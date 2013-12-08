@@ -18,8 +18,8 @@ define([
 				key,
 				listeners = this.listeners[name],
 				args = Array.prototype.slice.call(arguments);
+			//console.log('dojoConfig', dojoConfig);
 			args.shift();
-			
 			if(listeners){
 				for(key in listeners){
 					if(listeners.hasOwnProperty(key)){

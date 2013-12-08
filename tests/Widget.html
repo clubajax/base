@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Widget test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		dojoConfig = {
+			noCatch:false,
+			devReports: 1,
+			devCharts: 0,
+			noPersist: 0,
+			blockWelcome:1,
+			showProfile:0,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+	</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Widget test</h1>
+	<div id='widget01'></div>
+	<div id='widget02'></div>
+	<div id='widget03'></div>
+	<script>
+		require([
+			'dcl/dcl',
+			'base/registry',
+			'base/Widget'
+		], function(dcl, registry, Widget) {
+			
+			//console.log('empty widget, no args doesn\'t blow up');
+			//var w01 = new Widget();
+			//
+			//console.log('no template, shows default template');
+			//var w02 = new Widget({}, 'widget01');
+			
+			// inheritance
+			var MyWidget = dcl(Widget, {
+				declaredClass:'MyWidget',
+				template:'<div>My Widget</div>',
+				constructor: function(options, node){
+					// testing constructor firing order
+					console.log('MyWidget!', node);
+				},
+				postRender: function(){
+					// ensure postRender fires after dom insertion
+					console.log('postRender', this.node);
+				}
+			});
+			registry.addClass('MyWidget', MyWidget);
+			var m = new MyWidget({}, 'widget02')
+		
+			var WidgetWithSub = dcl(Widget, {
+				declaredClass:'MyWidget',
+				template:'<div><span>Parent Widget</span><div data-widget="MyWidget">did not render<div></div>',
+				constructor: function(options, node){
+					console.log('MyWidget!', node);
+				},
+				postRender: function(){
+					console.log('postRender', this.node);
+				}
+			});
+			var wws = new WidgetWithSub({}, 'widget03');
+			
+		});
+	</script>
+</body>
+</html>

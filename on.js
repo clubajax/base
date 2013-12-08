@@ -373,66 +373,6 @@ define(['./has'], function(has){
 
         on.bind = bind;
 
-        on.remove = function(handles){
-            // convenience function;
-            // removes one or more handles;
-            // accepts one handle or an array of handles;
-            // accepts different types of handles (dispose/remove/topic token)
-            //
-            var i, h, idHandles;
-            if(typeof handles === 'string'){
-                idHandles = registry[handles];
-                if(idHandles){
-                    idHandles.forEach(function(h){
-                        h.remove();
-                    });
-                    idHandles = registry[handles] = null;
-                    delete registry[handles];
-                }else{
-                    console.warn('Tried to remove on.handle, but id not found:', handles);
-                }
-
-                return [];
-            }
-            if(Object.prototype.toString.call(handles) !== '[object Array]'){
-                handles = [handles];
-            }
-
-            for( i = 0; i < handles.length; i++ ){
-                h = handles[i];
-
-                if(h){ // check for nulls / already removed handles
-                    if(h.remove){
-                        // on handle, or AOP
-                        h.remove();
-                    }
-                    else if(h.dispose){
-                        // knockout
-                        h.dispose();
-                    }
-                    // EventEmitter is not supported, but Evented extends EventEmitter
-                    // and is supported
-                    //else if(h.off){
-                    //    // EventEmitter
-                    //    h.off();
-                    //}
-                    else if(typeof h === 'function'){
-                        // custom clean up
-                        h();
-                    }
-                    else if(typeof h !== 'object'){
-							console.warn('pubsub object not implemented');   
-						   //pubsub.unsubscribe(h);
-                    }else{
-                        console.log('handle type not recognized', h);
-                    }
-                }else{
-                    console.log('null handle');
-                }
-            }
-            return [];
-        };
-
         on.ancestor = function(node, selector){
             // gets the ancestor of node based on selector criteria
             // useful for getting the target node when a child node is clicked upon
@@ -496,6 +436,52 @@ define(['./has'], function(has){
                 child = child.parentNode;
             }
             return false;
+        };
+		
+		on.remove = function(handles){
+            // convenience function;
+            // removes one or more handles;
+            // accepts one handle or an array of handles;
+            // accepts different types of handles (dispose/remove/topic token)
+            //
+            var i, h, idHandles;
+            if(typeof handles === 'string'){
+                idHandles = registry[handles];
+                if(idHandles){
+                    idHandles.forEach(function(h){
+                        h.remove();
+                    });
+                    idHandles = registry[handles] = null;
+                    delete registry[handles];
+                }else{
+                    console.warn('Tried to remove on.handle, but id not found:', handles);
+                }
+
+                return [];
+            }
+            if(Object.prototype.toString.call(handles) !== '[object Array]'){
+                handles = [handles];
+            }
+
+            for( i = 0; i < handles.length; i++ ){
+                h = handles[i];
+
+                if(h){ // check for nulls / already removed handles
+                    if(h.remove){
+                        // on handle, or AOP
+                        h.remove();
+                    }
+                    else if(h.dispose){
+                        // knockout
+                        h.dispose();
+                    }else{
+                        console.log('handle type not recognized', h);
+                    }
+                }else{
+                    console.log('null handle');
+                }
+            }
+            return [];
         };
 
     return on;

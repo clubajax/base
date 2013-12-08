@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Base test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		dojoConfig = {
+			noCatch:false,
+			devReports: 1,
+			devCharts: 0,
+			noPersist: 0,
+			blockWelcome:1,
+			showProfile:0,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+	</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Base test</h1>
+	<script>
+		require([
+			'base/observable',
+			'base/Base'
+		], function(observable, Base) {
+			var b = new Base({
+				observables:{
+					dribble:'double'
+				}
+			});
+			
+			b.own(b.on('dribble-observe', function(value){
+				console.log('emitted:', value);
+			}));
+			
+			b.own(b.dribble.subscribe(function(value){
+				console.log('observed:', value);
+				b.emit('dribble-observe', value);
+			}));
+			
+			console.log('b.dribble:', b.dribble());
+			b.dribble('travel');
+			console.log('b.dribble:', b.dribble());
+			
+			b.dispose();
+			console.log('b:', b);
+			
+			b.dribble('should not fire');
+			
+		});
+	</script>
+</body>
+</html>

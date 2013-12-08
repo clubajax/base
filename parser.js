@@ -1,10 +1,10 @@
 define([
-	'./lang',
+	'./registry',
 	'./logger'
-], function(lang, logger){
+], function(registry, logger){
 	var
-		log = logger('PRS', 0),
-		
+		log = logger('PRS', 1),
+		WIDGET_ATTR = 'data-widget',
 		indent = '',
 		
 		count = 0,
@@ -23,7 +23,8 @@ define([
 			var node = parentNode.firstChild;
 			while(node){
 				if(node.nodeType === 1){
-					if(node.getAttribute('data-view')){
+					//log('----node', node, node.getAttribute(WIDGET_ATTR), WIDGET_ATTR);
+					if(node.getAttribute(WIDGET_ATTR)){
 						viewNodes.push(node);
 					}else if(node.childNodes.length){
 						walkDom(node, viewNodes);
@@ -37,10 +38,10 @@ define([
 		parse = function(parentNode){
 			count++;
 			var dent = count+'  ';
-			//log(dent, 'parse');
+			log(dent, 'parse');
 			
 			parentNode = parentNode || document.body;
-			//console.log('   ', parentNode);
+			console.log('   parentNode:', parentNode);
 			var viewNodes = walkDom(parentNode);
 			if(viewNodes.length){
 				log(dent, 'parse complete');
@@ -51,15 +52,15 @@ define([
 			var widgets = [];
 			viewNodes.forEach(function(node){
 				var props = attsToObject(node.attributes);
-				var type = props['data-view'].replace(/\//g, '.');
-				var ctor = lang.getObject(type);
+				log('    props', props );
+				var type = props[WIDGET_ATTR].replace(/\//g, '.');
+				var ctor = registry.getClass(type);
 				if(!ctor){
 					console.error('cannot find ctor:', type);
 					return;
 				}
 				log('make view', type);
 				var view = new ctor(props, node);
-				//views.add(view);
 				widgets.push(view);
 			});
 			

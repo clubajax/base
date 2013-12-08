@@ -1,6 +1,4 @@
-define([
-
-], function(){
+define([], function(){
 
     function sortAsc(a, b){
 		a = a.toLowerCase();
