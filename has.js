@@ -16,9 +16,9 @@ define([], function(dcl){
         return testCache[name];
     }
 	
-	function add(name, test, now){
-        testCache[name] = now ? test(g, d, el) : test;
-    }
+	has.add = function(name, test, now){
+		testCache[name] = now ? test(g, d, el) : test;
+	};
 	
 	
 	

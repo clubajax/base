@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Evented test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		dojoConfig = {
+			noCatch:false,
+			devReports: 1,
+			devCharts: 0,
+			noPersist: 0,
+			blockWelcome:1,
+			showProfile:0,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+	</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Evented test</h1>
+	<p>Results are in the console.</p>
+	<script>
+		require([
+			'base/Evented'
+		], function(Evented) {
+			var h1, h2, o = new Evented();
+			h1 = o.on('bonk', function(arg){
+				console.log('bonked in the', arg);	
+			});
+			h2 = o.on('kick', function(a, b, c){
+				console.log('kicked in the', a, 'and the', b, 'and the', c);	
+			});
+			o.emit('bonk', 'head');
+			o.emit('kick', 'groin', 'shin', 'stomach');
+			
+			h1.pause();
+			o.emit('bonk', '(should not fire)');
+			h1.resume();
+			o.emit('bonk', 'face');
+			h1.remove();
+			o.emit('bonk', '(should not fire)');
+			
+			console.log('', o.listeners);
+			
+			o.removeAll();
+			
+			console.log('', o.listeners);
+			o.emit('kick', '(should not fire nor throw error)');
+			
+			h2.pause();
+			h2.resume();
+			o.emit('kick', '(should not fire nor throw error)');
+			
+			
+			h2.remove();
+			o.emit('kick', '(should not fire nor throw error)');
+			
+		});
+	</script>
+</body>
+</html>
