@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>xhr test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+	</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>xhr test</h1>
+	<p>Results are in the console.</p>
+	<script>
+		require([
+			'base/xhr'
+		], function(xhr) {
+			
+			//xhr.get('./data.json', {
+			//	callback: function(data){
+			//		console.log('data', data);	
+			//	}	
+			//});
+			
+			xhr.get('./data-bad-url.json', {
+				callback: function(data){
+					console.log('data', data);	
+				},
+				errback: function(e){
+					console.log('error handled:', e);
+				}
+			});
+		});
+	</script>
+</body>
+</html>

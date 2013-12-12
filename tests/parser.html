@@ -1,63 +1,82 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <title>Parser Test</title>
-	<link href='../resources/ui.css' rel='stylesheet' />
+    <title>parser test</title>
+	<link href='./tests.css' rel='stylesheet' />
 	<style>
-		.ParseTestItem{
-			padding: 3px;
-			margin: 2px;
-			border: 1px solid #ccc;
-			background: #fff;
-			font-size: 0.9em;
-		}
-		.container{
+		.MyWidget{
 			border: 1px solid #ccc;
 			background: #eee;
+			padding: 3px;
 		}
-
+		.WidgetWithSub{
+			border: 1px solid #FFAFAF;
+			background: #FCFFCE;
+			padding: 3px;
+			margin: 10px 0;
+		}
+		.WidgetWithSub h3{
+			background: #494E9B;
+			color: #fff;
+			padding: 3px;
+			margin: 3px 0;
+		}
 	</style>
 	<script>
 		dojoConfig = {
-			async:1,
-			isDebug:1,
-			packages:[{name:'dx-ui', location:'../dx-ui'}]
-		}
+			noCatch:false,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
 	</script>
-	<script src='../../dojo/dojo.js'></script>
-	<script>
-		
-	</script>
-	
+	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body>
-    <h1>Parser Test</h1>
-	<div data-view='dx-ui/tests/ParseTestItem' title='Oranges' name='Sunkist'>
-		<div data-view='dx-ui/tests/ParseTestItem' title='Grapes' name='Welches'></div>
-	</div>
+	<h1>parser test</h1>
+	<div data-widget="MyWidget"></div>
+	<div data-widget="WidgetWithSub"></div>
+	<div id='widget03'></div>
 	<script>
-		require(['dx-ui/util/parser', 'dojo/_base/declare', 'dx-ui/view/Base', 'dx-ui/view/views'], function(parser, declare, Base, ui){
+		require([
+			'dcl/dcl',
+			'base/registry',
+			'base/parser',
+			'base/Widget'
+		], function(dcl, registry, parser, Widget) {
 			
-			var template = 	"<div class='ParseTestItem'>" +
-								"<div><label>Title: <span>${title}</span></label></div>" +
-								"<div><label>Name: <span data-bind='name'></span></label></div>" +
-								"<div><label>Age: <span>${age}</span></label></div>" +
-								"<div><label>Age: <input data-bind='age' type='text' /></label></div>" +
-								"<div data-ref='containerNode' class='container'></div>" +
-							"</div>";
-			
-			
-			declare('dx-ui.tests.ParseTestItem', Base, {
-				id:'',
-				title:'My Title',
-				name:'Mike',
-				age:48,
-				constructor: function(props, node){
-					this.template = template;
+			// inheritance
+			var MyWidget = dcl(Widget, {
+				declaredClass:'MyWidget',
+				template:'<div class="MyWidget">My Widget</div>',
+				constructor: function(options, node){
+					// testing constructor firing order
+					console.log('MyWidget!', node);
+				},
+				postRender: function(){
+					// ensure postRender fires after dom insertion
+					console.log('postRender', this.node);
 				}
-				
 			});
-			
+			registry.addClass('MyWidget', MyWidget);
+			//var m = new MyWidget({}, 'widget02')
+		
+			var WidgetWithSub = dcl(Widget, {
+				declaredClass:'MyWidget',
+				template:'<div class="WidgetWithSub"><h3>Parent Widget</h3><div class="MyWidget" data-widget="MyWidget">did not render<div></div>',
+				constructor: function(options, node){
+					console.log('MyWidget!', node);
+				},
+				postRender: function(){
+					console.log('postRender', this.node);
+				}
+			});
+			registry.addClass('WidgetWithSub', WidgetWithSub);
+			//var wws = new WidgetWithSub({}, 'widget03');
 			parser.parse();
 		});
 	</script>
