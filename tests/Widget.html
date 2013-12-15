@@ -1,29 +1,35 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <title>Widget test</title>
+	<title>Widget test</title>
 	<link href='./tests.css' rel='stylesheet' />
 	<style>
-		.MyWidget{
+		.ChildWidget{
 			border: 1px solid #ccc;
 			background: #eee;
 			padding: 3px;
 		}
-		.WidgetWithSub{
+		.ParentWidget{
 			border: 1px solid #FFAFAF;
 			background: #FCFFCE;
 			padding: 3px;
 			margin: 10px 0;
 		}
-		.WidgetWithSub h3{
+		.ParentWidget h3{
 			background: #494E9B;
 			color: #fff;
 			padding: 3px;
 			margin: 3px 0;
 		}
+		.footer{
+			background: #ff0000;
+			color: #fff;
+			padding: 3px;
+			margin-top: 5px;
+		}
 	</style>
 	<script>
-		dojoConfig = {
+		window.dojoConfig = {
 			noCatch:false,
 			async: true,
 			tlmSiblingOfDojo: true,
@@ -33,7 +39,9 @@
 				{name: 'dcl', location: '../dcl'}
 			]
 		};
-	</script>
+		
+</script>
+	
 	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body>
@@ -48,41 +56,70 @@
 			'base/Widget'
 		], function(dcl, registry, Widget) {
 			
+			var wws, ChildWidget, GrandChildWidget, ParentWidget;
+			
 			//console.log('empty widget, no args doesn\'t blow up');
 			//var w01 = new Widget();
 			//
 			//console.log('no template, shows default template');
 			//var w02 = new Widget({}, 'widget01');
 			
-			// inheritance
-			var MyWidget = dcl(Widget, {
-				declaredClass:'MyWidget',
-				template:'<div class="MyWidget">My Widget</div>',
+			GrandChildWidget = dcl(Widget, {
+				declaredClass:'GrandChildWidget',
+				template:'<div class="GrandChildWidget">Grand Child Widget</div>',
 				constructor: function(options, node){
 					// testing constructor firing order
-					console.log('MyWidget!', node);
+					console.log('GrandChildWidget!', node);
 				},
 				postRender: function(){
 					// ensure postRender fires after dom insertion
 					console.log('postRender', this.node);
 				}
 			});
-			registry.addClass('MyWidget', MyWidget);
-			var m = new MyWidget({}, 'widget02')
-		
-			var WidgetWithSub = dcl(Widget, {
-				declaredClass:'MyWidget',
-				template:'<div class="WidgetWithSub"><h3>Parent Widget</h3><div class="MyWidget" data-widget="MyWidget">did not render<div></div>',
+			registry.addClass('GrandChildWidget', GrandChildWidget);
+			
+			
+			ChildWidget = dcl(Widget, {
+				declaredClass:'ChildWidget',
+				template:'<div class="ChildWidget"><h3>Child Widget<h3><div data-widget="GrandChildWidget">no grand child.</div></div>',
 				constructor: function(options, node){
-					console.log('MyWidget!', node);
+					// testing constructor firing order
+					console.log('ChildWidget!', node);
 				},
 				postRender: function(){
+					// ensure postRender fires after dom insertion
 					console.log('postRender', this.node);
 				}
 			});
-			var wws = new WidgetWithSub({}, 'widget03');
+			registry.addClass('ChildWidget', ChildWidget);
+			//m = new ChildWidget({}, 'widget02');
+		
+			ParentWidget = dcl(Widget, {
+				declaredClass:'ParentWidget',
+				template:	'<div class="ParentWidget">' +
+								'<div data-ref="headerNode">header.</div>' +
+								'<h3 data-ref="titleNode">Parent Widget</h3>' +
+								'<div class="ChildWidget" data-ref="childWidget,dupeWidget" data-widget="ChildWidget">did not render</div>' +
+								'<div class="footer" data-ref="footerNode,click:onFooterClick">footer.</div>' +
+							'</div>',
+							
+				constructor: function(options, node){
+					console.log('ParentWidget!', node);
+				},
+				onFooterClick: function(e){
+					console.log('onFooterClick', e);
+				},
+				postRender: function(){
+					console.log('TEST', typeof this.node, (this.node instanceof window.Node));
+					console.log('postRender', this.node);
+					console.log('titleNode', this.titleNode);
+					console.log('childWidget', this.childWidget);
+					console.log('dupeWidget', this.dupeWidget);
+				}
+			});
+			wws = new ParentWidget({}, 'widget03');
 			
 		});
-	</script>
+</script>
 </body>
 </html>

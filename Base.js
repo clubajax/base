@@ -11,8 +11,8 @@ define([
 			options = options || {};
 			//console.log('base!', n);
 			var
-				_dispose,
-				_oldDispose,
+				tempDispose,
+				oldDispose,
 				handles = [],
 				prop,
 				observables = options.observables ||  this.observables || {};
@@ -53,18 +53,18 @@ define([
 			};
 			
 			
-			_dispose = function(){
+			tempDispose = function(){
 				on.remove(handles);
 			}.bind(this);
 			
 			if(this.dispose){
-				_oldDispose = this.dispose;
+				oldDispose = this.dispose;
 				this.dispose = function(){
-					_oldDispose();
-					_dispose();
+					oldDispose();
+					tempDispose();
 				};
 			}else{
-				this.dispose = _dispose;
+				this.dispose = tempDispose;
 			}
 		}
 	});

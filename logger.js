@@ -22,12 +22,12 @@ define([], function(){
     if(document && document.location){
 
         var
-            _map,
+            map,
             cookies = {
                 get: function(){
                     var i, k, p, lg, a = document.cookie.split(';');
-                    if(!_map){
-                        _map = {};
+                    if(!map){
+                        map = {};
                         // loop through all cookies
                         for(i = 0; i < a.length; i++){
                             // get cookie key/value
@@ -37,13 +37,13 @@ define([], function(){
                                 lg = p[1].split(',');
                                 // map all log values
                                 for(k = 0; k < lg.length; k++){
-                                    _map[lg[k]] = 1;
+                                    map[lg[k]] = 1;
                                 }
                                 break;
                             }
                         }
                     }
-                    return _map;
+                    return map;
                 },
                 set: function(key, value){
                     document.cookie = key+'='+value;

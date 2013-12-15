@@ -91,26 +91,35 @@ define([
     }
 
     function attr(node, prop, value){
-        // get/set node attribute(s)
-        //      prop: string or object
-        //
-        var key;
-        if(typeof prop === 'object'){
-            for(key in prop){
-                if(prop.hasOwnProperty(key)){
-                    this.attr(node, key, prop[key]);
-                }
-            }
-            return null;
-        }else if(value !== undefined){
-            if(prop === 'text' || prop === 'html' || prop === 'innerHTML'){
-                node.innerHTML = value;
-            }else{
-                node.setAttribute(prop, value);
-            }
-        }
-
-        return node.getAttribute(prop);
+		// get/set node attribute(s)
+		//      prop: string or object
+		//
+		var key, i, attr, attrs, attsObject;
+		if(typeof prop === 'object'){
+			for(key in prop){
+				if(prop.hasOwnProperty(key)){
+					this.attr(node, key, prop[key]);
+				}
+			}
+			return null;
+		}else if(value !== undefined){
+			if(prop === 'text' || prop === 'html' || prop === 'innerHTML'){
+				node.innerHTML = value;
+			}else{
+				node.setAttribute(prop, value);
+			}
+		}else if(prop === undefined){
+			// get all attrs
+			attrs = node.attributes;
+			attsObject = {};
+			for (i = 0; i < attrs.length; i++){
+				attr = attrs.item(i);
+				attsObject[attr.nodeName] = attr.nodeValue;
+			}
+			return attsObject;
+		}
+		
+		return node.getAttribute(prop);
     }
 
     function box(node){

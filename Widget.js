@@ -1,15 +1,12 @@
 define([
 	'dcl/dcl',
+	'./lang',
 	'./dom',
+	'./registry',
+	'./Base',
 	'./parser',
-	'./Base'
-], function(dcl, dom, parser, Base){
-	
-
-	//for(k in dcl){
-	//	console.log('   ', k, dcl[k]);
-	//}
-
+	'./parser-props',
+], function(dcl, lang, dom, registry, Base, parser){
 	
 	var Widget = dcl(Base, {
 		declaredClass:'Widget',
@@ -21,13 +18,27 @@ define([
 			}
 		}),
 		render: function(node){
+			var attrObject;
+			
 			console.log('render!', node);
 			node = typeof node === 'string' ? document.getElementById(node) : node;
 			
 			if(node){
+				attrObject = dom.attr(node);
+				if(attrObject.id){
+					attrObject.widgetId = attrObject.id;
+				}else{
+					attrObject.widgetId = lang.uid('widget');
+				}
+				registry.addWidget(attrObject.widgetId, this);
+				
 				this.node = dom(this.template);
-				parser.parse(this.node);
+				parser.parse(this.node, this);
 				node.parentNode.replaceChild(this.node, node);
+				
+				dom.attr(this.node, attrObject);
+				
+				
 				// noop after creation
 				this.render = function(){};
 			}

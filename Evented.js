@@ -1,7 +1,8 @@
 define([
 	'dcl/dcl',
-	'./lang'
-], function(dcl, lang){
+	'./lang',
+	'./on'
+], function(dcl, lang, on){
 
 	function noop(){}
 	
@@ -34,7 +35,14 @@ define([
 			this.listeners = {};
 		},
 		
+		
+		// this.on(node, 'click', 'doFoo', this)
+		
 		on: function(name, callback, context){
+			if(name instanceof window.Node){
+				return on.apply(null, arguments);
+			}
+			
 			this.listeners[name] = this.listeners[name] || {};
 			if(context){
 				callback = callback.bind(context);
@@ -58,7 +66,7 @@ define([
 				resume: function(){
 					listeners[name][id] = paused;
 				}
-			}
+			};
 		}
 	});
 });
