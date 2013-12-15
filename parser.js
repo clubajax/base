@@ -24,7 +24,7 @@ define([
 		}
 		
 		function walkDom(parentNode, ATTR, nodes){
-			// walks a dom tree from a certaion point, and
+			// walks a dom tree from a certain point, and
 			// returns an array of nodes that contain a certain
 			// attribute
 			// 
@@ -33,7 +33,7 @@ define([
 			while(node){
 				if(node.nodeType === 1){
 					//log('----node', node, node.getAttribute(WIDGET_ATTR), WIDGET_ATTR);
-					
+					console.log('parse node', node.getAttribute(ATTR));
 					if(node.getAttribute(ATTR)){
 						nodes.push(node);
 						//

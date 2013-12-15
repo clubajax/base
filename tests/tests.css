@@ -24,3 +24,12 @@ body{
 	padding: 3px;
 	margin-top: 5px;
 }
+.basic{
+	font-size: 12px;
+}
+.big{
+	font-size: 18px;
+}
+.small{
+	font-size: 9px;
+}

@@ -21,7 +21,7 @@ define([], function(){
         return callback;
     }
 
-	function observableFactory( _item ){
+	function observableFactory( orgItem ){
 
 		// private properties
 		var
@@ -44,19 +44,6 @@ define([], function(){
 			return value;
 		}
 
-		observable.modify = function( callback, context ){
-			var id = 'sub' + (subid++);
-			modifiers[id] = bind(callback, context);
-			// subscribe returns a handle for which
-			// remove() can be called to stop the listener
-			return {
-				remove: function(){
-					delete modifiers[id];
-				}
-			};
-		};
-
-
 		// subscriber for listening to property changes
 		observable.subscribe = function( callback, context ){
 			var id = 'sub' + (subid++);
@@ -70,6 +57,7 @@ define([], function(){
 				}
 			};
 		};
+		
 
 		// publish changes. Often done automatically,
 		// but can be done manually,
@@ -89,6 +77,10 @@ define([], function(){
                 }
 			}
 		};
+		
+		// shortcuts
+		observable.sub = observable.subscribe;
+		observable.pub = observable.publish;
 
 		// for testing what thisis.
 		observable.isObservable = true;
@@ -158,7 +150,7 @@ define([], function(){
 
 
 		// Initialize observable property
-		observable( _item );
+		observable( orgItem );
 		return observable;
 
 	}

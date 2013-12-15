@@ -42,7 +42,10 @@ define([
 			propName,
 			widgetId,
 			nodes = walkDom(parentNode, PROP_ATTR);
-			
+		
+		if(parentNode.getAttribute(PROP_ATTR)){
+			nodes.push(parentNode);
+		}
 		for(i = 0; i < nodes.length; i++){
 			propName = nodes[i].getAttribute(PROP_ATTR);
 			widgetId = nodes[i].getAttribute(WIDGET_ID_ATTR);

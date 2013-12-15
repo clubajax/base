@@ -6,6 +6,7 @@ define([
 	'./Base',
 	'./parser',
 	'./parser-props',
+	'./parser-observable'
 ], function(dcl, lang, dom, registry, Base, parser){
 	
 	var Widget = dcl(Base, {
@@ -38,6 +39,7 @@ define([
 				registry.addWidget(attrObject.widgetId, this);
 				
 				this.node = dom(this.template);
+				console.log('PARSE THIS');
 				parser.parse(this.node, this);
 				node.parentNode.replaceChild(this.node, node);
 				

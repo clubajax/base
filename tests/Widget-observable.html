@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Widget Observable test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		window.dojoConfig = {
+			noCatch:false,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+		
+</script>
+	
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Widget Observable test</h1>
+	<div id='widget01'></div>
+	<div id='widget02'></div>
+	<div id='widget03'></div>
+	<div id='widget04'></div>
+	<button id='go'>text to 'GO!'</button>
+	<button id='stp'>text to 'Stop!'</button>
+	<button id='cssBig'>css to 'big'</button>
+	<button id='cssSm'>text to 'small'</button>
+	<script>
+		require([
+			'dcl/dcl',
+			'base/registry',
+			'base/Widget'
+		], function(dcl, registry, Widget) {
+			
+			var gc, GrandChildWidget;
+			
+			function attach(id, fn){
+				document.getElementById(id).addEventListener('click', fn, false);
+			}
+			
+			GrandChildWidget = dcl(Widget, {
+				declaredClass:'GrandChildWidget',
+				template:'<div class="GrandChildWidget" data-bind="text:innerText,css:setCSS">Grand Child Widget</div>',
+				observables:{
+					innerText:'Observed Content',
+					setCSS:'basic'
+				}
+			});
+			registry.addClass('GrandChildWidget', GrandChildWidget);
+			
+			gc = new GrandChildWidget({}, 'widget04');
+			
+			console.log('observable:', gc.innerText());
+			
+			setTimeout(function(){
+				gc.innerText('Changed Content');
+				console.log('observable:', gc.innerText());
+			}, 600);
+			
+			attach('go', function(){
+				gc.innerText('<strong>GO!</strong>');
+			});
+			attach('stp', function(){
+				gc.innerText('<em>STOP!</em>');
+			});
+			
+			attach('cssBig', function(){
+				gc.setCSS('big');
+			});
+			attach('cssSm', function(){
+				gc.setCSS('small');
+			});
+		});
+</script>
+</body>
+</html>
