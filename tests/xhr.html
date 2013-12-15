@@ -4,15 +4,16 @@
     <title>xhr test</title>
 	<link href='./tests.css' rel='stylesheet' />
 	<script>
-		dojoConfig = {
+		window.dojoConfig = {
 			async: true,
 			baseUrl: '',
 			packages: [
-				{name: 'base', location: '../'},
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
 				{name: 'dcl', location: '../dcl'}
 			]
 		};
-	</script>
+</script>
 	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body>
@@ -20,14 +21,14 @@
 	<p>Results are in the console.</p>
 	<script>
 		require([
-			'base/xhr'
+			'core/xhr'
 		], function(xhr) {
 			
-			//xhr.get('./data.json', {
-			//	callback: function(data){
-			//		console.log('data', data);	
-			//	}	
-			//});
+			xhr.get('./data.json', {
+				callback: function(data){
+					console.log('data', data);	
+				}	
+			});
 			
 			xhr.get('./data-bad-url.json', {
 				callback: function(data){
@@ -38,6 +39,6 @@
 				}
 			});
 		});
-	</script>
+</script>
 </body>
 </html>

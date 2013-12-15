@@ -23,17 +23,18 @@
 		}
 	</style>
 	<script>
-		dojoConfig = {
+		window.dojoConfig = {
 			noCatch:false,
 			async: true,
 			tlmSiblingOfDojo: true,
 			baseUrl: '',
 			packages: [
-				{name: 'base', location: '../'},
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
 				{name: 'dcl', location: '../dcl'}
 			]
 		};
-	</script>
+</script>
 	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body>
@@ -44,13 +45,13 @@
 	<script>
 		require([
 			'dcl/dcl',
-			'base/registry',
-			'base/parser',
-			'base/Widget'
+			'core/registry',
+			'core/parser',
+			'core/Widget'
 		], function(dcl, registry, parser, Widget) {
-			
+			var MyWidget, WidgetWithSub;
 			// inheritance
-			var MyWidget = dcl(Widget, {
+			MyWidget = dcl(Widget, {
 				declaredClass:'MyWidget',
 				template:'<div class="MyWidget">My Widget</div>',
 				constructor: function(options, node){
@@ -65,7 +66,7 @@
 			registry.addClass('MyWidget', MyWidget);
 			//var m = new MyWidget({}, 'widget02')
 		
-			var WidgetWithSub = dcl(Widget, {
+			WidgetWithSub = dcl(Widget, {
 				declaredClass:'MyWidget',
 				template:'<div class="WidgetWithSub"><h3>Parent Widget</h3><div class="MyWidget" data-widget="MyWidget">did not render<div></div>',
 				constructor: function(options, node){
@@ -79,6 +80,6 @@
 			//var wws = new WidgetWithSub({}, 'widget03');
 			parser.parse();
 		});
-	</script>
+</script>
 </body>
 </html>

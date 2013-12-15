@@ -13,7 +13,8 @@
 			tlmSiblingOfDojo: true,
 			baseUrl: '',
 			packages: [
-				{name: 'base', location: '../'},
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
 				{name: 'dcl', location: '../dcl'}
 			]
 		};
@@ -30,9 +31,9 @@
 	<script>
 		require([
 			'dcl/dcl',
-			'base/dom',
-			'base/registry',
-			'base/Widget'
+			'core/dom',
+			'core/registry',
+			'core/Widget'
 		], function(dcl, dom, registry, Widget) {
 			
 			var w01;

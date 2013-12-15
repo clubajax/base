@@ -4,7 +4,7 @@
     <title>Base test</title>
 	<link href='./tests.css' rel='stylesheet' />
 	<script>
-		dojoConfig = {
+		window.dojoConfig = {
 			noCatch:false,
 			devReports: 1,
 			devCharts: 0,
@@ -15,19 +15,20 @@
 			tlmSiblingOfDojo: true,
 			baseUrl: '',
 			packages: [
-				{name: 'base', location: '../'},
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
 				{name: 'dcl', location: '../dcl'}
 			]
 		};
-	</script>
+</script>
 	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body>
 	<h1>Base test</h1>
 	<script>
 		require([
-			'base/observable',
-			'base/Base'
+			'core/observable',
+			'core/Base'
 		], function(observable, Base) {
 			var b = new Base({
 				observables:{

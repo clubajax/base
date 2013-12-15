@@ -4,7 +4,7 @@
     <title>observable test</title>
 	<link href='./tests.css' rel='stylesheet' />
 	<script>
-		dojoConfig = {
+		window.dojoConfig = {
 			noCatch:false,
 			devReports: 1,
 			devCharts: 0,
@@ -15,11 +15,12 @@
 			tlmSiblingOfDojo: true,
 			baseUrl: '',
 			packages: [
-				{name: 'base', location: '../'},
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
 				{name: 'dcl', location: '../dcl'}
 			]
 		};
-	</script>
+</script>
 	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body>
@@ -27,10 +28,10 @@
 	<p>Results are in the console.</p>
 	<script>
 		require([
-			'base/observable'
+			'core/observable'
 		], function(observable) {
 		
-			var timer, likes, pie, o;
+			var timer, likes, pie, o, snack;
 		
 			timer = function(obs, val, callback){
 				setTimeout(function(){
@@ -42,7 +43,7 @@
 			};
 		
 			pie = observable();
-			pie.modify(function(v){
+			pie.sub(function(v){
 				if(v === 1){
 					return v + ' pie';
 				}
@@ -61,10 +62,9 @@
 			
 			o = {
 				init: function(){
-				   // var
-				   var snack = observable();
-				   snack.subscribe(this.onValue, this);
-				   snack('munch');
+					snack = observable();
+					snack.subscribe(this.onValue, this);
+					snack('munch');
 				},
 				onValue: function(v){
 					console.log('contextual value: ', v);
@@ -87,6 +87,6 @@
 		
 		
 		});
-	</script>
+</script>
 </body>
 </html>

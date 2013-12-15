@@ -22,7 +22,7 @@
         }
     </style>
 	<script>
-		dojoConfig = {
+		window.dojoConfig = {
 			noCatch:false,
 			devReports: 1,
 			devCharts: 0,
@@ -33,11 +33,12 @@
 			tlmSiblingOfDojo: true,
 			baseUrl: '',
 			packages: [
-				{name: 'base', location: '../'},
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
 				{name: 'dcl', location: '../dcl'}
 			]
 		};
-	</script>
+</script>
 	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body>
@@ -68,7 +69,7 @@
     </div>
 	<script>
 		require([
-			'base/on'
+			'core/on'
 		], function(on) {
 		
 			console.log('on loaded');
@@ -145,6 +146,6 @@
 		
 		});
 
-	</script>
+</script>
 </body>
 </html>
