@@ -9,8 +9,6 @@ define([
 		WIDGET_ID_ATTR = 'widgetId',
 		PROP_ATTR = 'data-ref';
 	
-	
-	
 	function assign(name, context, object){
 		var event, method;
 		name.split(',').forEach(function(nm){
@@ -19,10 +17,13 @@ define([
 				// event/method
 				event = nm.split(':')[0].trim();
 				method = nm.split(':')[1].trim();
+				if(!context[method]){
+					console.error('parser: Method "'+method+'" missing from widget:', context);
+				}
 				if(object instanceof window.Node){
-					context.own(context.on(object, event, method, context));
+					context.own(context.on(object, event, context[method], context));
 				}else{
-					context.own(context.on(event, method, context));
+					context.own(object.on(event, context[method], context));
 				}
 			}else{
 				// prop assignment
@@ -48,10 +49,8 @@ define([
 			
 			if(widgetId){
 				assign(propName, context, registry.getWidget(widgetId));
-				//context[propName] = registry.getWidget(widgetId);
 			}else{
 				assign(propName, context, nodes[i]);
-				//context[propName] = nodes[i];
 			}
 			
 		}

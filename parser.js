@@ -4,7 +4,7 @@ define([
 ], function(registry, logger){
 	
 	var
-		log = logger('PRS', 1),
+		log = logger('PRS', 0),
 		REF_ATTR = 'data-ref',
 		WIDGET_ATTR = 'data-widget',
 		plugins = [],

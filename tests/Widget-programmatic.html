@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Widget test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		
+	</style>
+	<script>
+		window.dojoConfig = {
+			noCatch:false,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+		
+</script>
+	
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Widget test</h1>
+	<div id='widget01'></div>
+	<div id='widget02'></div>
+	<div id='widget03'></div>
+	<script>
+		require([
+			'dcl/dcl',
+			'base/dom',
+			'base/registry',
+			'base/Widget'
+		], function(dcl, dom, registry, Widget) {
+			
+			var w01;
+			
+			console.log('empty widget, no args doesn\'t blow up');
+			new Widget();
+			
+			console.log('no template, shows default template');
+			new Widget({}, 'widget01');
+			
+			console.log('has template, attach after');
+			w01 = new Widget({
+				template:'<h3>Widget.appendChild</h3>',	
+			});
+			
+			console.log('NODE', dom('#widget03'));
+			console.log('w01:', w01);
+			dom('#widget03').appendChild(w01.node);
+			
+		});
+</script>
+</body>
+</html>

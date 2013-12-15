@@ -1,3 +1,26 @@
 body{
 	font-family: sans-serif;
 }
+.ChildWidget{
+	border: 1px solid #ccc;
+	background: #eee;
+	padding: 3px;
+}
+.ParentWidget{
+	border: 1px solid #FFAFAF;
+	background: #FCFFCE;
+	padding: 3px;
+	margin: 10px 0;
+}
+.ParentWidget h3{
+	background: #494E9B;
+	color: #fff;
+	padding: 3px;
+	margin: 3px 0;
+}
+.footer{
+	background: #ff0000;
+	color: #fff;
+	padding: 3px;
+	margin-top: 5px;
+}

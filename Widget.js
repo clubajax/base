@@ -13,6 +13,10 @@ define([
 		template:'<div>NO TEMPLATE</div>',
 		constructor: dcl.after(function(args){
 			this.render(args[1]);
+			if(this.preRender){
+				this.preRender();
+			}
+			// probably don't need this. constructor should work
 			if(this.postRender){
 				this.postRender();
 			}
@@ -24,6 +28,7 @@ define([
 			node = typeof node === 'string' ? document.getElementById(node) : node;
 			
 			if(node){
+				// associated with a dom node to replace
 				attrObject = dom.attr(node);
 				if(attrObject.id){
 					attrObject.widgetId = attrObject.id;
@@ -37,11 +42,15 @@ define([
 				node.parentNode.replaceChild(this.node, node);
 				
 				dom.attr(this.node, attrObject);
-				
-				
-				// noop after creation
-				this.render = function(){};
+			}else{
+				// no parent node yet. render, but do not attach
+				this.node = dom(this.template);
+				parser.parse(this.node, this);	
 			}
+				
+			// noop after creation
+			this.render = function(){};
+		
 		}
 	});
 	

@@ -3,31 +3,6 @@
 <head>
 	<title>Widget test</title>
 	<link href='./tests.css' rel='stylesheet' />
-	<style>
-		.ChildWidget{
-			border: 1px solid #ccc;
-			background: #eee;
-			padding: 3px;
-		}
-		.ParentWidget{
-			border: 1px solid #FFAFAF;
-			background: #FCFFCE;
-			padding: 3px;
-			margin: 10px 0;
-		}
-		.ParentWidget h3{
-			background: #494E9B;
-			color: #fff;
-			padding: 3px;
-			margin: 3px 0;
-		}
-		.footer{
-			background: #ff0000;
-			color: #fff;
-			padding: 3px;
-			margin-top: 5px;
-		}
-	</style>
 	<script>
 		window.dojoConfig = {
 			noCatch:false,
@@ -58,12 +33,6 @@
 			
 			var wws, ChildWidget, GrandChildWidget, ParentWidget;
 			
-			//console.log('empty widget, no args doesn\'t blow up');
-			//var w01 = new Widget();
-			//
-			//console.log('no template, shows default template');
-			//var w02 = new Widget({}, 'widget01');
-			
 			GrandChildWidget = dcl(Widget, {
 				declaredClass:'GrandChildWidget',
 				template:'<div class="GrandChildWidget">Grand Child Widget</div>',
@@ -92,29 +61,21 @@
 				}
 			});
 			registry.addClass('ChildWidget', ChildWidget);
-			//m = new ChildWidget({}, 'widget02');
-		
+			
 			ParentWidget = dcl(Widget, {
 				declaredClass:'ParentWidget',
 				template:	'<div class="ParentWidget">' +
-								'<div data-ref="headerNode">header.</div>' +
-								'<h3 data-ref="titleNode">Parent Widget</h3>' +
-								'<div class="ChildWidget" data-ref="childWidget,dupeWidget" data-widget="ChildWidget">did not render</div>' +
-								'<div class="footer" data-ref="footerNode,click:onFooterClick">footer.</div>' +
+								'<div>header.</div>' +
+								'<h3>Parent Widget</h3>' +
+								'<div class="ChildWidget" data-widget="ChildWidget">did not render</div>' +
+								'<div class="footer">footer.</div>' +
 							'</div>',
 							
 				constructor: function(options, node){
 					console.log('ParentWidget!', node);
 				},
-				onFooterClick: function(e){
-					console.log('onFooterClick', e);
-				},
 				postRender: function(){
-					console.log('TEST', typeof this.node, (this.node instanceof window.Node));
 					console.log('postRender', this.node);
-					console.log('titleNode', this.titleNode);
-					console.log('childWidget', this.childWidget);
-					console.log('dupeWidget', this.dupeWidget);
 				}
 			});
 			wws = new ParentWidget({}, 'widget03');

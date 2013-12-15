@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Widget test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		window.dojoConfig = {
+			noCatch:false,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+		
+</script>
+	
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Widget test</h1>
+	<div id='widget01'></div>
+	<div id='widget02'></div>
+	<div id='widget03'></div>
+	<script>
+		require([
+			'dcl/dcl',
+			'base/registry',
+			'base/Widget'
+		], function(dcl, registry, Widget) {
+			
+			var wws, ChildWidget, GrandChildWidget, ParentWidget;
+
+			GrandChildWidget = dcl(Widget, {
+				declaredClass:'GrandChildWidget',
+				template:'<div class="GrandChildWidget">Grand Child Widget</div>'
+			});
+			registry.addClass('GrandChildWidget', GrandChildWidget);
+			
+			
+			ChildWidget = dcl(Widget, {
+				declaredClass:'ChildWidget',
+				template:'<div class="ChildWidget"><h3 data-ref="click:onTitleClick">Child Widget<h3><div data-widget="GrandChildWidget">no grand child.</div></div>',
+				onTitleClick: function(){
+					console.log('onTitleClick');
+					this.emit('buzz', 'bird', 'alarm');
+				}
+			});
+			registry.addClass('ChildWidget', ChildWidget);
+			
+			ParentWidget = dcl(Widget, {
+				declaredClass:'ParentWidget',
+				template:	'<div class="ParentWidget">' +
+								'<div data-ref="headerNode,click:onTestMissingMethod">header.</div>' +
+								'<h3 data-ref="titleNode">Parent Widget</h3>' +
+								'<div class="ChildWidget" data-ref="childWidget,dupeWidget,buzz:onChildBuzz" data-widget="ChildWidget">did not render</div>' +
+								'<div class="footer" data-ref="footerNode,click:onFooterClick">footer.</div>' +
+							'</div>',
+							
+				onChildBuzz: function(a, b){
+					console.log('onChildBuzz', a, b);
+				},
+				onFooterClick: function(e){
+					console.log('onFooterClick', e);
+				},
+				postRender: function(){
+					console.log('postRender', this.node);
+					console.log('titleNode', this.titleNode);
+					console.log('childWidget', this.childWidget);
+					console.log('dupeWidget', this.dupeWidget);
+				}
+			});
+			wws = new ParentWidget({}, 'widget03');
+			
+		});
+</script>
+</body>
+</html>
