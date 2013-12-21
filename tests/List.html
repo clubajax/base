@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>List Test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
+				{name: 'ui', location: '../ui'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>List Test</h1>
+	<div id='list'></div>
+	<script>
+		require([
+			'core/Store',
+			'ui/List'
+		], function(Store, List) {
+			
+			var
+			list,
+			store = new Store({
+				url:'/observato/web/rest/resources',
+				database:'main',
+				target: '/entities'
+			});
+			
+			list = new List({
+				store:store,
+				columns:[{
+					label:'schema'
+				},{
+					label:'source'
+				},{
+					label:'reference'
+				}],
+				observables:{
+					title:'My Test List'
+				}
+			}, 'list');
+			
+			store.query({
+				source:'CRM',
+				schema:'Order'
+			});
+			
+		});
+</script>
+</body>
+</html>

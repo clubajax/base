@@ -33,3 +33,23 @@ body{
 .small{
 	font-size: 9px;
 }
+
+.base-list-row{
+	padding: 3px;
+}
+.base-list-row:nth-child(even){
+	background: #eee;
+}
+.base-list-pair{
+	display: inline-block;
+}
+.base-list-label{
+	display: inline-block;
+	color: #999;
+	margin-right: 3px;
+}
+.base-list-text{
+	display: inline-block;
+	color: #333;
+	margin-right: 6px;
+}
