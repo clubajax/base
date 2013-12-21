@@ -2,10 +2,16 @@ define([
 ], function(dcl){
 	
 	function toQuery(obj){
-		var key, params = [];
+		var key, i, params = [];
 		for(key in obj){
 			if(obj.hasOwnProperty(key)){
-				params.push(key+'='+obj[key]);
+				if(Array.isArray(obj[key])){
+					for(i = 0; i < obj[key].length; i++){
+						params.push(key+'='+obj[key][i]);
+					}
+				}else{
+					params.push(key+'='+obj[key]);
+				}
 			}
 		}
 		return params.join('&');
@@ -22,10 +28,9 @@ define([
 		}
 		
 		function onload(request) {
-			var req = request.currentTarget;
+			var req = request.currentTarget, result, err;
 			//console.log(this.responseText);
 			console.log('onload', req);
-			var result, err;
 			
 			if(req.status !== 200){
 				err = {
@@ -74,7 +79,7 @@ define([
 		return xhr(url, options);
 	}
 	
-	function post(options){
+	function post(url, options){
 		options = options || {};
 		options.type = 'POST';
 		return xhr(url, options);
