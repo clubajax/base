@@ -13,7 +13,7 @@ define([
 		declaredClass:'Widget',
 		template:'<div>NO TEMPLATE</div>',
 		constructor: dcl.after(function(args){
-			this.render(args[1]);
+			this.renderWidget(args[1]);
 			if(this.preRender){
 				this.preRender();
 			}
@@ -22,12 +22,19 @@ define([
 				this.postRender();
 			}
 		}),
-		render: function(node){
+		renderWidget: function(node){
 			var attrObject;
 			
 			console.log('render!', node);
 			node = typeof node === 'string' ? document.getElementById(node) : node;
 			
+			this.node = dom(this.template.replace(/\{\{\w*\}\}/g, function(word){
+				word = word.substring(2, word.length-2);
+				return this[word];
+			}.bind(this)));
+			parser.parse(this.node, this);
+				
+				
 			if(node){
 				// associated with a dom node to replace
 				attrObject = dom.attr(node);
@@ -38,20 +45,13 @@ define([
 				}
 				registry.addWidget(attrObject.widgetId, this);
 				
-				this.node = dom(this.template);
-				console.log('PARSE THIS');
-				parser.parse(this.node, this);
 				node.parentNode.replaceChild(this.node, node);
 				
 				dom.attr(this.node, attrObject);
-			}else{
-				// no parent node yet. render, but do not attach
-				this.node = dom(this.template);
-				parser.parse(this.node, this);	
 			}
 				
 			// noop after creation
-			this.render = function(){};
+			this.renderWidget = function(){};
 		
 		}
 	});

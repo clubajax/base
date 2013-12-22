@@ -36,7 +36,8 @@
 			
 			GrandChildWidget = dcl(Widget, {
 				declaredClass:'GrandChildWidget',
-				template:'<div class="GrandChildWidget">Grand Child Widget</div>',
+				displayText:'Grand Child Widget!',
+				template:'<div class="GrandChildWidget">{{displayText}}</div>',
 				constructor: function(options, node){
 					// testing constructor firing order
 					console.log('GrandChildWidget!', node);
