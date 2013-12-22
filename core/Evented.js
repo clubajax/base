@@ -39,8 +39,16 @@ define([
 		// this.on(node, 'click', 'doFoo', this)
 		
 		on: function(name, callback, context){
+			var
+				listeners = this.listeners,
+				paused,
+				handle,
+				id = lang.uid();
+				
 			if(name instanceof window.Node){
-				return on.apply(null, arguments);
+				handle = on.apply(null, arguments);
+				// need to collect and destroy
+				return handle;
 			}
 			
 			this.listeners[name] = this.listeners[name] || {};
@@ -48,10 +56,7 @@ define([
 				callback = callback.bind(context);
 			}
 			
-			var
-				listeners = this.listeners,
-				paused,
-				id = lang.uid();
+			
 			
 			listeners[name][id] = callback;
 			

@@ -69,7 +69,7 @@ define([
 		if(typeof prop === 'object'){
 			for(key in prop){
 				if(prop.hasOwnProperty(key)){
-					this.style(node, key, prop[key]);
+					style(node, key, prop[key]);
 				}
 			}
 			return null;
@@ -80,7 +80,7 @@ define([
 			node.style[prop] = value;
 	
 			if(prop === 'userSelect'){
-				this.style(node, {
+				style(node, {
 					webkitTouchCallout: 'none',
 					webkitUserSelect: 'none',
 					khtmlUserSelect: 'none',
@@ -98,11 +98,11 @@ define([
 		// get/set node attribute(s)
 		//      prop: string or object
 		//
-		var key, i, attr, attrs, attsObject;
+		var key, i, attribute, attrs, attsObject;
 		if(typeof prop === 'object'){
 			for(key in prop){
 				if(prop.hasOwnProperty(key)){
-					this.attr(node, key, prop[key]);
+					attr(node, key, prop[key]);
 				}
 			}
 			return null;
@@ -117,8 +117,8 @@ define([
 			attrs = node.attributes;
 			attsObject = {};
 			for (i = 0; i < attrs.length; i++){
-				attr = attrs.item(i);
-				attsObject[attr.nodeName] = attr.nodeValue;
+				attribute = attrs.item(i);
+				attsObject[attribute.nodeName] = attribute.nodeValue;
 			}
 			return attsObject;
 		}
@@ -185,11 +185,11 @@ define([
 		}
 	
 		if(options.style){
-			this.style(node, options.style);
+			style(node, options.style);
 		}
 	
 		if(options.attr){
-			this.attr(node, options.attr);
+			attr(node, options.attr);
 		}
 	
 		if(parent && isNode(parent)){
