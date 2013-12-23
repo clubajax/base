@@ -40,6 +40,10 @@ body{
 .base-list-row:nth-child(even){
 	background: #eee;
 }
+.base-list-row.selected,
+.base-list-row.selected:nth-child(even){
+	background: #C6EFF4;
+}
 .base-list-pair{
 	display: inline-block;
 }
@@ -52,4 +56,24 @@ body{
 	display: inline-block;
 	color: #333;
 	margin-right: 6px;
+}
+
+.base-grid{
+	
+}
+.base-grid table{
+	width: 100%;
+	border-collapse: collapse;
+}
+.base-grid th{
+	text-align: left;
+	background: #eee;
+	padding: 3px;
+	font-weight: normal;
+	border: 1px solid #ccc;
+	border-bottom-width: 0;
+}
+.base-grid td{
+	padding: 3px;
+	border: 1px solid #ccc;
 }

@@ -27,6 +27,8 @@ define([
 	Store = dcl(Base, {
 		declaredClass:'Store',
 		
+		idProperty:'id',
+		
 		url:'',
 		
 		// url path
@@ -42,6 +44,11 @@ define([
 		processResults: function(data){
 			// to be over written by extending objects
 			return data;
+		},
+		
+		byIndex: function(idx){
+			var items = this.data ? this.data.length ? this.data : this.data.items : [];
+			return items[idx];
 		},
 		
 		query: function(query, params, successCallback){
@@ -97,6 +104,7 @@ define([
 					console.log('Store data:', data);
 					this.emit('data', data);
 					this.emit('data-end', data);
+					this.data = data;
 				}.bind(this),
 				errback: function(e){
 					console.error('Store error', e);

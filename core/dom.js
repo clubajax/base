@@ -191,6 +191,10 @@ define([
 		if(options.attr){
 			attr(node, options.attr);
 		}
+		
+		if(options.html){
+			node.innerHTML = options.html;
+		}
 	
 		if(parent && isNode(parent)){
 			if(prepend && parent.hasChildNodes()){

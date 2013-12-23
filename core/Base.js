@@ -44,9 +44,7 @@ define([
 			
 			// NOTE:
 			// don't delete this.observables or its props or it removes it from future prototypes
-			
 			//delete this.observables;
-			
 			
 			this.own = function(handle){
 				handles.push(handle);
