@@ -26,7 +26,7 @@ define([
 		headerClass:'base-list-header',
 		containerClass:'base-list-container',
 		
-		template:'<div class="{{baseClass}}"><div data-ref="header" class="{{headerClass}}"></div><div data-ref="container" class="containerClass"></div></div>',
+		template:'<div class="{{baseClass}}"><div data-ref="header" class="{{headerClass}}"></div><div data-ref="container" class="{{containerClass}}"></div></div>',
 		
 		rowTemplate:'<div class="base-list-pair"><div class="base-list-label">{LABEL}</div><div class="base-list-text">{TEXT}</div></div>',
 		
@@ -35,15 +35,7 @@ define([
 		},
 		
 		postRender: function(){
-			this.on(this.container, 'click .' + this.rowClass, function(event){
-				event.item = this.store.byIndex(event.selectorElement.getAttribute('data-item-index'));
-				if(this.selectedRow){
-					this.selectedRow.classList.remove('selected');
-				}
-				this.selectedRow = event.selectorElement;
-				this.selectedRow.classList.add('selected');
-				this.emit(events.rowClick, event);
-			}, this);
+			this.connectClickEvents();
 			
 			this.title.sub(function(value){
 				this.header.innerHTML = value;
@@ -56,10 +48,12 @@ define([
 				this.storeHandle.remove();
 			}
 			this.store = store;
-			this.storeHandle = this.store.on('data', function(data){
-				console.log('LIST DATA', data);
-				this.render(data);
-			}, this);
+			if(this.store){
+				this.storeHandle = this.store.on('data', function(data){
+					console.log('LIST DATA', data);
+					this.render(data);
+				}, this);
+			}
 		},
 		render: function(data){
 			var i, col, row, html, label, text;
@@ -74,6 +68,17 @@ define([
 				}
 				this.container.appendChild(row);
 			}
+		},
+		connectClickEvents: function(){
+			this.on(this.container, 'click .' + this.rowClass, function(event){
+				event.item = this.store.byIndex(event.selectorElement.getAttribute('data-item-index'));
+				if(this.selectedRow){
+					this.selectedRow.classList.remove('selected');
+				}
+				this.selectedRow = event.selectorElement;
+				this.selectedRow.classList.add('selected');
+				this.emit(events.rowClick, event);
+			}, this);
 		},
 		query: function(){
 			this.store.query.apply(this, arguments);

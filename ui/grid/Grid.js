@@ -4,6 +4,16 @@ define([
 	'./List'
 ], function(dcl, dom, List){
 
+	var scrollbarwidth;
+	function getScrollbarWidth(header, container){
+		if(!scrollbarwidth){
+			header.scrollLeft = 10000;
+			container.scrollLeft = 10000;
+			scrollbarwidth = container.scrollLeft - header.scrollLeft;
+		}
+		return scrollbarwidth;
+	}
+	
 	return dcl(List, {
 		declaredClass:'BaseGrid',
 		baseClass:'base-grid',
@@ -14,6 +24,8 @@ define([
 			
 		},
 		postRender: function(){
+			this.connectClickEvents();
+			this.connectScrollEvents();
 			this.renderHeader();	
 		},
 		
@@ -54,16 +66,60 @@ define([
 			this.setColumnWidths();
 		},
 		
+		connectScrollEvents: function(){
+			var
+				container = this.container,
+				header = this.header;
+				window.header = header; window.container = container;
+			this.on(container, 'scroll', function(e){
+				header.scrollLeft = container.scrollLeft;
+			});
+		},
+		
 		setColumnWidths: function(){
 			var
-				i,
-				ths = this.header.querySelectorAll('th'),
-				tds = this.container.querySelector('tr').querySelectorAll('td');
-				
+				i, max,
+				container = this.container,
+				header = this.header,
+				headerTable = header.querySelector('table'),
+				ths = headerTable.querySelectorAll('th'),
+				lastTH = ths[ths.length - 1],
+				containerTable = container.querySelector('table'),
+				tds = containerTable.querySelector('tr').querySelectorAll('td');
+			
+			// reset
+			dom.style(lastTH, 'paddingRight', '');
+			dom.style(header, {
+				position:'absolute',
+				width:10000
+			});
+			dom.style(container, {
+				position:'absolute',
+				width:10000
+			});
 			for(i = 0; i < ths.length; i++){
-				dom.style(ths[i], {width:'30%', minWidth:'30%'});
-				dom.style(tds[i], {width:'30%', minWidth:'30%'});
+				dom.style(ths[i], {width:'', minWidth:''});
+				dom.style(tds[i], {width:'', minWidth:''});
 			}
+			
+			window.requestAnimationFrame(function(){
+				for(i = 0; i < ths.length; i++){
+					max = Math.max(dom.box(ths[i]).width, dom.box(tds[i]).width);
+					dom.style(ths[i], {width:max, minWidth:max});
+					dom.style(tds[i], {width:max, minWidth:max});
+				}	
+				dom.style(header, {
+					position:'',
+					width:''
+				});
+				dom.style(container, {
+					position:'',
+					width:''
+				});
+				
+				//sw = getScrollbarWidth(header, container);
+				dom.style(lastTH, 'paddingRight', 20+'px');
+			});
 			
 		}
 	});

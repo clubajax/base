@@ -101,7 +101,7 @@ define([
 				callback: function(data){
 					console.timeEnd(this.url);
 					data = this.processResults(data);
-					console.log('Store data:', data);
+					console.log('Store data:', JSON.stringify(data));
 					this.emit('data', data);
 					this.emit('data-end', data);
 					this.data = data;

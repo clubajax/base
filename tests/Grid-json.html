@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
 	<title>Grid Test</title>
 	<link href='./tests.css' rel='stylesheet' />
 	<style>
@@ -33,25 +35,23 @@
 	</div>
 	<script>
 		require([
-			'core/Store',
+			'core/xhr',
 			'ui/grid/Grid'
-		], function(Store, Grid) {
+		], function(xhr, Grid) {
 			// /entities/6dcccbf46c6e463ebb5532589ac29d89/properties?reference=12&path=%40&expand=createdBy&expand=createdOn&start=0&max=10
 			// /properties?start=0&max=10&expand=schema&expand=source&expand=timestamp
 			
 			var
-			grid,
-			store = new Store({
-				idProperty:'key',
-				url:'/observato/web/rest/resources',
-				database:'main',
-				
-				
-				target: '/properties'
+			grid;
+			
+			xhr.get('./data/grid.json', {
+				callback: function(data){
+					console.log('JSON', data);
+					grid.render(data);
+				}	
 			});
 			
 			grid = new Grid({
-				store:store,
 				columns:[{
 					label:'reference'
 				},{
@@ -69,11 +69,8 @@
 				}]
 			}, 'list');
 			
-			store.query({
-				start:0,
-				max:50,
-				expand:['schema','source', 'timestamp']
-			});
+			
+			
 			
 			grid.on('row-click', function(event){
 				console.log('clicked item', event.item);

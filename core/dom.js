@@ -25,7 +25,11 @@ define([
 			maxWidth:1,
 			'max-width':1,
 			maxHeight:1,
-			'max-height':1
+			'max-height':1,
+			minWidth:1,
+			'min-width':1,
+			minHeight:1,
+			'min-height':1
 		},uids = {},
 		destroyer = document.createElement('div');
 	
