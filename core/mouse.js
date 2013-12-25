@@ -54,17 +54,20 @@ define(['./has', './on', './logger'], function(has, on, logger){
 		log = logger('MSE', 0),
 		CLICKTIME = 400,
 		DBLCLICKTIME = 400,
+		XTIME = 300,
 		trackers = {},
 		org = {},
 		last = {},
+		lastx,
+		lasty,
 		mouse,
-		_uidMap = {};
+		uidMap = {};
 		
 		function getUniqueId(str){
 			str = str || "id";
-			if(!_uidMap[str]){  _uidMap[str] = 0; }
-			_uidMap[str]++;
-			return str+"_"+_uidMap[str];
+			if(!uidMap[str]){  uidMap[str] = 0; }
+			uidMap[str]++;
+			return str+"_"+uidMap[str];
 		
 		}
 		
@@ -90,7 +93,7 @@ define(['./has', './on', './logger'], function(has, on, logger){
 					height:window.innerHeight
 				};
 			}
-			 return node.getBoundingClientRect();
+			return node.getBoundingClientRect();
 		}
 		
 		function Timer(){
@@ -98,10 +101,13 @@ define(['./has', './on', './logger'], function(has, on, logger){
 				var
 					pingtime = 0,
 					lasttime = this.time;
+					
+				this.time = new Date().getTime();
+				
 				if(lasttime){
 					pingtime = this.time - lasttime;
 				}
-				this.time = new Date().getTime();
+				
 				return pingtime;
 			};
 		}
@@ -122,11 +128,12 @@ define(['./has', './on', './logger'], function(has, on, logger){
 		function Tracker(node, callback){
 
 			this.uid = getUniqueId('mouse');
-			this.node = node;
+			this.node = typeof node === 'string' ? document.getElementById(node) : node;
 			//dom.selectable(node, false);
 			this.begTime = 0;
 			this.callback = callback;
 			this.tmr = new Timer();
+			this.accleration  = new Timer();
 
 
 			this.init();
@@ -140,15 +147,18 @@ define(['./has', './on', './logger'], function(has, on, logger){
 		Tracker.prototype = {
 
 			onEvent: function(evt, type){
-				evt.preventDefault();
+				evt.preventDefault(); // maybe only on move?
 				var
-					px, py, cx, cy,
+					px, py, cx, cy, speedx = 0, speedy = 0,
 					pos = this.getPos(evt, type),
 					x = pos.x - this.box.left,
-					y = pos.y - this.box.top;
-
-				py = clamp(y/this.box.height, 0, 1);
-				px = clamp(x/this.box.width, 0, 1);
+					y = pos.y - this.box.top,
+					speed = this.accleration.ping();
+				
+				speed = Math.min(speed, XTIME);
+				
+				py = clamp(y / this.box.height, 0, 1);
+				px = clamp(x / this.box.width, 0, 1);
 				
 				cx = this.box.width * px;
 				cy = this.box.height * py;
@@ -156,6 +166,16 @@ define(['./has', './on', './logger'], function(has, on, logger){
 				if(type === 'down'){
 					org  = { x:x, y:y, cx:cx, cy:cy, px:px, py:py };
 					last = { x:x, y:y, cx:cx, cy:cy, px:px, py:py };
+				}
+				
+				if(type !== 'up'){
+					lastx = x - last.x;
+					lasty = y - last.y;
+				}else if(speed < XTIME){
+					if(Math.abs(lastx) > 1){
+						speedx = Math.abs(lastx) * (XTIME - speed);
+						speedx = Math.ceil(speedx * 0.001);
+					}
 				}
 
 				evt.mouse = {
@@ -180,10 +200,16 @@ define(['./has', './on', './logger'], function(has, on, logger){
 						y: y - org.y
 					},
 
-					// last: distance from the last point
+					// last: distance from the point of the last move event
 					last:{
-						x: x - last.x,
-						y: y - last.y
+						x: lastx,
+						y: lasty
+					},
+					
+					speed:{
+						x: speedx,
+						y: Math.abs(lasty) * (XTIME - speed),
+						ping:speed
 					},
 
 
@@ -193,7 +219,7 @@ define(['./has', './on', './logger'], function(has, on, logger){
 					parent: getMousePosition(pos, this.parentRect),
 
 					// px/py: percentage of x/y position across width/height of node
-					px:     px,
+					px:    px,
 					py:		py,
 
 					scale:(type === 'zoom') ? evt.scale : 1,
@@ -216,7 +242,7 @@ define(['./has', './on', './logger'], function(has, on, logger){
 			onStart: function(evt){
 				log('start', evt);
 				var ping = this.tmr.ping();
-				//log('beg ping:', ping);
+				//console.log('beg ping:', ping);
 				if(ping > 0 && ping < DBLCLICKTIME){
 					this.onEvent(evt, 'dblclick');
 					this.tmr.ping(true);
@@ -251,7 +277,7 @@ define(['./has', './on', './logger'], function(has, on, logger){
 				this.onEvent(evt, 'up');
 
 				var ping = this.tmr.ping();
-				//log('end ping:', ping);
+				//console.log('end ping:', ping);
 				if(!this.moved && ping < CLICKTIME){
 					this.onEvent(evt, 'click');
 				}
