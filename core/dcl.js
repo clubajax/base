@@ -1,8 +1,8 @@
 define([
-	'dcl/dcl',
+	'../dcl/dcl',
 	'./registry'
 ], function(dcl, registry){
-
+	
 	var wrapped = function(parentClasses, childClass){
 		var
 			i,

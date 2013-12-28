@@ -18,6 +18,7 @@ define([], function(){
 			return widgets[id];
 		},
 		log: function(what){
+			// for testin'
 			var names;
 			if(what === 'classes'){
 				console.log('classes', classes);
