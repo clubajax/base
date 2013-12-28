@@ -27,10 +27,9 @@
 	<div id='widget03'></div>
 	<script>
 		require([
-			'dcl/dcl',
-			'core/registry',
+			'core/dcl',
 			'core/Widget'
-		], function(dcl, registry, Widget) {
+		], function(dcl, Widget) {
 			
 			var wws, ChildWidget, GrandChildWidget, ParentWidget;
 			
@@ -47,7 +46,6 @@
 					console.log('postRender', this.node);
 				}
 			});
-			registry.addClass('GrandChildWidget', GrandChildWidget);
 			
 			
 			ChildWidget = dcl(Widget, {
@@ -62,7 +60,6 @@
 					console.log('postRender', this.node);
 				}
 			});
-			registry.addClass('ChildWidget', ChildWidget);
 			
 			ParentWidget = dcl(Widget, {
 				declaredClass:'ParentWidget',

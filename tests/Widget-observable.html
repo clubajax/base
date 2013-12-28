@@ -32,10 +32,9 @@
 	<button id='cssSm'>text to 'small'</button>
 	<script>
 		require([
-			'dcl/dcl',
-			'core/registry',
+			'core/dcl',
 			'core/Widget'
-		], function(dcl, registry, Widget) {
+		], function(dcl, Widget) {
 			
 			var gc, GrandChildWidget;
 			
@@ -51,7 +50,6 @@
 					setCSS:'basic'
 				}
 			});
-			registry.addClass('GrandChildWidget', GrandChildWidget);
 			
 			gc = new GrandChildWidget({}, 'widget04');
 			

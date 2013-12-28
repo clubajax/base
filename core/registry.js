@@ -16,6 +16,16 @@ define([], function(){
 		},
 		getWidget: function(id){
 			return widgets[id];
+		},
+		log: function(what){
+			var names;
+			if(what === 'classes'){
+				console.log('classes', classes);
+			}else if(what === 'className'){
+				names = [];
+				Object.keys(classes).forEach(function(name){ names.push(name); });
+				console.log('classNames:', names.join(', '));
+			}
 		}
 	};
 });

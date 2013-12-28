@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>dcl Test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>dcl Test</h1>
+	<p>Results are in the console.</p>
+	<script>
+		require([
+			'core/dcl',
+			'core/registry'
+		], function(dcl, registry) {
+			
+			var a, A, b, B, c, C, D, e, E;
+			
+			A = dcl(null, {
+				declaredClass:'A',
+				constructor: function(){
+					console.log('instantiated A');
+				}
+			});
+			a = new A();
+			
+			B = dcl(A, {
+				declaredClass:'B',
+				constructor: function(){
+					console.log('instantiated B');
+				}
+			});
+			b = new B();
+			
+			C = dcl([A, B], {
+				declaredClass:'C',
+				constructor: dcl.after(function(){
+					console.log('instantiated C (after)');
+					this.postCreate();
+				}),
+				postCreate: function(){
+					console.log('C postCreate');
+				}
+			});
+			c = new C();
+			
+			D = dcl([A, B], {
+				//declaredClass:'D',
+				constructor: function(){
+					console.log('instantiated D');
+				}
+			});
+			E = dcl(D, {
+				//declaredClass:'D',
+				constructor: function(){
+					console.log('instantiated E');
+				}
+			});
+			
+			e = new E();
+			
+			registry.log('className');
+		});
+</script>
+</body>
+</html>

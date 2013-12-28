@@ -27,10 +27,9 @@
 	<div id='widget03'></div>
 	<script>
 		require([
-			'dcl/dcl',
-			'core/registry',
+			'core/dcl',
 			'core/Widget'
-		], function(dcl, registry, Widget) {
+		], function(dcl, Widget) {
 			
 			var wws, ChildWidget, GrandChildWidget, ParentWidget;
 
@@ -38,7 +37,6 @@
 				declaredClass:'GrandChildWidget',
 				template:'<div class="GrandChildWidget">Grand Child Widget</div>'
 			});
-			registry.addClass('GrandChildWidget', GrandChildWidget);
 			
 			
 			ChildWidget = dcl(Widget, {
@@ -49,7 +47,6 @@
 					this.emit('buzz', 'bird', 'alarm');
 				}
 			});
-			registry.addClass('ChildWidget', ChildWidget);
 			
 			ParentWidget = dcl(Widget, {
 				declaredClass:'ParentWidget',
