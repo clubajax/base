@@ -30,7 +30,8 @@ define([
 			'min-width':1,
 			minHeight:1,
 			'min-height':1
-		},uids = {},
+		},
+		uids = {},
 		destroyer = document.createElement('div');
 	
 	//function notNull(item){
@@ -76,11 +77,14 @@ define([
 					style(node, key, prop[key]);
 				}
 			}
-			return null;
+			return {};
 		}else if(value !== undefined){
 			if(typeof value === 'number' && isDimension[prop]){
 				value += 'px';
 			}
+			
+			//prop = propMap[prop] || prop;
+			
 			node.style[prop] = value;
 	
 			if(prop === 'userSelect'){
@@ -92,9 +96,11 @@ define([
 					msUserSelect: 'none'
 				});
 			}
+			return null;
+		}else if(value === undefined){
+			return window.getComputedStyle(node)[prop];
 		}
 	
-		// TODO - if no style return box()
 		return node.style[prop];
 	}
 

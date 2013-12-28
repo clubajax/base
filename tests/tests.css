@@ -43,7 +43,10 @@ body{
 .base-list-row{
 	padding: 3px;
 }
-
+.base-list-header{
+	background: #eee;
+	padding: 3px;
+}
 .base-list-row:nth-child(even){
 	background: #eee;
 }

@@ -71,9 +71,11 @@ define([
 		},
 		connectClickEvents: function(){
 			this.on(this.container, 'click .' + this.rowClass, function(event){
-				event.item = this.store.byIndex(event.selectorElement.getAttribute('data-item-index'));
-				if(this.selectedRow){
-					this.selectedRow.classList.remove('selected');
+				if(this.store){
+					event.item = this.store.byIndex(event.selectorElement.getAttribute('data-item-index'));
+					if(this.selectedRow){
+						this.selectedRow.classList.remove('selected');
+					}
 				}
 				this.selectedRow = event.selectorElement;
 				this.selectedRow.classList.add('selected');

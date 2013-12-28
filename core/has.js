@@ -5,12 +5,50 @@ define([], function(dcl){
 	var VENDOR_PREFIXES = ["Webkit", "Moz", "O", "ms", "Khtml"],
 		d = document,
 		el = d.createElement("DiV"),
+		testStyle = el.style,
+		g = window,
 		testCache = {},
 		isIE = navigator.userAgent.indexOf('Trident') > -1
     ;
 	
+	function cap(word){
+		return word.charAt(0).toUpperCase() + word.substr(1);
+	}
+	
+	function testCss(prop){
+		var
+			key,
+			uc = cap(prop),
+			props = [
+				prop,
+				'Webkit' + uc,
+				'Moz' + uc,
+				'O' + uc,
+				'ms' + uc,
+				'Khtml' + uc
+			];
+		for(key in props){
+			if(props.hasOwnProperty(key) && testStyle[props[key]] !== undefined){
+				return props[key];
+			}
+		}
+		return false;
+	}
+	
+	function dashify(word){
+		var i, dashed = '';
+		for(i = 0; i < word.length; i++){
+			if(word.charCodeAt(i) < 91){
+				dashed += '-' + word[i].toLowerCase();
+			}else{
+				dashed += word[i];
+			}
+		}
+		return dashed;
+	}
+	
 	function has(name){
-        if(typeof testCache[name] == "function"){
+        if(typeof testCache[name] === "function"){
             testCache[name] = testCache[name](g, d, el);
         }
         return testCache[name];
@@ -20,7 +58,9 @@ define([], function(dcl){
 		testCache[name] = now ? test(g, d, el) : test;
 	};
 	
-	
+	has.add('transform', function(){
+		return dashify(testCss('transform'));
+	});
 	
 	
 	// has custom tests

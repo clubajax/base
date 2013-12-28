@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>mouse Test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		#wrap{
+			width: 200px;
+			height: 200px;
+			overflow: hidden;
+			position: relative;
+			border: 1px solid #ccc;
+			margin-left: 50px;
+		}
+		#wrap table{
+			position: absolute;
+			left: 0;
+			top:0;
+		}
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>mouse Test</h1>
+	<div id='wrap'>
+		<table id='tbl'><tbody><tr class="base-grid-row" data-item-index="0"><td style="width: 74px; min-width: 74px;">19</td><td style="width: 170px; min-width: 170px;">State</td><td style="width: 77px; min-width: 77px;">String</td><td style="width: 238px; min-width: 238px;"> MS</td><td style="width: 124px; min-width: 124px;">1382431838512</td><td style="width: 91px; min-width: 91px;">Assignment</td><td style="width: 55px; min-width: 55px;">Click</td></tr><tr class="base-grid-row" data-item-index="1"><td>18</td><td>Latitude</td><td>Integer</td><td>97</td><td>1383579318052</td><td>Engineer</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="2"><td>9</td><td>Status</td><td>String</td><td> Assigned</td><td>1382357361840</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="3"><td>3</td><td>City</td><td>String</td><td> Paris</td><td>1382434274876</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="4"><td>7</td><td>Status</td><td>String</td><td>New</td><td>1382354860173</td><td>Order</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="5"><td>10</td><td>Customer</td><td>String</td><td>3fec8d4feb944ed3</td><td>1382355986345</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="6"><td>5</td><td>Postcode</td><td>String</td><td>3fdddb25ce1434e2</td><td>1382434119422</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="7"><td>4</td><td>State</td><td>String</td><td> NY</td><td>1382354925526</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="8"><td>4</td><td>Start</td><td>DateTime</td><td>Mon Oct 29 03:44:01 GMT 2012</td><td>1383579289003</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="9"><td>1</td><td>ID</td><td>String</td><td>3fdddde5178fef04</td><td>1383581368043</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="10"><td>4</td><td>State</td><td>String</td><td> LA</td><td>1382434577583</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="11"><td>4</td><td>Type</td><td>String</td><td> Gold</td><td>1382357970915</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row selected" data-item-index="12"><td>4</td><td>Discount</td><td>Integer</td><td>12</td><td>1382354058397</td><td>Order</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="13"><td>3</td><td>City</td><td>String</td><td> Paris</td><td>1383582706077</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row selected" data-item-index="14"><td>1</td><td>Quantity</td><td>Integer</td><td>56</td><td>1382357729841</td><td>Order</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="15"><td>20</td><td>Postcode</td><td>String</td><td>3fddbdab28f545de</td><td>1382433204619</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="16"><td>4</td><td>State</td><td>String</td><td> AR</td><td>1382358432814</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="17"><td>0</td><td>ID</td><td>String</td><td>3fefa34dc454eec2</td><td>1382354651246</td><td>Order</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="18"><td>3</td><td>City</td><td>String</td><td>London</td><td>1382358547416</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="19"><td>10</td><td>Customer</td><td>String</td><td>3fdfacf544e093f2</td><td>1382357142114</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="20"><td>10</td><td>Latitude</td><td>Integer</td><td>80</td><td>1382354937190</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="21"><td>31</td><td>AppointmentStart</td><td>DateTime</td><td>Thu Dec 27 13:30:32 GMT 2012</td><td>1383580944879</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="22"><td>11</td><td>Calendar</td><td>String</td><td>3fc43dd07836d348</td><td>1383580329561</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="23"><td>10</td><td>Latitude</td><td>Integer</td><td>23</td><td>1382355380120</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="24"><td>4</td><td>Type</td><td>String</td><td>Bronz</td><td>1382358294101</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="25"><td>8</td><td>Calendar</td><td>String</td><td>3fe292a1eec3aa81</td><td>1383578550515</td><td>Engineer</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="26"><td>18</td><td>Latitude</td><td>Integer</td><td>97</td><td>1382433343290</td><td>Engineer</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="27"><td>3</td><td>City</td><td>String</td><td> Paris</td><td>1382358685345</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="28"><td>20</td><td>Postcode</td><td>String</td><td>3fe8957fd57e1276</td><td>1382355551313</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="29"><td>2</td><td>Joined Date</td><td>DateTime</td><td>Mon Oct 29 21:30:59 GMT 2012</td><td>1382350540438</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="30"><td>0</td><td>ID</td><td>String</td><td>3fe4381eb296d7e7</td><td>1382350239719</td><td>Order</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="31"><td>19</td><td>State</td><td>String</td><td> MS</td><td>1382354335615</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="32"><td>5</td><td>Finish</td><td>DateTime</td><td>Fri Oct 19 12:45:01 BST 2012</td><td>1383579379404</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="33"><td>2</td><td>Efficiency</td><td>Float</td><td>-8846.977</td><td>1382354937431</td><td>Engineer</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="34"><td>0</td><td>RequiredEngineerTool</td><td>String</td><td>3fef9ff5f84ced1e</td><td>1382350658800</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="35"><td>4</td><td>Start</td><td>DateTime</td><td>Mon Dec 31 18:22:40 GMT 2012</td><td>1382355848510</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="36"><td>18</td><td>Latitude</td><td>Integer</td><td>95</td><td>1383580118887</td><td>Engineer</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="37"><td>37</td><td>Longitude</td><td>Integer</td><td>30</td><td>1382350354920</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="38"><td>3</td><td>Comment</td><td>String</td><td>3fc7647e9c0a50b4</td><td>1382357890065</td><td>Order</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="39"><td>3</td><td>Unit Price</td><td>Float</td><td>710.7073</td><td>1382354916784</td><td>Order</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="40"><td>8</td><td>Priority</td><td>Integer</td><td>14</td><td>1383580189188</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="41"><td>3</td><td>City</td><td>String</td><td> Berlin</td><td>1382354758705</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="42"><td>5</td><td>Postcode</td><td>String</td><td>3fdadcfd6af6e2e2</td><td>1383582741313</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="43"><td>16</td><td>CountryID</td><td>String</td><td>3fe73ae90d4110e1</td><td>1383578241315</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="44"><td>8</td><td>Calendar</td><td>String</td><td>3fd8ec68b89af174</td><td>1383578156117</td><td>Engineer</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="45"><td>0</td><td>Engineer</td><td>String</td><td>3fdd89ff3184c32e</td><td>1382350210439</td><td>Assignment</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="46"><td>10</td><td>Customer</td><td>String</td><td>3feeab3df81a512d</td><td>1383581994728</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="47"><td>11</td><td>Calendar</td><td>String</td><td>3fd1150218eb6bd6</td><td>1382355683498</td><td>Task</td><td>Click</td></tr><tr class="base-grid-row" data-item-index="48"><td>5</td><td>Postcode</td><td>String</td><td>3fe81699165df3e0</td><td>1382357682327</td><td>Customer</td><td>CRM</td></tr><tr class="base-grid-row" data-item-index="49"><td>3</td><td>City</td><td>String</td><td>London</td><td>1382434547059</td><td>Customer</td><td>CRM</td></tr></tbody></table>
+	</div>
+	<script>
+		require([
+			'core/mouse',
+			'core/dom'
+		], function(mouse, dom) {
+			var x = 0;
+			mouse.track('wrap', function(e){
+				console.log('e', e.mouse.last.x);
+				if(e.mouse.type === 'move'){
+					x += e.mouse.last.x;
+					dom.style(window.tbl, {
+						'webkitTransform':'translateX('+x+'px)'	
+					});
+				}else if(e.mouse.type === 'up'){
+					console.log('UP last.x', e.mouse.last.x, 'speed', e.mouse.speed.x, e.mouse.speed.ping);
+					
+				}
+			});
+			window.tbl = document.getElementById('tbl');
+			
+		});
+</script>
+</body>
+</html>

@@ -1,8 +1,9 @@
 define([
 	'dcl/dcl',
 	'../../core/dom',
+	'../../core/has',
 	'./List'
-], function(dcl, dom, List){
+], function(dcl, dom, has, List){
 
 	var scrollbarwidth;
 	function getScrollbarWidth(header, container){
@@ -25,7 +26,6 @@ define([
 		},
 		postRender: function(){
 			this.connectClickEvents();
-			this.connectScrollEvents();
 			this.renderHeader();	
 		},
 		
@@ -64,16 +64,31 @@ define([
 			this.container.innerHTML = '';
 			this.container.appendChild(table);
 			this.setColumnWidths();
+			
+			this.connectScrollEvents(table);
+			
 		},
 		
-		connectScrollEvents: function(){
+		connectScrollEvents: function(table){
 			var
 				container = this.container,
-				header = this.header;
-				window.header = header; window.container = container;
-			this.on(container, 'scroll', function(e){
-				header.scrollLeft = container.scrollLeft;
-			});
+				header = this.header,
+				useTransform = /Android/.test(navigator.userAgent),
+				scroll = useTransform ? function(e){
+					// Android does not support node.scrollLeft. How IE6-like of them.
+					dom.style(header, has('transform'), 'translateX('+(-container.scrollLeft)+'px)');	
+				} : function(e){
+					// For sane browsers and devices
+					header.scrollLeft = container.scrollLeft;
+				};
+				
+			if(useTransform){
+				dom.style(header, 'overflow', 'visible');
+			}
+			if(this.onScrollHandle){
+				this.onScrollHandle.remove();
+			}
+			this.onScrollHandle = this.on(container, 'scroll', scroll);
 		},
 		
 		setColumnWidths: function(){
