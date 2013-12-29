@@ -29,6 +29,9 @@ define([
 		
 		idProperty:'id',
 		
+		// for development - switches to PHP page
+		proxy:false,
+		
 		url:'',
 		
 		// url path
@@ -98,10 +101,12 @@ define([
 			console.time(this.url);
 			
 			xhr.get(url, {
+				proxy:this.proxy,
 				callback: function(data){
 					console.timeEnd(this.url);
 					data = this.processResults(data);
-					console.log('Store data:', JSON.stringify(data));
+					//console.log('Store data:', JSON.stringify(data));
+					console.log('Store data:', data);
 					this.emit('data', data);
 					this.emit('data-end', data);
 					this.data = data;

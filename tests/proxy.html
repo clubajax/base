@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>xhr test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>xhr test</h1>
+	<p>Results are in the console.</p>
+	<script>
+		require([
+			'core/Store'
+		], function(Store) {
+			
+			var store = new Store({
+				proxy:true,
+				url:'/observato/web/rest/resources',
+				database:'main',
+				target: '/entities'
+			});
+			
+			store.query({
+				source:'CRM',
+				schema:'Order'
+			});
+
+		});
+</script>
+</body>
+</html>

@@ -13,10 +13,13 @@ define([
 		declaredClass:'Widget',
 		template:'<div>NO TEMPLATE</div>',
 		constructor: dcl.after(function(args){
-			this.renderWidget(args[1]);
+			
 			if(this.preRender){
 				this.preRender();
 			}
+			
+			this.renderWidget(args[1]);
+			
 			// probably don't need this. constructor should work
 			if(this.postRender){
 				this.postRender();
@@ -25,7 +28,7 @@ define([
 		renderWidget: function(node){
 			var attrObject;
 			
-			console.log('render!', node);
+			//console.log('render!', node);
 			node = typeof node === 'string' ? document.getElementById(node) : node;
 			
 			this.node = dom(this.template.replace(/\{\{\w*\}\}/g, function(word){
@@ -39,9 +42,9 @@ define([
 				// associated with a dom node to replace
 				attrObject = dom.attr(node);
 				if(attrObject.id){
-					attrObject.widgetId = attrObject.id;
+					this.id = attrObject.widgetId = attrObject.id;
 				}else{
-					attrObject.widgetId = lang.uid('widget');
+					this.id = attrObject.widgetId = lang.uid('widget');
 				}
 				registry.addWidget(attrObject.widgetId, this);
 				
@@ -49,7 +52,10 @@ define([
 				
 				dom.attr(this.node, attrObject);
 			}
-				
+			
+			if(!this.id){
+				this.id = lang.uid('widget');
+			}
 			// noop after creation
 			this.renderWidget = function(){};
 		

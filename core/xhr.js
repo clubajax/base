@@ -68,7 +68,11 @@ define([
 		}
 		
 		req.onload = onload;
-		req.open(options.type, url, true);
+		if(options.proxy){
+			req.open(options.type, './proxy.php?url='+window.escape(url), true);
+		}else{
+			req.open(options.type, url, true);
+		}
 		req.send();
 		return req;
 	}

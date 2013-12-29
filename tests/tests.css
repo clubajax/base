@@ -7,6 +7,9 @@ body{
 	font-family: sans-serif;
 }
 
+.off{
+	display: none;
+}
 .ChildWidget{
 	border: 1px solid #ccc;
 	background: #eee;
@@ -111,4 +114,33 @@ body{
 .base-grid td{
 	padding: 3px;
 	border: 1px solid #ccc;
+}
+
+
+.base-view{
+	position: absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom: 0;
+	width: auto;
+	height: auto;
+}
+.base-view.dev{
+	border: 1px solid #ccc;
+	background: #F3F4D2;
+	top:5px;
+	left:5px;
+	right:5px;
+	bottom: 5px;
+	padding: 10px;
+}
+.dev.devblue{
+	background: #C2C7ED;
+}
+.dev.devred{
+	background: #F2C9C9;
+}
+.dev.devgreen{
+	background: #D3F2D0;
 }

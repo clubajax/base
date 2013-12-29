@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>View Test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		body{
+			padding-left: 20px;
+		}
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'core', location: '../core'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>View Test</h1>
+	<div id='viewA'></div>
+	<div id='viewB'></div>
+	<div id='viewC'></div>
+	<script>
+		require([
+			'core/dcl',
+			'base/ui/views/View',
+			'base/ui/views/manager'
+		], function(dcl, View, mgr) {
+			
+			mgr.add([
+				new View({content:'<div>Yellow View</div>', className:'dev'}, 'viewA'),
+				new View({content:'<div>Blue View</div>', className:'dev devblue'}, 'viewB'),
+				new View({content:'<div>Red View</div>', className:'dev devred'}, 'viewC')
+			]);
+		});
+</script>
+</body>
+</html>

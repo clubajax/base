@@ -148,8 +148,10 @@ define(['./has', './on', './logger'], function(has, on, logger){
 
 		onEvent: function(evt, type){
 			evt.preventDefault(); // maybe only on move?
+			
+			// TODO: add speed check for acceleration and momentum
 			var
-				px, py, cx, cy, speedx = 0, speedy = 0,
+				px, py, cx, cy, speedx = 0, //speedy = 0,
 				pos = this.getPos(evt, type),
 				x = pos.x - this.box.left,
 				y = pos.y - this.box.top,
@@ -224,7 +226,8 @@ define(['./has', './on', './logger'], function(has, on, logger){
 
 				scale:(type === 'zoom') ? evt.scale : 1,
 
-				move:	type === 'move',
+				move:	type === 'move' || type === 'begin-move',
+				startMove: type === 'start-move',
 				down:	type === 'down',
 				up:		type === 'up',
 				click:	type === 'click',
@@ -262,9 +265,11 @@ define(['./has', './on', './logger'], function(has, on, logger){
 		onMove: function(evt){
 			evt.preventDefault();
 			//log('move', evt);
+			this.onEvent(evt, (this.moved ? 'move' : 'start-move'));
 			this.moved = 1;
-			this.onEvent(evt, 'move');
+			
 			if(evt.clientX < 0 || evt.clientX > this.winRect.width || evt.clientY < 0 || evt.clientY > this.winRect.height){
+				// dragged out of browser window - ending the drag is less buggy than losing control
 				this.onEnd(evt);
 			}
 		},
