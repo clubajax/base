@@ -5,7 +5,7 @@ define([
 	'./registry',
 	'./Base',
 	'./parser',
-	'./parser-props',
+	'./parser-reference',
 	'./parser-observable'
 ], function(dcl, lang, dom, registry, Base, parser){
 	

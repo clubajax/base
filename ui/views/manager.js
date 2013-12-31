@@ -2,10 +2,12 @@ define([
 	'../../core/dom',
 	'../../core/has',
 	'../../core/mouse',
-	'../../core/behavior'
-], function(dom, has, mouse, behavior){
+	'../../core/behavior',
+	'../../core/logger'
+], function(dom, has, mouse, behavior, logger){
 	
 	var
+		log = logger('VMN', 0, 'View Manager'),
 		viewMap = {},
 		viewList = [],
 		selected,
@@ -108,7 +110,7 @@ define([
 	}
 	
 	function setTransitionView(view){
-		console.log('\nsetTransitionView', view.index, view.id);
+		log('\nsetTransitionView', view.index, view.id);
 		var
 			duration = 600,
 			distance = 1,
@@ -125,22 +127,15 @@ define([
 		
 		distance = toIndex - fromIndex;
 		
-		
-		// A B C
-		// ^ ^ .
-		
-		// A B C
-		// ^ . ^
-		// 
-		console.log('  from idx', fromIndex, 'to', toIndex);
+		log('  from idx', fromIndex, 'to', toIndex);
 		Object.keys(viewMap).forEach(function(viewId, i){
 			var
 				v = viewMap[viewId],
 				from = x * (i-fromIndex),
 				to = (x * (i-fromIndex)) - x * distance;
 			
-			console.log('    idx', i);
-			console.log('      view', viewId, from, 'to', to);
+			log('    idx', i);
+			log('      view', viewId, from, 'to', to);
 			
 			
 			dom.show(v.node);
@@ -160,8 +155,6 @@ define([
 		promise = behavior.all(moves);
 		
 		promise.then(function(){
-			console.log('ALL DONE');
-			
 			setDisplayView(setSelected(view));
 		});
 	}

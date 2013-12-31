@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <title>View Test</title>
+    <title>View Widgets Test</title>
 	<link href='./tests.css' rel='stylesheet' />
 	<style>
 		body{
@@ -38,12 +38,23 @@
 		require([
 			'core/dcl',
 			'core/on',
+			'core/Widget',
 			'base/ui/views/View',
 			'base/ui/views/manager'
-		], function(dcl, on, View, mgr) {
+		], function(dcl, on, Widget, View, mgr) {
+			
+			var Pane = dcl(Widget, {
+				declaredClass:'Pane',
+				displayText:'NOTSET',
+				template:'<div class="base-pane">{{displayText}}</div>',
+				constructor: function(){
+					
+				}
+			});
+			
 			
 			mgr.add([
-				new View({content:'<div>Yellow View</div>', className:'dev'}, 'viewA'),
+				new View({content:'<div data-widget="Pane" data-props="displayText:\'wOOt there it is\'" displayText="Mike Wilcox"></div>', className:'dev'}, 'viewA'),
 				new View({content:'<div>Blue View</div>', className:'dev devblue'}, 'viewB'),
 				new View({content:'<div>Red View</div>', className:'dev devred'}, 'viewC')
 			]);

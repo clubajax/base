@@ -7,7 +7,7 @@ define([
 	var
 		//WIDGET_ATTR = 'data-widget',
 		WIDGET_ID_ATTR = 'widgetId',
-		PROP_ATTR = 'data-ref';
+		REF_ATTR = 'data-ref';
 	
 	function assign(name, context, object){
 		var event, method;
@@ -41,13 +41,13 @@ define([
 			i,
 			propName,
 			widgetId,
-			nodes = walkDom(parentNode, PROP_ATTR);
+			nodes = walkDom(parentNode, REF_ATTR);
 		
-		if(parentNode.getAttribute(PROP_ATTR)){
+		if(parentNode.getAttribute(REF_ATTR)){
 			nodes.push(parentNode);
 		}
 		for(i = 0; i < nodes.length; i++){
-			propName = nodes[i].getAttribute(PROP_ATTR);
+			propName = nodes[i].getAttribute(REF_ATTR);
 			widgetId = nodes[i].getAttribute(WIDGET_ID_ATTR);
 			
 			if(widgetId){

@@ -7,6 +7,7 @@ define([
 		log = logger('PRS', 0),
 		REF_ATTR = 'data-ref',
 		WIDGET_ATTR = 'data-widget',
+		PROP_ATTR = 'data-props',
 		plugins = [],
 		count = 0;
 		
@@ -14,11 +15,33 @@ define([
 			plugins.push(plug);	
 		}
 		
+		function assignProps(object, propObject){
+			//	currently only supports flat objects
+			//	deeper nesting could be done with:
+			//		JSON.parse('{' + propObject + '}');
+			var
+			i, key, value,
+			props = propObject.split(',');
+		
+			for(i = 0; i < props.length; i++){
+				key = props[i].split(':')[0].trim();
+				value = props[i].split(':')[1].trim();
+				if(value !== '' && !isNaN(Number(value))){
+					value = Number(value);
+				}
+				object[key] = value;
+			}
+		}
+		
 		function attsToObject(atts){
 			var i, a, props = {};
 			for(i = 0; i < atts.length; i++){
 				a = atts[i];
-				props[a.localName] = a.value;
+				if(a.localName === PROP_ATTR){
+					assignProps(props, a.value);
+				}else{
+					props[a.localName] = a.value;
+				}
 			}
 			return props;
 		}
@@ -33,7 +56,7 @@ define([
 			while(node){
 				if(node.nodeType === 1){
 					//log('----node', node, node.getAttribute(WIDGET_ATTR), WIDGET_ATTR);
-					console.log('parse node', node.getAttribute(ATTR));
+					//console.log('parse node', node.getAttribute(ATTR));
 					if(node.getAttribute(ATTR)){
 						nodes.push(node);
 						//
@@ -92,8 +115,14 @@ define([
 			
 			return widgets;
 		}
+	
+	function parseProps(template){
+		// pre parse template to get attributes
 		
+	}
+	
 	return {
+		parseProps: parseProps,
 		parse: parse,
 		plugin: plugin
 	};

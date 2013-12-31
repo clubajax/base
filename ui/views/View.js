@@ -1,7 +1,8 @@
 define([
 	'core/dcl',
+	'core/parser',
 	'core/Widget'
-], function(dcl, Widget){
+], function(dcl, parser, Widget){
 
 	return dcl(Widget, {
 		declaredClass:'View',
@@ -19,6 +20,7 @@ define([
 		
 		postRender: function(){
 			this.node.innerHTML = this.content || '';
+			parser.parse(this.node);
 		}
 	});
 });
