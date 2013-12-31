@@ -6,7 +6,7 @@
 	<link href='./tests.css' rel='stylesheet' />
 	<style>
 		body{
-			overflow-y: hidden;
+			overflow: hidden;
 		}
 		.btns{
 			position: fixed;
@@ -14,9 +14,6 @@
 			right: 10px;
 			width: 60px;
 			z-index: 100;
-		}
-		.base-pane{
-			background: #ff0000;
 		}
 	</style>
 	<script>
@@ -50,23 +47,32 @@
 			dcl(Widget, {
 				declaredClass:'Pane',
 				displayText:'NOTSET',
-				template:'<div class="base-pane">{{displayText}}</div>',
-				constructor: function(){
-					
-				}
+				template:'<div class="base-pane">{{displayText}}</div>'
 			});
 			
 			
 			mgr.add([
 				new View({
 					content:
-						'<div data-widget="Pane" data-props="displayText:\'wOOt there it is\'" displayText="Mike Wilcox"></div>',
-					className:'dev',
+						'<div data-widget="Pane" data-props="displayText:Content for View A"></div>',
+					className:'',
 					headerContent:'<div>View A Title</div>',
 					footerContent:'<div>Copyright &copy; 2014</div>'
 				}, 'viewA'),
-				new View({content:'<div>Blue View</div>', className:'dev devblue'}, 'viewB'),
-				new View({content:'<div>Red View</div>', className:'dev devred'}, 'viewC')
+				new View({
+					content:
+						'<div data-widget="Pane" data-props="displayText:Content for View B"></div>',
+					className:'',
+					headerContent:'<div>View Bee Title</div>',
+					footerContent:'<div>No copyright for you</div>'
+				}, 'viewB'),
+				new View({
+					content:
+						'<div data-widget="Pane" data-props="displayText:Content for View C"></div>',
+					className:'',
+					headerContent:'<div>View See Title</div>',
+					footerContent:'<div>See more at our website</div>'
+				}, 'viewC')
 			]);
 			
 			on('ba', 'click', function(){

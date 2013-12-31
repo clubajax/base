@@ -17,13 +17,14 @@
 	left:0;
 	right:0;
 	width: auto;
-	background: #6784E5;
+	background: #1C3CA5;
 	color: #fff;
 	font-weight: bold;
 	text-align: center;
 	height: 30px;
 	line-height: 30px;
 	display: none;
+	border-bottom: 1px solid #999;
 }
 
 .base-view-container{
@@ -34,6 +35,7 @@
 	bottom: 0;
 	width: auto;
 	height: auto;
+	background: #ccc;
 }
 
 .base-view-footer{
@@ -45,13 +47,31 @@
 	background: #C9D0E5;
 	color: #303747;
 	text-align: left;
+	padding: 0 5px;
 	height: 30px;
 	line-height: 30px;
 	font-size: 12px;
 	display: none;
+	border-top: 1px solid #999;
 }
 
 .base-view.hasHeader .base-view-container{ top:30px; }
 .base-view.hasFooter .base-view-header{ display: block; }
 .base-view.hasFooter .base-view-container{ bottom:30px; }
 .base-view.hasFooter .base-view-footer{ display: block; }
+
+
+
+.base-pane{
+	position: absolute;
+	top:5px;
+	left:5px;
+	right:5px;
+	bottom: 5px;
+	width: auto;
+	height: auto;
+	background: #fff;
+	padding: 10px;
+	border: 1px solid #999;
+	border-radius: 5px;
+}
