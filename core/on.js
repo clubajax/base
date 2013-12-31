@@ -98,17 +98,21 @@ define(['./has'], function(has){
 			//          a function, method or string reference
 			//          to a method.
 			//
+			if(!ctx){
+				return callback;	
+			}
 			if(typeof(callback) === "string"){
 				if(!callback){ callback = ctx; ctx = window; }
 				return function(){
 					ctx[callback].apply(ctx, arguments); };
-			}else{
-				var
-                    method = !!callback ? ctx.callback || callback : ctx,
-                    scope = !!callback ? ctx : window;
-
-				return function(){  method.apply(scope, arguments); };
 			}
+			
+			var
+				method = !!callback ? ctx.callback || callback : ctx,
+				scope = !!callback ? ctx : window;
+
+			return function(){  method.apply(scope, arguments); };
+		
 		},
 
 		onClickoff = function(node, callback){
@@ -369,6 +373,16 @@ define(['./has'], function(has){
 			}
 	
 			return makeMultiHandle(handles);
+		};
+		
+		on.once = function(node, eventType, callback, optionalContext/*, id*/){
+			// id not supported (yet)
+			callback = bind(optionalContext, callback);
+			var handle = on(node, eventType, function(){
+				handle.remove();
+				callback.apply(null, arguments);	
+			});
+			return handle;
 		};
 	
 		on.bind = bind;

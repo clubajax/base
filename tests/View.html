@@ -5,7 +5,14 @@
 	<link href='./tests.css' rel='stylesheet' />
 	<style>
 		body{
-			padding-left: 20px;
+			overflow-y: hidden;
+		}
+		.btns{
+			position: fixed;
+			top:10px;
+			right: 10px;
+			width: 60px;
+			z-index: 100;
 		}
 	</style>
 	<script>
@@ -21,22 +28,40 @@
 	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body>
-	<h1>View Test</h1>
-	<div id='viewA'></div>
-	<div id='viewB'></div>
-	<div id='viewC'></div>
+	<div class='btns'><button id='ba'>View A</button><button id='bb'>View B</button><button id='bc'>View C</button><button id='br'>reset</button></div>
+	<div id='views'>
+		<div id='viewA'></div>
+		<div id='viewB'></div>
+		<div id='viewC'></div>
+	</div>
 	<script>
 		require([
 			'core/dcl',
+			'core/on',
 			'base/ui/views/View',
 			'base/ui/views/manager'
-		], function(dcl, View, mgr) {
+		], function(dcl, on, View, mgr) {
 			
 			mgr.add([
 				new View({content:'<div>Yellow View</div>', className:'dev'}, 'viewA'),
 				new View({content:'<div>Blue View</div>', className:'dev devblue'}, 'viewB'),
 				new View({content:'<div>Red View</div>', className:'dev devred'}, 'viewC')
 			]);
+			
+			
+			on('ba', 'click', function(){
+				mgr.select('viewA');	
+			});
+			on('bb', 'click', function(){
+				mgr.select('viewB');	
+			});
+			on('bc', 'click', function(){
+				mgr.select('viewC');	
+			});
+			on('br', 'click', function(){
+				mgr.reset();	
+			});
+			
 		});
 </script>
 </body>

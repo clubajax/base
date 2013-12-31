@@ -1,7 +1,10 @@
 define([
+	'./on',
 	'./mouse',
-	'./dom'
-], function(mouse, dom){
+	'./dom',
+	'./has',
+	'./Promise'
+], function(on, mouse, dom, has, Promise){
 	
 	var
 		testNode = document.createElement('div'),
@@ -53,7 +56,6 @@ define([
 		cssMap[prop] = dashify(testCss(prop));
 	});
 	
-	console.log('CSSMAP', cssMap);
 	
 	//addTrans[cssMap.transition] = transValue;
 	remTrans[cssMap.transition] = '';
@@ -87,6 +89,59 @@ define([
 	}
 	
 	return {
+		all: Promise.all,
+		move: function(node, options){
+			var
+				transform = has('transform'),
+				transition = has('transition'),
+				duration = options.d || options.dur || options.duration || 500,
+				ease = options.ease || 'ease',
+				transitionProps = transform + ' ' + duration + 'ms ' + ease,
+				transformFromProps = [],
+				transformToProps = [],
+				promise = new Promise();
+			
+			if(options.callback){
+				promise.then(options.callback, options.errback);
+			}
+				
+			if(options.to.x){
+				transformToProps.push('translateX(' + options.to.x +'px)');
+			}
+			if(options.to.y){
+				transformToProps.push('translateY(' + options.to.y +'px)');
+			}
+			if(options.from){
+				if(options.from.x){
+					transformFromProps.push('translateX(' + options.from.x +'px)');
+				}
+				if(options.from.y){
+					transformFromProps.push('translateY(' + options.from.y +'px)');
+				}
+				//console.log(node.id, 'FROM', transformFromProps.join(' '));
+				dom.style(node, transform, transformFromProps.join(' '));
+			}
+			
+			dom.style(node, transition, transitionProps);
+			
+			on.once(node, has('transitionend'), function(){
+				promise.resolve();
+				if(options.resetOnFinish){
+					setTimeout(function(){
+						dom.style(node, transform, '');
+						dom.style(node, transition, '');
+					}, 100);
+					
+				}
+			});
+			
+			window.requestAnimationFrame(function(){
+				dom.style(node, transform, transformToProps.join(' '));
+			});
+			
+			return promise;
+		},
+		
 		momentum: function(node, sibling){
 			node = typeof node === 'string' ? document.getElementById(node) : node;
 			

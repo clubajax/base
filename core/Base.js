@@ -19,7 +19,6 @@ define([
 			
 			for(prop in options){
 				if(options.hasOwnProperty(prop)){
-					console.log('prop', prop);
 					if(this[prop] !== undefined && observables[prop] !== undefined){
 						console.error('Property assignment conflict with observable assignment:', prop);
 					}

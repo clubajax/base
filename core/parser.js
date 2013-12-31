@@ -63,13 +63,8 @@ define([
 			log(dent, 'parse');
 			
 			parentNode = parentNode || document.body;
-			console.log('   parentNode:', parentNode);
 			
 			widgetNodes = walkDom(parentNode, WIDGET_ATTR);
-			
-			//console.log('****REFS:', walkDom(parentNode, REF_ATTR));
-			
-			
 			
 			log(dent, 'parse complete, widgetNodes:', widgetNodes.length);
 			

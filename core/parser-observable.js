@@ -61,7 +61,7 @@ define([
 		if(!context){
 			return;
 		}
-		console.log('ONSERVABLE');
+		
 		var
 			i,
 			nodes = walkDom(parentNode, OBS_ATTR);

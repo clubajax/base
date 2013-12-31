@@ -2,13 +2,20 @@ define([], function(dcl){
 	
 	// has library
 	// 
-	var VENDOR_PREFIXES = ["Webkit", "Moz", "O", "ms", "Khtml"],
+	var
 		d = document,
-		el = d.createElement("DiV"),
+		el = d.createElement('div'),
 		testStyle = el.style,
 		g = window,
 		testCache = {},
-		isIE = navigator.userAgent.indexOf('Trident') > -1
+		isIE = navigator.userAgent.indexOf('Trident') > -1,
+		transitions = {
+			'MozTransition': 'transitionend',
+			'WebkitTransition': 'webkitTransitionEnd',
+			'transition': 'transitionEnd',
+			'MSTransition': 'msTransitionEnd',
+			'OTransition': 'oTransitionEnd'
+		}
     ;
 	
 	function cap(word){
@@ -22,6 +29,7 @@ define([], function(dcl){
 			props = [
 				prop,
 				'Webkit' + uc,
+				'webkit' + uc,
 				'Moz' + uc,
 				'O' + uc,
 				'ms' + uc,
@@ -60,6 +68,18 @@ define([], function(dcl){
 	
 	has.add('transform', function(){
 		return dashify(testCss('transform'));
+	});
+	
+	has.add('transition', function(){
+		return dashify(testCss('transition'));
+	});
+	has.add('transitionend', function(){
+		// Stupid Chrome. Get it right.
+		if(/webkit/i.test(testCss('transform'))){
+			return transitions.WebkitTransition;
+		}
+		return transitions[testCss('transition')];
+		
 	});
 	
 	
