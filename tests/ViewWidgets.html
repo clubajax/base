@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>View Widgets Test</title>
+	<link href='../resources/base.css' rel='stylesheet' />
 	<link href='./tests.css' rel='stylesheet' />
 	<style>
 		body{
@@ -13,6 +14,9 @@
 			right: 10px;
 			width: 60px;
 			z-index: 100;
+		}
+		.base-pane{
+			background: #ff0000;
 		}
 	</style>
 	<script>
@@ -43,7 +47,7 @@
 			'base/ui/views/manager'
 		], function(dcl, on, Widget, View, mgr) {
 			
-			var Pane = dcl(Widget, {
+			dcl(Widget, {
 				declaredClass:'Pane',
 				displayText:'NOTSET',
 				template:'<div class="base-pane">{{displayText}}</div>',
@@ -54,7 +58,13 @@
 			
 			
 			mgr.add([
-				new View({content:'<div data-widget="Pane" data-props="displayText:\'wOOt there it is\'" displayText="Mike Wilcox"></div>', className:'dev'}, 'viewA'),
+				new View({
+					content:
+						'<div data-widget="Pane" data-props="displayText:\'wOOt there it is\'" displayText="Mike Wilcox"></div>',
+					className:'dev',
+					headerContent:'<div>View A Title</div>',
+					footerContent:'<div>Copyright &copy; 2014</div>'
+				}, 'viewA'),
 				new View({content:'<div>Blue View</div>', className:'dev devblue'}, 'viewB'),
 				new View({content:'<div>Red View</div>', className:'dev devred'}, 'viewC')
 			]);
