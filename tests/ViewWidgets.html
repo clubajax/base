@@ -1,7 +1,9 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <title>View Widgets Test</title>
+	<title>View Widgets Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
 	<link href='../resources/base.css' rel='stylesheet' />
 	<link href='./tests.css' rel='stylesheet' />
 	<style>
@@ -10,10 +12,13 @@
 		}
 		.btns{
 			position: fixed;
-			top:10px;
-			right: 10px;
+			top:40px;
+			right: 20px;
 			width: 60px;
 			z-index: 100;
+		}
+		.btns button{
+			width: 70px;
 		}
 	</style>
 	<script>
@@ -54,7 +59,7 @@
 			mgr.add([
 				new View({
 					content:
-						'<div data-widget="Pane" data-props="displayText:Content for View A"></div>',
+						'<div data-widget="Pane" data-props="displayText:Super Content for View A"></div>',
 					className:'',
 					headerContent:'<div>View A Title</div>',
 					footerContent:'<div>Copyright &copy; 2014</div>'

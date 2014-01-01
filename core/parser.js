@@ -15,6 +15,24 @@ define([
 			plugins.push(plug);	
 		}
 		
+		function handlePlugins(type, nodeOrAttributes, object){
+			if(plugins.length){
+				if(type === 'node'){
+					
+					plugins.forEach(function(plug){
+						plug(walkDom, nodeOrAttributes, object);
+					});
+				
+				}else if(type === 'attributes'){
+					plugins.forEach(function(plug){
+						plug(nodeOrAttributes, object);
+					});
+				}
+			}else{
+				console.log('no plugins.');
+			}
+		}
+		
 		function assignProps(object, propObject){
 			//	currently only supports flat objects
 			//	deeper nesting could be done with:
@@ -92,7 +110,10 @@ define([
 			log(dent, 'parse complete, widgetNodes:', widgetNodes.length);
 			
 			widgetNodes.forEach(function(node){
-				props = attsToObject(node.attributes);
+				//console.log('node.attributes', node.attributes, node.attributes instanceof NamedNodeMap );
+				props = {};
+				attsToObject(node.attributes);
+				handlePlugins('attributes', node.attributes, props);
 				log('    props', props );
 				type = props[WIDGET_ATTR].replace(/\//g, '.');
 				Ctor = registry.getClass(type);
@@ -105,13 +126,7 @@ define([
 				widgets.push(widget);
 			});
 			
-			if(plugins.length){
-				plugins.forEach(function(plug){
-					plug(walkDom, parentNode, context);
-				});
-			}else{
-				console.log('no plugins.');
-			}
+			handlePlugins('node', parentNode, context);
 			
 			return widgets;
 		}

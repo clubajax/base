@@ -7,7 +7,7 @@ define([
 	
 	var
 		//WIDGET_ATTR = 'data-widget',
-		WIDGET_ID_ATTR = 'widgetId',
+		//WIDGET_ID_ATTR = 'widgetId',
 		OBS_ATTR = 'data-bind',
 		map;
 		

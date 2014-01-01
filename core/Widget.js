@@ -6,7 +6,8 @@ define([
 	'./Base',
 	'./parser',
 	'./parser-reference',
-	'./parser-observable'
+	'./parser-observable',
+	'./parser-attributes'
 ], function(dcl, lang, dom, registry, Base, parser){
 	
 	var Widget = dcl(Base, {
