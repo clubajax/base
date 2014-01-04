@@ -24,16 +24,59 @@
 			'core/Store'
 		], function(Store) {
 			
-			var store = new Store({
+			var store2, store = new Store({
 				url:'/observato/web/rest/resources',
 				database:'main',
 				target: '/entities'
+			});
+			store.on('data', function(data){
+				console.log('store data:', data.items);	
 			});
 			
 			store.query({
 				source:'CRM',
 				schema:'Order'
 			});
+			
+			
+			
+			// Testing autocomplete calls and pagination
+			//// /observato/web/rest/resources/main/dictionaries?name=Path&start=0&value=%40*&max=50
+			
+			store2 = new Store({
+				url:'/observato/web/rest/resources',
+				database:'main',
+				target: '/dictionaries',
+				pagingStartProp:'start',
+				pagingEndProp:'max',
+				pagingDefaultMax:5
+			});
+			
+			store2.on('data', function(data){
+				console.log('store2 data:\n'+( data.items.map(function(item){ return item.value; }).join('  \n'))); 
+			});
+			
+			store2.query({
+				name:'Path',
+				value:'%40*'
+			});
+			
+			setTimeout(function(){
+				store2.query({
+					name:'Path',
+					value:'%40%3A2*'
+				});
+				setTimeout(function(){
+					store2.page(6, 10);
+					setTimeout(function(){
+						store2.page(11, 15);
+					}, 500);
+				}, 500);
+				
+			}, 500);
+			
+			
+			
 			
 		});
 </script>

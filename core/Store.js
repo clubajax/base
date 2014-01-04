@@ -40,6 +40,13 @@ define([
 		// the database name to call normally attached after the url
 		database: '',
 		
+		// For pagination - the keys to send for start and end
+		pagingStartProp:'',
+		pagingEndProp:'',
+		// For pagination - if set, the default max results
+		// (must have pagingStartProp and pagingEndProp set)
+		pagingDefaultMax:0,
+		
 		constructor: function(options){
 			console.log('Store', options);
 		},
@@ -52,6 +59,16 @@ define([
 		byIndex: function(idx){
 			var items = this.data ? this.data.length ? this.data : this.data.items : [];
 			return items[idx];
+		},
+		
+		page: function(start, end){
+			if(!this.pagingStartProp || !this.pagingEndProp){
+				console.error('Paging start and end properties mut be set');
+			}
+			var params = {};
+			params[this.pagingStartProp] = start;
+			params[this.pagingEndProp] = end;
+			this.query(this.lastQuery, params);
 		},
 		
 		query: function(query, params, successCallback){
@@ -77,6 +94,11 @@ define([
 			
 			if(this.queryAppend){
 				target += this.queryAppend;
+			}
+			
+			if(this.pagingDefaultMax && !params[this.pagingStartProp] && !params[this.pagingEndProp]){
+				params[this.pagingStartProp] = 0;
+				params[this.pagingEndProp] = this.pagingDefaultMax;
 			}
 			
 			console.log('query', query);
@@ -106,7 +128,7 @@ define([
 					console.timeEnd(this.url);
 					data = this.processResults(data);
 					//console.log('Store data:', JSON.stringify(data));
-					console.log('Store data:', data);
+					//console.log('Store data:', data);
 					this.emit('data', data);
 					this.emit('data-end', data);
 					this.data = data;

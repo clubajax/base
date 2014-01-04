@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>AutoComplete Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		body{
+			overflow: hidden;
+		}
+		.btns{
+			position: fixed;
+			top:40px;
+			right: 20px;
+			width: 60px;
+			z-index: 100;
+		}
+		.btns button{
+			width: 70px;
+		}
+		
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'core', location: '../core'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>AutoComplete Test</h1>
+	<div id='views'>
+		<div id='home'></div>
+		<div id='viewA'></div>
+		<div id='viewB'></div>
+		<div id='viewC'></div>
+	</div>
+	<script>
+		require([
+			'core/ui/form/AutoComplete'
+		], function(AutoComplete) {
+			
+			
+		});
+</script>
+</body>
+</html>
