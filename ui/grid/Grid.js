@@ -1,5 +1,5 @@
 define([
-	'dcl/dcl',
+	'../../core/dcl',
 	'../../core/dom',
 	'../../core/has',
 	'./List'

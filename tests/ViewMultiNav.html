@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>View Multi Nav Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		body{
+			overflow: hidden;
+		}
+		.btns{
+			position: fixed;
+			top:40px;
+			right: 20px;
+			width: 60px;
+			z-index: 100;
+		}
+		.btns button{
+			width: 70px;
+		}
+		
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'core', location: '../core'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<div id='views'>
+		<div id='home'></div>
+		<div id='viewA'></div>
+		<div id='viewB'></div>
+		<div id='viewC'></div>
+	</div>
+	<script>
+		require([
+			'core/dcl',
+			'core/on',
+			'core/Widget',
+			'base/ui/views/View',
+			'base/ui/views/manager'
+		], function(dcl, on, Widget, View, mgr) {
+			
+			function creator(id, back, title, content){
+				return new View({
+					id:id,
+					back:back,
+					content: '<div>'+content+'</div>',
+					className:'',
+					headerContent:'<div>'+title+'</div>',
+					footerContent:'<div>Copyright &copy; 2014</div>'
+				}, id);
+			}
+			
+			var pane, Pane;
+			
+			Pane = dcl(Widget, {
+				declaredClass:'Pane',
+				template:'<div class="base-pane home">'+
+					'<button data-ref="click:onViewA">View A</button>' +
+					'<button data-ref="click:onViewB">View B</button>' +
+					'<button data-ref="click:onViewC">View C</button>' +
+				'</div>',
+				
+				onViewA: function(){
+					if(!mgr.contains('viewA')){
+						mgr.add(creator('viewA', 'home', 'View A Title', 'Content for View A'));
+					}
+					mgr.select('viewA');
+				},
+				onViewB: function(){
+					if(!mgr.contains('viewB')){
+						mgr.add(creator('viewB', 'home', 'View Bee Title', 'Content for View Bee'));
+					}
+					mgr.select('viewB');
+				},
+				onViewC: function(){
+					if(!mgr.contains('viewC')){
+						mgr.add(creator('viewC', 'home', 'View See Title', 'Content for View See'));
+					}
+					mgr.select('viewC');
+				}
+			});
+			
+			pane = new Pane();
+			
+			mgr.add([
+				new View({
+					content: pane,
+						//'<div data-widget="Pane" data-props="displayText:Super Content for View A"></div>',
+					className:'',
+					headerContent:'<div>Home</div>',
+					footerContent:'<div>Copyright &copy; 2014</div>'
+				}, 'home')
+			]);
+			
+			
+			
+		});
+</script>
+</body>
+</html>

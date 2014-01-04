@@ -15,34 +15,11 @@ define([
 		parent,
 		manager;
 		
-	function length(){
-		return Object.keys(viewMap).length;	
-	}
-	
 	function indexViews(){
 		var i;
 		for(i = 0; i < viewList.length; i++){
 			viewList[i].index = i;
 		}
-	}
-	
-	function index(view){
-		var key, count = 0;
-		for(key in viewMap){
-			if(viewMap.hasOwnProperty(key)){
-				if(view){
-					if(viewMap[key] === view){
-						return count;
-					}
-				}else{
-					if(viewMap[key].selected){
-						return count;
-					}
-				}
-				count++;
-			}
-		}
-		return 0;
 	}
 	
 	function makeDraggable(view){
@@ -71,6 +48,9 @@ define([
 	
 	
 	function setSelected(view){
+		if(view){
+			console.log('setSelected', view.id);
+		}
 		var i;
 		for(i = 0; i < viewList.length; i++){
 			viewList[i].selected = false;
@@ -110,29 +90,56 @@ define([
 	}
 	
 	function setTransitionView(view){
+		view = typeof view === 'string' ? viewMap[view] : view;
 		log('\nsetTransitionView', view.index, view.id);
 		var
 			duration = 600,
-			distance = 1,
+			direction = 1,
 			toIndex = view.index,
 			fromIndex = selected.index,
 			size = dom.box(selected.node),
 			x = size.width,
 			moves = [],
-			promise;
+			from, to;
 			
 		if(toIndex === fromIndex){
 			return;
 		}
 		
-		distance = toIndex - fromIndex;
+		if(toIndex > fromIndex){
+			direction = -1;
+		}
 		
 		log('  from idx', fromIndex, 'to', toIndex);
+		
+		
+		// selected
+		from = 0;
+		to = x * direction;
+		moves.push(behavior.move(selected.node, {
+			duration: duration,
+			resetOnFinish:true,
+			from:{ x: from },
+			to:{ x: to }
+		}));
+		
+		// next view
+		from = x * direction * -1;
+		to = 0;
+		dom.show(view.node);
+		moves.push(behavior.move(view.node, {
+			duration: duration,
+			resetOnFinish:true,
+			from:{ x: from },
+			to:{ x: to }
+		}));
+		
+		/*
 		Object.keys(viewMap).forEach(function(viewId, i){
 			var
 				v = viewMap[viewId],
 				from = x * (i-fromIndex),
-				to = (x * (i-fromIndex)) - x * distance;
+				to = (x * (i-fromIndex)) - x * direction;
 			
 			log('    idx', i);
 			log('      view', viewId, from, 'to', to);
@@ -151,12 +158,17 @@ define([
 				}
 			}));
 		});
+		*/
 		
-		promise = behavior.all(moves);
-		
-		promise.then(function(){
+		behavior.all(moves).then(function(){
 			setDisplayView(setSelected(view));
 		});
+	}
+	
+	function addView(view){
+		viewMap[view.id] = view;
+		viewList.push(view);
+		view.on('navigate', setTransitionView);
 	}
 	
 	manager = {
@@ -164,28 +176,30 @@ define([
 			var i, view;
 			if(Array.isArray(vs)){
 				for(i = 0; i < vs.length; i++){
-					viewMap[vs[i].id] = vs[i];
-					viewList.push(vs[i]);
+					addView(vs[i]);
 				}
 			}else{
-				viewMap[vs.id] = vs;
-				viewList.push(vs);
+				addView(vs);
 			}
 			
 			indexViews();
 			
-			//view = this.select();
 			view = setSelected(view);
+			console.log('view:', view.index, view.id, view);
 			setDisplayView(view);
 			if(!parent){
 				parent = view.node.parentNode;
 			}
+			return view;
 		},
 		
 		select: function(view){
-			view = typeof view === 'string' ? viewMap[view] : view;
 			setTransitionView(view);
 			return view;
+		},
+		
+		contains: function(id){
+			return viewMap[id];
 		},
 		
 		reset: function(){

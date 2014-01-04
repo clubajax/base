@@ -1,8 +1,9 @@
 define([
 	'core/dcl',
+	'core/dom',
 	'core/parser',
 	'core/Widget'
-], function(dcl, parser, Widget){
+], function(dcl, dom, parser, Widget){
 
 	return dcl(Widget, {
 		declaredClass:'View',
@@ -12,7 +13,8 @@ define([
 		headerClass:'base-view-header',
 		containerClass:'base-view-container',
 		footerClass:'base-view-footer',
-		
+		back:'',
+		backText:'Back',
 		
 		
 		template:'<div class="{{baseClass}} {{className}}">' +
@@ -30,12 +32,24 @@ define([
 		},
 		
 		postRender: function(){
-			this.containerNode.innerHTML = this.content || '';
-			parser.parse(this.containerNode);
-			
-			if(this.headerContent){
-				this.headerNode.innerHTML = this.headerContent;
-				parser.parse(this.headerNode);
+			if(typeof this.content === 'object'){
+				this.containerNode.appendChild(this.content.node);
+			}else{
+				this.containerNode.innerHTML = this.content || '';
+				parser.parse(this.containerNode);
+			}
+			if(this.headerContent || this.back){
+				if(this.headerContent){
+					this.headerNode.innerHTML = this.headerContent;
+					parser.parse(this.headerNode);
+				}
+				if(this.back){
+					this.backNode = dom('div', {css:'base-view-back', html:'<span>'+this.backText+'</span>'});
+					this.headerNode.appendChild(this.backNode);
+					this.on(this.backNode, 'click', function(){
+						this.emit('navigate', this.back);
+					}, this);
+				}
 				this.node.classList.add('hasHeader');
 			}
 			if(this.footerContent){

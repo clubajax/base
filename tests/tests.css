@@ -136,3 +136,45 @@ body{
 .dev.devgreen{
 	background: #D3F2D0;
 }
+
+
+.base-pane.home button{
+	display: block;
+	width: 100%;
+	margin: 10px 0;
+	border: 3px solid #999;
+	background: #fff;
+	border-radius: 8px;
+	box-sizing: border-box;
+	position: relative;
+	font-size: 18px;
+	text-align: left;
+	padding-left: 10px;
+	height: 50px;
+	line-height: 24px;
+	cursor: pointer;
+	font-weight: bold;
+	color: #333;
+}
+.base-pane.home button:hover{
+	background: #0000ff;
+	color: #fff;
+}
+.base-pane.home button:hover:after{
+	border-color: #fff;
+}
+.base-pane.home button:after{
+	content:'';
+	display: block;
+	width: 10px;
+	height: 10px;
+	border-width: 3px 3px 0px 0px;
+	border-style: solid;
+	border-color: #666;
+	position: absolute;
+	right: 10px;
+	top:50%;
+	margin-top: -7px;
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
