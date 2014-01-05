@@ -10,7 +10,7 @@ define([
 	// 
 	var
 		Store,
-		log = logger('XHR', 1, 'base xhr');
+		log = logger('STR', 0, 'base xhr');
 	
 	function cleanObject(o){
 		for(var key in o){

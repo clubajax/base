@@ -30,7 +30,7 @@ define([
 		function onload(request) {
 			var req = request.currentTarget, result, err;
 			//console.log(this.responseText);
-			console.log('onload', req);
+			//console.log('onload', req);
 			
 			if(req.status !== 200){
 				err = {

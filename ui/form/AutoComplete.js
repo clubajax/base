@@ -25,6 +25,10 @@ define([
 		// Data store (required)
 		store:null,
 		
+		// delimeter
+		// If set, assumes multiple selections are allowed
+		delimeter:'',
+		
 		// freetext
 		//	If true, does not ensure that typed text is in one
 		//	of the server results items
@@ -124,9 +128,22 @@ define([
 			// Probably a Store thing that should normalize different
 			// cases.
 			// 
-			console.log(this.inputNode.value);
-			var query = {};
+			console.log('QUERY', this.inputNode.value);
+			
+			var
+				value,
+				words,
+				query = {};
+			
 			query.name = this.queryName;
+			
+			if(this.delimeter && this.inputNode.value.indexOf(this.delimeter) > -1){
+				console.log('cursor position', this.inputNode.selectionStart);
+				console.log('comma position', this.inputNode.value.indexOf(this.delimeter));
+				
+				words = this.inputNode.value.split(',');
+			}
+			
 			query.value = window.escape(this.inputNode.value) + this.wildcard;
 			this.store.query(query);
 		},
