@@ -133,6 +133,7 @@ define([
 			return attsObject;
 		}
 		
+		// get single attribute
 		return node.getAttribute(prop);
 	}
 
@@ -225,11 +226,15 @@ define([
 	}
 	
 	function show(node){
-		getNode(node).classList.remove('off');
+		if(node){
+			getNode(node).classList.remove('off');
+		}
 	}
 	
 	function hide(node){
-		getNode(node).classList.add('off');
+		if(node){
+			getNode(node).classList.add('off');
+		}
 	}
 	
 	dom.attr = attr;

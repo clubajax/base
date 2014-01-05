@@ -9,16 +9,8 @@
 	<style>
 		body{
 			overflow: hidden;
-		}
-		.btns{
-			position: fixed;
-			top:40px;
-			right: 20px;
-			width: 60px;
-			z-index: 100;
-		}
-		.btns button{
-			width: 70px;
+			padding: 10px;
+			background: #eee;
 		}
 		
 	</style>
@@ -36,18 +28,30 @@
 </head>
 <body>
 	<h1>AutoComplete Test</h1>
-	<div id='views'>
-		<div id='home'></div>
-		<div id='viewA'></div>
-		<div id='viewB'></div>
-		<div id='viewC'></div>
-	</div>
+	<input id='ac' />
+	<input value='compare field' class='base-field'/><br>
+	<input value='compare style' />
 	<script>
 		require([
-			'core/ui/form/AutoComplete'
-		], function(AutoComplete) {
+			'core/Store',
+			'base/ui/form/AutoComplete'
+		], function(Store, AutoComplete) {
 			
+			var store = new Store({
+				testForProxy:true,
+				url:'/observato/web/rest/resources',
+				database:'main',
+				target: '/dictionaries',
+				pagingStartProp:'start',
+				pagingEndProp:'max',
+				pagingDefaultMax:5
+			});
 			
+			new AutoComplete({
+				store:store,
+				queryName:'Path',
+				value:'Kevin'
+			}, 'ac');
 		});
 </script>
 </body>

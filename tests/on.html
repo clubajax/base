@@ -44,7 +44,10 @@
 <body>
 	<h1>on test</h1>
 	<p style='font-style: italic;'>Results are in the console.</p>
-
+	
+	<p>Test Key Events</p>
+	<input id='inp' />
+	
     <p>Test simple connections</p>
     <button id=b1>clicker</button>
     <button id=b2>pause clicker</button>
@@ -67,6 +70,7 @@
         <span class='tab'><a href='#' >Tab 2</a></span>
         <span class='tab'><a href='#' >Tab 3</a></span>
     </div>
+	
 	<script>
 		require([
 			'core/on'
@@ -75,6 +79,15 @@
 			console.log('on loaded');
 			var h1, h2, o;
 		
+			on('inp', 'keydown', function(e){
+				console.log('keydown', e.keyCode, e);
+			});
+			on('inp', 'keyup', function(e){
+				console.log('keyup', e.keyCode, e);
+			});
+			on('inp', 'keypress', function(e){
+				console.log('keypress', e.keyCode, e);
+			});
 		
 			on('css', 'click .tab a', function(e){
 				console.log('clicked tab');

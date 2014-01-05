@@ -5,7 +5,9 @@ define([
 	'./xhr',
 	'./logger'
 ], function(dcl, Base, lang, xhr, logger){
-	
+	// Store
+	// Simple Memory Store. Does not support REST functionality
+	// 
 	var
 		Store,
 		log = logger('XHR', 1, 'base xhr');
@@ -27,10 +29,12 @@ define([
 	Store = dcl(Base, {
 		declaredClass:'Store',
 		
-		idProperty:'id',
-		
 		// for development - switches to PHP page
 		proxy:false,
+		
+		// for development - tests domain for whether this
+		// shoudl use a proxy or not
+		testForProxy:false,
 		
 		url:'',
 		
@@ -40,20 +44,51 @@ define([
 		// the database name to call normally attached after the url
 		database: '',
 		
+		// itemsProperty:
+		//	The array-property-name
+		//	If empty string, assumes server returns an array and
+		//	not an object containing an array
+		itemsProperty:'items',
+		
+		// valueProperty:
+		// The property name that contains the value in each item
+		valueProperty:'value',
+		
+		// idProperty:
+		// The property name in each item that is its unique indentifier
+		idProperty:'key',
+		
 		// For pagination - the keys to send for start and end
 		pagingStartProp:'',
 		pagingEndProp:'',
+		
 		// For pagination - if set, the default max results
 		// (must have pagingStartProp and pagingEndProp set)
 		pagingDefaultMax:0,
 		
 		constructor: function(options){
-			console.log('Store', options);
+			this.idMap = {};
+			this.valueMap = {};
+			if(this.testForProxy){
+				if(/\d+\.\d+\.\d+\.\d+/.test(location.host) || /mikewilcox/.test(location.host)){
+					this.proxy = true;
+				}
+			}
 		},
 		
 		processResults: function(data){
 			// to be over written by extending objects
 			return data;
+		},
+		
+		storeItems: function(items){
+			var i, id, value;
+			for(i = 0; i < items.length; i++){
+				id = this.getId(items[i]);
+				value = this.getValue(items[i]);
+				this.idMap[id] = items[i];
+				this.valueMap[value] = items[i];
+			}
 		},
 		
 		byIndex: function(idx){
@@ -69,6 +104,38 @@ define([
 			params[this.pagingStartProp] = start;
 			params[this.pagingEndProp] = end;
 			this.query(this.lastQuery, params);
+		},
+		
+		onResults: function(data){
+			console.timeEnd(this.url);
+			data = this.processResults(data);
+			//console.log('Store data:', JSON.stringify(data));
+			//console.log('Store data:', data);
+			this.emit('data', data);
+			this.emit('data-end', data);
+			this.data = data;
+			
+			this.items = !!this.itemsProperty ? data[this.itemsProperty] : data;
+			this.storeItems(this.items);
+			this.emit('items', this.items);
+		},
+		
+		getId: function(item){
+			return item[this.idProperty];
+		},
+		
+		getValue: function(item){
+			return item[this.valueProperty];
+		},
+		
+		byValue: function(value){
+			// There is no garauntee that values are unique
+			// and return the correct item
+			return this.valueMap[value];
+		},
+		
+		byId: function(id){
+			return this.idMap[id];
 		},
 		
 		query: function(query, params, successCallback){
@@ -124,15 +191,7 @@ define([
 			
 			xhr.get(url, {
 				proxy:this.proxy,
-				callback: function(data){
-					console.timeEnd(this.url);
-					data = this.processResults(data);
-					//console.log('Store data:', JSON.stringify(data));
-					//console.log('Store data:', data);
-					this.emit('data', data);
-					this.emit('data-end', data);
-					this.data = data;
-				}.bind(this),
+				callback: this.onResults.bind(this),
 				errback: function(e){
 					console.error('Store error', e);
 					this.emit('data-end', e);

@@ -20,7 +20,8 @@ define([
 			for(prop in options){
 				if(options.hasOwnProperty(prop)){
 					if(this[prop] !== undefined && observables[prop] !== undefined){
-						console.error('Property assignment conflict with observable assignment:', prop);
+						//console.error('Property assignment conflict with observable assignment:', prop);
+						observables[prop] = this[prop];
 					}
 					else if(this[prop] !== undefined){
 						this[prop] = options[prop];
@@ -34,7 +35,8 @@ define([
 			
 			for(prop in observables){
 				if(this[prop] !== undefined && observables[prop] !== undefined){
-					console.error('Property conflict with observable namespace:', prop);
+					//console.error('Property conflict with observable namespace:', prop);
+					//delete this[prop];
 				}
 				else if(observables.hasOwnProperty(prop)){
 					this[prop] = observable(observables[prop]);
