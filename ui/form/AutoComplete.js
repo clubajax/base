@@ -59,13 +59,17 @@ define([
 		
 		onItems: function(items){
 			console.log('items:', items.length);
+			if(!this.inputShowing){
+				// typed and hit enter, before results returned
+				return;
+			}
 			this.showPopup();
 			this.listNode.innerHTML = '';
 			var i, id, value;
 			for(i = 0; i < items.length; i++){
 				id = this.store.getId(items[i]);
 				value = this.store.getValue(items[i]);
-				console.log('    - ', value);
+				//console.log('    - ', value);
 				dom('div', {css:this.itemClass, html:value, attr:{'data-id':id}}, this.listNode);
 			}
 		},
@@ -79,6 +83,7 @@ define([
 					//this.onEnter(this.value());
 					this.hidePopup();
 					this.hideInput();
+					this.inputNode.blur();
 					break;
 				case 13:
 					// ENTER
@@ -94,9 +99,14 @@ define([
 		onEnter: function(value){
 			this.hidePopup();
 			this.hideInput();
+			this.inputNode.blur();
 			this.value(value);
+			this.node.classList.remove('invalid');
 			if(!this.freetext){
 				//validate
+				if(!this.store.byValue(value)){
+					this.node.classList.add('invalid');
+				}
 			}
 		},
 		
@@ -145,6 +155,7 @@ define([
 			}
 			this.node.classList.add('disabled');
 			this.inputNode.value = this.value();
+			this.inputShowing = true;
 			window.requestAnimationFrame(function(){
 				this.containerNode.classList.add('show');	
 			}.bind(this));
@@ -153,6 +164,7 @@ define([
 		hideInput: function(){
 			this.containerNode.classList.remove('show');
 			this.node.classList.remove('disabled');
+			this.inputShowing = false;
 		},
 		
 		

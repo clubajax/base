@@ -50,6 +50,7 @@ define([
 					try{
 						result = JSON.parse(req.responseText);
 					}catch(e){
+						console.error('XHR PARSE ERROR:', req.responseText);
 						if(options.errback){
 							options.errback(e);
 						}else{
