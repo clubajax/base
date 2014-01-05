@@ -39,7 +39,7 @@ define([], function(){
 			if( item !== undefined ){
 				value = item;
 				isArray = Array.isArray(item);
-				observable.publish( value );
+				observable.publish.apply( null, arguments );
 			}
 			return value;
 		}
@@ -62,7 +62,7 @@ define([], function(){
 		// publish changes. Often done automatically,
 		// but can be done manually,
 		observable.publish = function(){
-			var callback, temp;
+			var callback, temp, args = Array.prototype.slice.call(arguments);
 			for(callback in modifiers){
                 if(modifiers.hasOwnProperty(callback)){
                     temp = modifiers[callback]( value );
@@ -71,9 +71,10 @@ define([], function(){
                     }
                 }
 			}
+			args[0] = value;
 			for(callback in subscribers){
                 if(subscribers.hasOwnProperty(callback)){
-                    subscribers[callback]( value );
+                    subscribers[callback].apply( null, args);
                 }
 			}
 		};
@@ -93,7 +94,6 @@ define([], function(){
 		observable.len = function(){
 			return value.length;
 		};
-
 
 		observable.sort = function( direction /*, key*/ ){
 			if (isArray) {

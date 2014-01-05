@@ -31,7 +31,7 @@
 			'core/observable'
 		], function(observable) {
 		
-			var timer, likes, pie, o, snack;
+			var timer, likes, pie, o, snack, p;
 		
 			timer = function(obs, val, callback){
 				setTimeout(function(){
@@ -41,6 +41,15 @@
 					}
 				}, 300);
 			};
+			
+			
+			p = observable('paramable');
+			p.sub(function(value, a,b,c){
+				console.log('P::', value);
+				console.log('P.option:', a,b,c);
+			});
+			p('p.changed', 'with an option');
+			p('p.again', 'opt1', 'opt2', 'opt3');
 		
 			pie = observable();
 			pie.sub(function(v){
