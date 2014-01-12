@@ -14,6 +14,7 @@ define([
 		containerClass:'base-view-container',
 		footerClass:'base-view-footer',
 		back:'',
+		
 		backText:'Back',
 		
 		

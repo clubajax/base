@@ -27,7 +27,11 @@ define([
 			}
 		}),
 		renderWidget: function(node){
-			var attrObject;
+			var
+				frag,
+				appendNode,
+				hadChildren = 0,
+				attrObject;
 			
 			//console.log('render!', node);
 			node = typeof node === 'string' ? document.getElementById(node) : node;
@@ -48,6 +52,24 @@ define([
 					this.id = attrObject.widgetId = lang.uid('widget');
 				}
 				registry.addWidget(attrObject.widgetId, this);
+				
+				
+				frag = document.createDocumentFragment();
+				
+				while(node.firstChild){
+					// TODO: Include comments and white space?
+					console.log('PULL FROM ORG', node.firstChild);
+					frag.appendChild(node.firstChild);
+					hadChildren = 1;
+				}
+				
+				if(hadChildren){
+					// TODO: If frag just contains text, this may be used for
+					// things like button labels or input values
+					appendNode = this.containerNode || this.container || this.node;
+					appendNode.appendChild(frag);
+					parser.parse(appendNode, this);
+				}
 				
 				node.parentNode.replaceChild(this.node, node);
 				

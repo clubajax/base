@@ -28,7 +28,9 @@
 </head>
 <body>
 	<h1>AutoComplete Test</h1>
+	<p>This uses "Path" for testing. So start by typing "@"</p>
 	<input id='ac' />
+	<p>These are non-functioning; used for visual comparison</p>
 	<input value='compare field' class='base-field'/><br>
 	<input value='compare style' />
 	<script>
@@ -44,7 +46,7 @@
 				target: '/dictionaries',
 				pagingStartProp:'start',
 				pagingEndProp:'max',
-				pagingDefaultMax:5
+				pagingDefaultMax:50
 			});
 			
 			new AutoComplete({
