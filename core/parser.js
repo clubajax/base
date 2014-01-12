@@ -5,7 +5,6 @@ define([
 	
 	var
 		log = logger('PRS', 0),
-		REF_ATTR = 'data-ref',
 		WIDGET_ATTR = 'data-widget',
 		PROP_ATTR = 'data-props',
 		plugins = [],
@@ -68,8 +67,13 @@ define([
 			// walks a dom tree from a certain point, and
 			// returns an array of nodes that contain a certain
 			// attribute
-			// 
+			//
 			nodes = nodes || [];
+			
+			if(parentNode.getAttribute(ATTR)){
+				nodes.push(parentNode);
+			}
+			
 			var node = parentNode.firstChild;
 			while(node){
 				if(node.nodeType === 1){
@@ -92,7 +96,13 @@ define([
 		
 		function parse(parentNode, context){
 			count++;
+			
+			if(count > 100){
+				console.warn('TOO MUCH RECURSION');
+				return;
+			}
 			var
+				i,
 				props,
 				type,
 				Ctor,
@@ -100,6 +110,14 @@ define([
 				widgets = [],
 				widgetNodes,
 				dent = count+'  ';
+			
+			if(Array.isArray(parentNode)){
+				for(i = 0; i < parentNode.length; i++){
+					console.log('UNARRAY', parentNode[i]);
+					parse(parentNode[i], context);
+				}
+				return;
+			}
 			
 			log(dent, 'parse');
 			
@@ -110,7 +128,7 @@ define([
 			log(dent, 'parse complete, widgetNodes:', widgetNodes.length);
 			
 			widgetNodes.forEach(function(node){
-				//console.log('node.attributes', node.attributes, node.attributes instanceof NamedNodeMap );
+				console.log('node.attributes', node.attributes, node.attributes instanceof NamedNodeMap );
 				props = {};
 				attsToObject(node.attributes);
 				handlePlugins('attributes', node.attributes, props);

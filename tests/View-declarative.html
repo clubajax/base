@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>View Declarative Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		body{
+			overflow: hidden;
+		}
+		.btns{
+			position: fixed;
+			top:40px;
+			right: 20px;
+			width: 60px;
+			z-index: 100;
+		}
+		.btns button{
+			width: 70px;
+		}
+		
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'core', location: '../core'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<div id='views'>
+		<div id='home' data-widget='View' data-props='{"headerContent":"Home","buttons":{"rawData":"Raw Data","charts":"Charts"}}'></div>
+		<div id='rawData' data-widget='View' data-props='headerContent:Raw Data,back:home'>Grid here</div>
+		<div id='charts' data-widget='View' data-props='headerContent:Charts,back:home'></div>
+	</div>
+	<script>
+		require([
+			'core/parser',
+			'core/dcl',
+			'core/on',
+			'core/Widget',
+			'base/ui/views/View',
+			'base/ui/views/manager'
+		], function(parser, dcl, on, Widget, View, mgr) {
+			parser.parse();
+		});
+</script>
+</body>
+</html>

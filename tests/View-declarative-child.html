@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>View Declarative Child Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		body{
+			overflow: hidden;
+		}
+		.btns{
+			position: fixed;
+			top:40px;
+			right: 20px;
+			width: 60px;
+			z-index: 100;
+		}
+		.btns button{
+			width: 70px;
+		}
+		
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'core', location: '../core'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body style='display: none;'>
+	<div id='views'>
+		<div id='home' data-widget='View' data-props='headerContent:Home'>
+			<div id='search' title='Search' data-widget='View' data-props='headerContent:Search,back:home'>
+				<div class='test-form'>
+					<div class='row'>
+						<label>Resource</label>
+						<select>
+							<option>main</option>
+							<option>archive</option>
+						</select>
+					</div>
+					<div class='row'>
+						<label>Source</label>
+						<select>
+							<option>CRM</option>
+							<option>Click</option>
+						</select>
+					</div>
+					<div class='row'>
+						<label>Schema</label>
+						<select>
+							<option>Assignment</option>
+							<option>Engineer</option>
+							<option>Task</option>
+						</select>
+					</div>
+					<div class='row'>
+						<label>Reference</label>
+						<input />
+					</div>
+					<div class='buttonRow'>
+						<button>Search Entities</button>
+					</div>
+				</div>
+			</div>
+			<div id='rawData' title='Raw Data' data-widget='View' data-props='headerContent:Raw Data,back:home'>
+				<div class='test-form'>
+					<div class='row'>
+						<label>Resource</label>
+						<select>
+							<option>main</option>
+							<option>archive</option>
+						</select>
+					</div>
+					<a href='javascript:void(0)'>Properties</a>
+					<a href='javascript:void(0)'>Collections</a>
+					<a href='javascript:void(0)'>Revisions</a>
+					<a href='javascript:void(0)'>Entities</a>
+				</div>
+				
+			</div>
+			<div id='charts' title='Charts' data-widget='View' data-props='headerContent:Charts,back:home'>
+				<div class='test-form'>
+					<div class='row'>
+						<label>Resource</label>
+						<select>
+							<option>main</option>
+							<option>archive</option>
+						</select>
+					</div>
+					<div class='row'>
+						<label>Source</label>
+						<select>
+							<option>Revisions</option>
+							<option>Entities</option>
+							<option>Properties</option>
+							<option>Collections</option>
+						</select>
+					</div>
+					<div class='row'>
+						<label>Groups</label>
+						<select>
+							<option>Schema</option>
+							<option>Source</option>
+							<option>Created By</option>
+							<option>Day of Month</option>
+						</select>
+					</div>
+					<div class='buttonRow'>
+						<button>Create Chart</button>
+					</div>
+				</div>
+			</div>	
+		</div>
+		<div id='devGrid' title='Raw Data/Properties' data-widget='View' data-props='headerContent:Raw Data/Properties,back:rawData'>
+			<div id='grid'>A GRID GOES HERE</div>
+		</div>
+	</div>
+	<script>
+		require([
+			'core/parser',
+			'core/dom',
+			'core/on',
+			'base/ui/views/View',
+			'base/ui/views/manager',
+			'core/xhr',
+			'ui/grid/Grid'
+		], function(parser, dom, on, View, mgr, xhr, Grid) {
+			// View needs to be preloaded to work
+			parser.parse();
+			dom.style(document.body, 'display', '');
+			
+			var grid, built = 0;
+			function buildGrid(){
+				if(built){
+					return;
+				}
+				built = 1;
+				
+			
+				grid = new Grid({
+					columns:[{
+						label:'reference'
+					},{
+						label:'name'
+					},{
+						label:'type'
+					},{
+						label:'value'
+					},{
+						label:'timestamp'
+					},{
+						label:'schema'
+					},{
+						label:'source'
+					}]
+				}, 'grid');
+				
+				xhr.get('./data/grid.json', {
+					callback: function(data){
+						console.log('JSON', data);
+						grid.render(data);
+					}	
+				});
+			}
+			on('rawData', 'click a', function(e){
+				console.log('LINK', e);
+				buildGrid();
+				mgr.select('devGrid');
+			});
+		});
+</script>
+</body>
+</html>

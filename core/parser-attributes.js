@@ -10,18 +10,32 @@ define([
 		//	currently only supports flat objects
 		//	deeper nesting could be done with:
 		//		JSON.parse('{' + propObject + '}');
+		
+		//console.log('PROPS:::', JSON.parse(json));
 		var
 		i, key, value,
+		parsedJson,
 		props = propObject.split(',');
 	
-		for(i = 0; i < props.length; i++){
-			key = props[i].split(':')[0].trim();
-			value = props[i].split(':')[1].trim();
-			if(value !== '' && !isNaN(Number(value))){
-				value = Number(value);
-			}
-			object[key] = value;
+		if(propObject.indexOf('{') === 0){
+			parsedJson = JSON.parse(propObject);
+			for(key in parsedJson){
+				if(parsedJson.hasOwnProperty(key)){
+					object[key] = parsedJson[key];
+				}
+			}	
+		}else{
+			for(i = 0; i < props.length; i++){
+				key = props[i].split(':')[0].trim();
+				value = props[i].split(':')[1].trim();
+				if(value !== '' && !isNaN(Number(value))){
+					value = Number(value);
+				}
+				object[key] = value;
+			}	
 		}
+		
+		
 	}
 	
 	function attsToObject(atts, props){

@@ -178,3 +178,32 @@ body{
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
+
+.test-form{
+	
+}
+.test-form .row{
+	position: relative;
+	margin-bottom: 5px;
+}
+.test-form label{
+	display: inline-block;
+	width: 70px;
+	font-size: 12px;
+}
+.test-form select,
+.test-form input{
+	display: block;
+	position: absolute;
+	left: 75px;
+	right: 5px;
+	top:0px;
+}
+.test-form .buttonRow{
+	text-align: right;
+}
+.test-form a{
+	display: block;
+	font-size: 12px;
+	margin-bottom: 5px;
+}

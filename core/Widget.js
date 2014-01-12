@@ -28,9 +28,9 @@ define([
 		}),
 		renderWidget: function(node){
 			var
-				frag,
-				appendNode,
-				hadChildren = 0,
+				childNode,
+				childrenNode,
+				appendedNodes = [],
 				attrObject;
 			
 			//console.log('render!', node);
@@ -53,27 +53,44 @@ define([
 				}
 				registry.addWidget(attrObject.widgetId, this);
 				
-				
-				frag = document.createDocumentFragment();
+				childrenNode = this.containerNode || this.container || this.node;
 				
 				while(node.firstChild){
 					// TODO: Include comments and white space?
-					console.log('PULL FROM ORG', node.firstChild);
-					frag.appendChild(node.firstChild);
-					hadChildren = 1;
-				}
-				
-				if(hadChildren){
 					// TODO: If frag just contains text, this may be used for
 					// things like button labels or input values
-					appendNode = this.containerNode || this.container || this.node;
-					appendNode.appendChild(frag);
-					parser.parse(appendNode, this);
+					childNode = node.firstChild;
+					if(childNode.nodeType === 1){
+						if(this.appendNode){
+							this.appendNode.appendChild(childNode);
+							appendedNodes.push(childNode);
+						}else{
+							childrenNode.appendChild(childNode);
+							parser.parse(childNode);
+						}
+					}else{
+						// to keep the while() moving
+						node.removeChild(childNode);
+					}
 				}
 				
-				node.parentNode.replaceChild(this.node, node);
-				
 				dom.attr(this.node, attrObject);
+				
+				if(this.postCreate){
+					this.postCreate();
+				}
+				
+				if(node.parentNode){
+					node.parentNode.replaceChild(this.node, node);
+				}
+				
+				if(appendedNodes.length){
+					parser.parse(appendedNodes);
+					this.parsedChildNodes = appendedNodes;
+					console.log('this.parsedChildNodes', this.parsedChildNodes);
+				}
+			}else if(this.postCreate){
+				this.postCreate();
 			}
 			
 			if(!this.id){
