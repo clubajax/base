@@ -4,12 +4,9 @@ define([
 	'./dom',
 	'./registry',
 	'./Base',
-	'./parser',
-	'./parser-reference',
-	'./parser-observable',
-	'./parser-attributes'
+	'./parser/main'
 ], function(dcl, lang, dom, registry, Base, parser){
-	
+	console.log('PARSER', parser);
 	var Widget = dcl(Base, {
 		declaredClass:'Widget',
 		template:'<div>NO TEMPLATE</div>',

@@ -1,8 +1,8 @@
 define([
 	'./parser',
-	'./registry',
-	'./observable',
-	'./on'
+	'../registry',
+	'../observable',
+	'../on'
 ], function(parser, registry, observable, on){
 	
 	var

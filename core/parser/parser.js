@@ -1,6 +1,6 @@
 define([
-	'./registry',
-	'./logger'
+	'../registry',
+	'../logger'
 ], function(registry, logger){
 	
 	var
@@ -98,8 +98,7 @@ define([
 			count++;
 			
 			if(count > 100){
-				console.warn('TOO MUCH RECURSION');
-				return;
+				throw new Error('TOO MUCH RECURSION');
 			}
 			var
 				i,
@@ -116,7 +115,7 @@ define([
 					console.log('UNARRAY', parentNode[i]);
 					parse(parentNode[i], context);
 				}
-				return;
+				return null;
 			}
 			
 			log(dent, 'parse');
@@ -128,7 +127,7 @@ define([
 			log(dent, 'parse complete, widgetNodes:', widgetNodes.length);
 			
 			widgetNodes.forEach(function(node){
-				console.log('node.attributes', node.attributes, node.attributes instanceof NamedNodeMap );
+				console.log('node.attributes', node.attributes, node.attributes instanceof window.NamedNodeMap );
 				props = {};
 				attsToObject(node.attributes);
 				handlePlugins('attributes', node.attributes, props);
