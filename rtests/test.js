@@ -12,6 +12,7 @@ requirejs.config({
 
 var
 	i,
+	catchErrors = 0,
 	args = process.argv.toString().split(','),
 	defaultTests = [
 		'observable',
@@ -40,31 +41,34 @@ function runtests(){
 		currentTestName;
 	
 	function runtest(){
-		if(args.length){
-			path = args.shift();
-			try{
-				test = requirejs(path);
-			}catch(e){
-				console.error('PATH ERROR', path);
-				console.error('', e);
-				fail++;
+		var testOptions = {
+			begin: function(name){
+				total++;
+				currentTestName = name;
+				console.log('\n'+name+'\n--------------------');
+			},
+			end: function(name){
+				pass++;
+				console.log(name+' complete without errors');
 				runtest();
 			}
-			//requirejs([path], function(test){
-				if(typeof test === 'function'){
+		};
+		
+		if(args.length){
+			path = args.shift();
+			//try{
+				test = requirejs(path);
+			//}catch(e){
+			//	console.error('PATH ERROR', path);
+			//	console.error('', e);
+			//	fail++;
+			//	runtest();
+			//}
+			
+			if(typeof test === 'function'){
+				if(catchErrors){
 					try{
-					test({
-						begin: function(name){
-							total++;
-							currentTestName = name;
-							console.log('\n'+name+'\n--------------------');
-						},
-						end: function(name){
-							pass++;
-							console.log(name+' complete without errors');
-							runtest();
-						}
-					});
+						test(testOptions);
 					}catch(e){
 						fail++;
 						console.error('*ERROR*', currentTestName);
@@ -72,9 +76,13 @@ function runtests(){
 						runtest();
 					}
 				}else{
-					console.log('module did not return a function', test);
+					test(testOptions);
 				}
-			//});
+			
+			}else{
+				console.log('module did not return a function', path, test);
+			}
+			
 			
 		}else{
 			console.log('\n\n==================\n\n'+total+' tests complete');

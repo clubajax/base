@@ -42,6 +42,7 @@ define([
 				}.bind(this)));
 				parser.parse(this.node, this);
 			}
+			
 				
 			if(node){
 				// associated with a dom node to replace

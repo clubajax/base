@@ -1,18 +1,3 @@
-//require.config({
-//	baseUrl: '../../',
-//	paths: {
-//		'base': './base',
-//		'core':'./base/core'
-//	},
-//	waitSeconds: 15
-//});
-//
-//
-
-
-console.log('******** observable loaded');
-
-
 define([
 	'core/observable'
 ], function(observable) {
@@ -81,15 +66,12 @@ define([
 		likes.subscribe(function(v){
 			console.log('likes: ', v);
 			if(v === 'pie'){
-				options.end(testName);
+				options.end(testName); /////// ends here
 			}
 		});
 		timer(likes, 'nothing', function(){
 			timer(likes, 'pie');
 				
 		});
-		
-		
 	};
-
 });
