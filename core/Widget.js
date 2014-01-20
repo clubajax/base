@@ -1,5 +1,5 @@
 define([
-	'dcl/dcl',
+	'./dcl',
 	'./lang',
 	'./dom',
 	'./registry',
@@ -33,12 +33,15 @@ define([
 			//console.log('render!', node);
 			node = typeof node === 'string' ? document.getElementById(node) : node;
 			
-			this.node = dom(this.template.replace(/\{\{\w*\}\}/g, function(word){
-				word = word.substring(2, word.length-2);
-				return this[word];
-			}.bind(this)));
-			parser.parse(this.node, this);
-				
+			if(typeof this.template === 'object'){
+				this.node = dom(this.template.nodeName, this.template);
+			}else{
+				this.node = dom(this.template.replace(/\{\{\w*\}\}/g, function(word){
+					word = word.substring(2, word.length-2);
+					return this[word];
+				}.bind(this)));
+				parser.parse(this.node, this);
+			}
 				
 			if(node){
 				// associated with a dom node to replace

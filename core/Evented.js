@@ -1,5 +1,5 @@
 define([
-	'dcl/dcl',
+	'./dcl',
 	'./lang',
 	'./on'
 ], function(dcl, lang, on){

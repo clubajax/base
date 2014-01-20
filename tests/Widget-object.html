@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Widget Programmatic test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		.test-object{
+			margin: 20px;
+			padding: 10px;
+			background: #F4F2DE;
+			text-align: center;
+		}
+	</style>
+	<script>
+		window.dojoConfig = {
+			noCatch:false,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+		
+</script>
+	
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Widget Programmatic test</h1>
+	<div id='widget01'></div>
+	<div id='widget02'></div>
+	<div id='widget03'></div>
+	<script>
+		require([
+			'core/dcl',
+			'core/dom',
+			'core/Widget'
+		], function(dcl, dom, Widget) {
+			
+			new Widget({
+				template:{
+					nodeName:'div',
+					css:'test-object',
+					html:'Test Object',
+					attr:{
+						id:'test'
+					},
+					style:{
+						border:'1px solid #dd0000',
+						width:100,
+						height:100
+					}
+				},	
+			}, 'widget01');
+			
+			
+		});
+</script>
+</body>
+</html>
