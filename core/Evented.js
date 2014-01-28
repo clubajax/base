@@ -6,7 +6,7 @@ define([
 
 	function noop(){}
 	
-	return dcl(null, {
+	var Evented = dcl(null, {
 		
 		declaredClass:'',
 		
@@ -35,6 +35,15 @@ define([
 			this.listeners = {};
 		},
 		
+		child: function(){
+	            var tree = new Evented();
+	            tree.parent = this;
+	            this.children[tree.id] = {
+	                tree: tree
+	                // handle
+	            };
+	            return tree;
+	        },
 		
 		// this.on(node, 'click', 'doFoo', this)
 		
@@ -74,4 +83,6 @@ define([
 			};
 		}
 	});
+	
+	return Evented;
 });
