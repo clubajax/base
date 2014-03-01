@@ -30,7 +30,7 @@ define([], function(){
 			this.appendChild(new Node('div'));
 		},
 		get innerHTML(){
-			return this.html;
+			return this.html || '<div></div>';
 		}
 	};
 	

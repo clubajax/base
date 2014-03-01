@@ -30,7 +30,11 @@
 			A = dcl(null, {
 				declaredClass:'A',
 				constructor: function(){
+					this.render();
 					console.log('instantiated A');
+				},
+				render: function(){
+					
 				}
 			});
 			a = new A();
@@ -62,13 +66,13 @@
 				}
 			});
 			E = dcl(D, {
-				//declaredClass:'D',
-				constructor: function(){
-					console.log('instantiated E');
+				declaredClass:'E',
+				constructor: function(arg){
+					console.log('instantiated E', arg);
 				}
 			});
 			
-			e = new E();
+			e = new E('test');
 			
 			registry.log('className');
 		});

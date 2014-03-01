@@ -56,14 +56,7 @@ function runtests(){
 		
 		if(args.length){
 			path = args.shift();
-			//try{
-				test = requirejs(path);
-			//}catch(e){
-			//	console.error('PATH ERROR', path);
-			//	console.error('', e);
-			//	fail++;
-			//	runtest();
-			//}
+			test = requirejs(path);
 			
 			if(typeof test === 'function'){
 				if(catchErrors){

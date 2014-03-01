@@ -97,7 +97,7 @@ define([
 		function parse(parentNode, context){
 			count++;
 			
-			if(count > 100){
+			if(count > 30){
 				throw new Error('TOO MUCH RECURSION');
 			}
 			var
