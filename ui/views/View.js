@@ -1,7 +1,7 @@
 define([
 	'core/dcl',
 	'core/dom',
-	'core/parser',
+	'core/parser/main',
 	'core/Widget',
 	'./manager'
 ], function(dcl, dom, parser, Widget, manager){

@@ -2,12 +2,45 @@ define([
 	'core/observable'
 ], function(observable) {
 	
-	var testName = 'observable';
-	
-	return function (options){
-		
-		options.begin(testName);
-		
+    return {
+		suiteName: 'observable',
+		tests:[
+			{
+				title:'Set observable on creation',
+				run: function(t){
+                    var
+                        value = 'it is set',
+                        p = observable(value);
+                    t.assert(p() === value, 'p() === value');
+                }
+			},
+            {
+				title:'Set observable after creation',
+				run: function(t){
+                    var
+                        value = 'it is set',
+                        p = observable();
+                    p(value);
+                    t.assert(p() === value, 'p() === value');
+                }
+			},
+            {
+				title:'Check observable change',
+				run: function(t){
+                    var
+                        oldValue = 'not set',
+                        newValue = 'it is set',
+                        p = observable(oldValue);
+                    p.sub(function(value){
+                        t.assert(value === newValue, 'value === newValue');
+                    });
+                    p(newValue);
+                }
+			}
+        ]
+    };
+
+/* OLD TESTS TO PORT
 		var timer, likes, pie, o, snack, p;
 	
 		timer = function(obs, val, callback){
@@ -74,4 +107,5 @@ define([
 				
 		});
 	};
+	*/
 });

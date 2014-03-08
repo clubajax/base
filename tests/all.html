@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>all modules test</title>
+	<link href='./tests.css' rel='stylesheet' />
+	<script>
+		window.dojoConfig = {
+			noCatch:false,
+			devReports: 1,
+			devCharts: 0,
+			noPersist: 0,
+			blockWelcome:1,
+			showProfile:0,
+			async: true,
+			tlmSiblingOfDojo: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../../'},
+				{name: 'core', location: '../core'},
+				{name: 'dcl', location: '../dcl'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>all modules test</h1>
+	<p>Results are in the console.</p>
+	<script>
+		var
+            paths,
+            modules = 'Base,behavior,dcl,Evented,mouse,observable,on,parser/main,Store,Widget';
+        modules = modules.split(',');
+        paths = modules.map(function(m){ return 'core/' + m; });
+
+        require(paths, function() {
+            var args = arguments;
+            modules.forEach(function(m, i){
+                window[m] = args[i];
+            });
+
+		});
+</script>
+</body>
+</html>

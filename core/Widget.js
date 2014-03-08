@@ -46,7 +46,8 @@ define([
 				// attempting to parse a widget's properties
 				// might need a parsed attr, to skip widgets and
 				// just check attrs and bindings
-				// 
+				//
+               // this.node.setAttribute('parsed', true);
 				parser.parse(this.node, this);
 			}
 			

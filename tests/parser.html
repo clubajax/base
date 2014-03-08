@@ -40,7 +40,7 @@
 <body>
 	<h1>parser test</h1>
 	<div data-widget="MyWidget"></div>
-	<div data-widget="WidgetWithSub"></div>
+	<div data-widget="WidgetWithSub" data-props='titleText:Prop Title,otherText:Prop 2'></div>
 	<div id='widget03'></div>
 	<script>
 		require([
@@ -67,16 +67,18 @@
 			//var m = new MyWidget({}, 'widget02')
 		
 			WidgetWithSub = dcl(Widget, {
-				declaredClass:'MyWidget',
-				template:'<div class="WidgetWithSub"><h3>Parent Widget</h3><div class="MyWidget" data-widget="MyWidget">did not render<div></div>',
+				declaredClass:'WidgetWithSub',
+                otherText:'other text.',
+                titleText:'title text.',
+				template:'<div class="WidgetWithSub"><h3>Parent Widget / {{titleText}} / {{otherText}}</h3><div class="MyWidget" data-widget="MyWidget">did not render<div></div>',
 				constructor: function(options, node){
-					console.log('MyWidget!', node);
+					console.log(' - Parsed ParentWidget! -');
 				},
 				postRender: function(){
 					console.log('postRender', this.node);
 				}
 			});
-			registry.addClass('WidgetWithSub', WidgetWithSub);
+			//registry.addClass('WidgetWithSub', WidgetWithSub);
 			//var wws = new WidgetWithSub({}, 'widget03');
 			parser.parse();
 		});
