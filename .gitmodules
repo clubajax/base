@@ -1,3 +1,6 @@
 [submodule "dcl"]
 	path = dcl
 	url = https://github.com/uhop/dcl.git
+[submodule "rtests/HeadlessBrowser"]
+	path = rtests/HeadlessBrowser
+	url = git@github.com:clubajax/HeadlessBrowser.git

@@ -1,5 +1,5 @@
 define([
-	'dcl/dcl',
+	'./dcl',
 	'./on',
 	'./Evented',
 	'./observable'

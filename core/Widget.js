@@ -1,15 +1,12 @@
 define([
-	'dcl/dcl',
+	'./dcl',
 	'./lang',
 	'./dom',
 	'./registry',
 	'./Base',
-	'./parser',
-	'./parser-reference',
-	'./parser-observable',
-	'./parser-attributes'
+	'./parser/main'
 ], function(dcl, lang, dom, registry, Base, parser){
-	
+	console.log('PARSER', parser);
 	var Widget = dcl(Base, {
 		declaredClass:'Widget',
 		template:'<div>NO TEMPLATE</div>',
@@ -36,12 +33,23 @@ define([
 			//console.log('render!', node);
 			node = typeof node === 'string' ? document.getElementById(node) : node;
 			
-			this.node = dom(this.template.replace(/\{\{\w*\}\}/g, function(word){
-				word = word.substring(2, word.length-2);
-				return this[word];
-			}.bind(this)));
-			parser.parse(this.node, this);
+			if(typeof this.template === 'object'){
+				this.node = dom(this.template.nodeName, this.template);
+			}else{
+				console.log('this.template', this.template);
+				this.node = dom(this.template.replace(/\{\{\w*\}\}/g, function(word){
+					word = word.substring(2, word.length-2);
+					return this[word];
+				}.bind(this)));
 				
+				// causes a recursion in parser test
+				// attempting to parse a widget's properties
+				// might need a parsed attr, to skip widgets and
+				// just check attrs and bindings
+				// 
+				parser.parse(this.node, this);
+			}
+			
 				
 			if(node){
 				// associated with a dom node to replace

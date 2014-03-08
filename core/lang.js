@@ -54,6 +54,29 @@ define([], function(){
 			
 		},
 		
+		mixProps: function(){
+			// only mixes in defined props
+			// TODO: DRY this up with mix();
+			var
+				i, key,
+				args = Array.prototype.slice.call(arguments),
+				mixTo = args.shift(),
+				mixFrom;
+			
+			for(i = 0; i < args.length; i++){
+				mixFrom = args[i];
+				for(key in mixFrom){
+					if(mixFrom.hasOwnProperty(key)){
+						if(mixTo[key] !== undefined){
+							mixTo[key] = mixFrom[key];
+						}
+					}
+				}
+			}
+			return mixTo;
+			
+		},
+		
 		clone: function(){
 			
 		},

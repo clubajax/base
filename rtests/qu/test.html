@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Test QU</title>
+	<script src='./log.js'></script>
+	<script src="../require.js"></script>
+	<script>
+		require.config({
+			baseUrl: ".",
+			packages: [
+				{
+					name: "qu",
+					location: "."
+				}
+			]
+		});
+	</script>
+</head>
+<body>
+    <h1>Test QU</h1>
+	<script>
+		require(['qu', './testTests'], function( qu, testTests ){
+			qu.run();
+		});
+	</script>
+</body>
+</html>

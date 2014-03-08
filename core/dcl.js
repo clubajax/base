@@ -17,7 +17,7 @@ define([
 					declaredClass = childClass.parentClasses[i];
 				}	
 			}
-		}else if(typeof parentClasses === 'object'){
+		}else if(parentClasses && typeof parentClasses === 'object'){
 			if(parentClasses.declaredClass){
 				declaredClass = childClass.parentClasses;
 			}	

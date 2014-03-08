@@ -1,7 +1,7 @@
 define([
 	'./parser',
-	'./registry',
-	'./on'
+	'../registry',
+	'../on'
 ], function(parser, registry, on){
 	
 	var

@@ -52,7 +52,7 @@ define([
 	}
 	
 	parser.plugin(function(attributes, propObject){
-		if(attributes instanceof window.NamedNodeMap){
+		if(typeof attributes === 'object' && attributes instanceof window.NamedNodeMap){
 			attsToObject(attributes, propObject);
 		}
 	});
