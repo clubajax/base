@@ -63,14 +63,14 @@ define([
 			return props;
 		}
 		
-		function walkDom(parentNode, ATTR, nodes){
+		function walkDom(parentNode, ATTR, nodes, widgetHasBeenParsed){
 			// walks a dom tree from a certain point, and
 			// returns an array of nodes that contain a certain
 			// attribute
 			//
 			nodes = nodes || [];
 			
-			if(parentNode.getAttribute(ATTR)){
+			if(!widgetHasBeenParsed && parentNode.getAttribute(ATTR)){
 				nodes.push(parentNode);
 			}
 			
@@ -78,8 +78,10 @@ define([
 			while(node){
 				if(node.nodeType === 1){
 					//log('----node', node, node.getAttribute(WIDGET_ATTR), WIDGET_ATTR);
-					//console.log('parse node', node.getAttribute(ATTR));
+					//console.log('parse node', node.getAttribute(ATTR), 'parsed:', node.getAttribute('parsed'));
 					if(node.getAttribute(ATTR)){
+                        console.log('widget node:', node);
+                        node.setAttribute('parsed', true);
 						nodes.push(node);
 						//
 						// stop searching child nodes if we hit a widget to parse
@@ -95,9 +97,11 @@ define([
 		}
 		
 		function parse(parentNode, context){
+            console.log(' * parse');
+
 			count++;
 			
-			if(count > 30){
+			if(count > 100){
 				throw new Error('TOO MUCH RECURSION');
 			}
 			var
@@ -108,11 +112,11 @@ define([
 				widget,
 				widgets = [],
 				widgetNodes,
+                widgetHasBeenParsed,
 				dent = count+'  ';
 			
 			if(Array.isArray(parentNode)){
 				for(i = 0; i < parentNode.length; i++){
-					console.log('UNARRAY', parentNode[i]);
 					parse(parentNode[i], context);
 				}
 				return null;
@@ -120,9 +124,11 @@ define([
 			
 			log(dent, 'parse');
 			
+            widgetHasBeenParsed = parentNode && parentNode.getAttribute('parsed');
+            
 			parentNode = parentNode || document.body;
 			
-			widgetNodes = walkDom(parentNode, WIDGET_ATTR);
+			widgetNodes = walkDom(parentNode, WIDGET_ATTR, null, widgetHasBeenParsed);
 			
 			log(dent, 'parse complete, widgetNodes:', widgetNodes.length);
 			
@@ -131,16 +137,20 @@ define([
 				props = {};
 				attsToObject(node.attributes);
 				handlePlugins('attributes', node.attributes, props);
-				log('    props', props );
-				type = props[WIDGET_ATTR].replace(/\//g, '.');
-				Ctor = registry.getClass(type);
-				if(!Ctor){
-					console.error('cannot find Ctor:', type);
-					return;
-				}
-				log('make widget', type);
-				widget = new Ctor(props, node);
-				widgets.push(widget);
+                //if(!widgetHasBeenParsed){
+                    log('    props', props );
+                    type = props[WIDGET_ATTR].replace(/\//g, '.');
+                    Ctor = registry.getClass(type);
+                    if(!Ctor){
+                        console.error('cannot find Ctor:', type);
+                        return;
+                    }
+                    log('make widget', type);
+                    widget = new Ctor(props, node);
+                    widgets.push(widget);
+                //}else{
+                //    console.log('..........already parsed', node);
+                //}
 			});
 			
 			handlePlugins('node', parentNode, context);

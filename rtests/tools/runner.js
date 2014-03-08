@@ -18,24 +18,26 @@ var
 	pass = 0,
 	fail = 0,
 	errors = 0,
+    suitesSuccess = 0,
+    suitesFail = 0,
 	testsDivider = '========================================================================',
 	currentSuiteName = '',
 	currentTestName = '',
 	suiteDivider = '------------------------------------------------------------------------',
 	defaultTests = [
 		'observable',
-		'example',
+        'dom'/*
 		'example-syntax-error',
-		'example-path-error'				
+		'example-path-error'*/
 	],
 	options = {
 		assert: function(exp, msg){
 			if(exp){
 				pass++;
-				//console.log('Ã:', currentTestName);
+				console.log('PASS:', msg ||currentTestName);
 			}else{
 				fail++;
-				console.log('*FAIL*:', currentTestName);
+				console.log('*FAIL*:', msg || currentTestName);
 			}
 		}	
 	};
@@ -48,8 +50,9 @@ function argsToPaths(){
 	}
 	
 	for(i = 0; i < args.length; i++){
-		args[i] = 'test/'+args[i];
+		args[i] = 'base/rtests/'+args[i];
 	}
+    console.log('ARGS', args);
 	return args;
 }
 
@@ -63,7 +66,9 @@ function testEnd(){
 	// total and assertions may not match if multiple assertions in a test
 	// 
 	console.log('\n\n'+testsDivider+'\n\n'+total+' tests complete');
-	console.log('    pass:', pass);
+	console.log('    suites loaded:', suitesSuccess);
+	console.log('    suites load fail:', suitesFail);
+    console.log('    pass:', pass);
 	console.log('    fail:', fail);
 	console.log('\n'+testsDivider);
 }
@@ -118,6 +123,9 @@ function loadTestSuite(suite){
 }
 
 function loadTests(){
+
+    requirejs('base/rtests/HeadlessBrowser/browser');
+
 	var
 		path,
 		suite,
@@ -125,8 +133,21 @@ function loadTests(){
 		
 	while(args.length){
 		path = args.shift();
-		suite = requirejs(path);
-		loadTestSuite(suite);
+        console.log('\nPATH', path);
+        try{
+            suite = requirejs(path);
+        }catch(e){
+            console.log('----------E:', e);
+            suitesFail++;
+            continue;
+        }
+        if(suite){
+            //console.log('suite', suite);
+            suitesSuccess++;
+            loadTestSuite(suite);
+        }else{
+            console.log('NOT FOUND:', path);
+        }
 	}
 	runTests();
 }

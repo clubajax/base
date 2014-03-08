@@ -138,13 +138,13 @@ define([
 	}
 
 	function box(node){
-		if(node === window){
+		// get node (or window) dimensions
+        if(node === window){
 			return {
 				width: node.innerWidth,
 				height: node.innerHeight
 			};
 		}
-		// get node dimensions
 		return getNode(node).getBoundingClientRect();
 	}
 	

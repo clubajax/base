@@ -36,14 +36,14 @@ define([
 		},
 		
 		child: function(){
-	            var tree = new Evented();
-	            tree.parent = this;
-	            this.children[tree.id] = {
-	                tree: tree
-	                // handle
-	            };
-	            return tree;
-	        },
+            var tree = new Evented();
+            tree.parent = this;
+            this.children[tree.id] = {
+                tree: tree
+                // handle
+            };
+            return tree;
+        },
 		
 		// this.on(node, 'click', 'doFoo', this)
 		
