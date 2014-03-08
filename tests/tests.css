@@ -184,7 +184,7 @@ body{
 }
 .test-form .row{
 	position: relative;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 .test-form label{
 	display: inline-block;
