@@ -11,8 +11,11 @@ define([
 		declaredClass:'Widget',
 		template:'<div>NO TEMPLATE</div>',
 		constructor: dcl.after(function(args){
-			
+			console.log('WIDGET!', this.declaredClass);
 			this.children = [];
+			
+			this.id = args[0] && args[0].id ? args[0].id : dom.uid(this.declaredClass.toLowerCase());
+			console.log('ID', this.id);
 			
 			if(this.preRender){
 				this.preRender();
@@ -32,6 +35,11 @@ define([
 				appendedNodes = [],
 				attrObject;
 			
+			if(this.nodeIsReference){
+				// nodeIsReference means the node is not going to be a parent
+				node = null;
+			}
+			
 			//console.log('render!', node);
 			node = typeof node === 'string' ? document.getElementById(node) : node;
 			
@@ -39,7 +47,7 @@ define([
 				this.node = dom(this.template.nodeName, this.template);
 			}else{
 				//console.log('this.template', this.template);
-				this.node = dom(this.template.replace(/\{\{\w*\}\}/g, function(word){
+				this.node = dom(this.template.replace(/\{\{[\w\s]*\}\}/g, function(word){
 					word = word.substring(2, word.length-2);
 					return this[word];
 				}.bind(this)));

@@ -21,6 +21,7 @@ define([
 					console.error('parser: Method "'+method+'" missing from widget:', context);
 				}
 				if(object instanceof window.Node){
+					console.log('CONNECT!');
 					context.own(context.on(object, event, context[method], context));
 				}else{
 					context.own(object.on(event, context[method], context));
@@ -43,9 +44,10 @@ define([
 			widgetId,
 			nodes = walkDom(parentNode, REF_ATTR);
 		
-		if(parentNode.getAttribute(REF_ATTR)){
+		if(parentNode.getAttribute(REF_ATTR) && !nodes.some(function(n){ return n === parentNode})){
 			nodes.push(parentNode);
 		}
+		
 		for(i = 0; i < nodes.length; i++){
 			propName = nodes[i].getAttribute(REF_ATTR);
 			widgetId = nodes[i].getAttribute(WIDGET_ID_ATTR);

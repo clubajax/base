@@ -90,6 +90,7 @@ define(['./has'], function(has){
 			};
 		},
 		bind = function(ctx, callback){
+			console.log('---------------bind');
 			// binds a function to a context which can be passed
 			// around and used later
 			//      ctx:

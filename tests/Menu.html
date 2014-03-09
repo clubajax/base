@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Menu Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		body{
+			overflow: hidden;
+			padding: 10px;
+			background: #fff;
+		}
+		
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'core', location: '../core'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Menu Test</h1>
+	<p></p>
+	<div id='menu'></div>
+	<button id='show-menu'>show</button>
+	<script>
+		require([
+			'base/core/on',
+			'base/ui/common/Menu'
+		], function(on, Menu) {
+			
+			var
+				list = ['Texas', 'California', 'Oregon', 'Michigan', 'Florida'],
+				menu = new Menu({
+					list:list,
+					refNode:'dd'
+				});		
+				
+				menu.show();
+				
+			on('show-menu', 'click', function(){
+				menu.show();	
+			});
+			console.log('menu', menu);
+		});
+</script>
+</body>
+</html>
