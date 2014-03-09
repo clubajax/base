@@ -23,6 +23,8 @@ define([
 	}
 	
 	function makeDraggable(view){
+		return;
+		console.error('.base-view-header');
 		if(handle){
 			handle.remove();
 		}
@@ -48,9 +50,7 @@ define([
 	
 	
 	function setSelected(view){
-		if(view){
-			console.log('setSelected', view.id);
-		}
+		//if(view){ console.log('setSelected', view.id);}
 		var i;
 		for(i = 0; i < viewList.length; i++){
 			viewList[i].selected = false;
@@ -65,7 +65,6 @@ define([
 			selected.selected = true;
 		}
 	
-		console.log('selected', selected.index, selected.id);
 		return selected;
 	}
 	
@@ -185,7 +184,6 @@ define([
 			indexViews();
 			
 			view = setSelected(view);
-			console.log('view:', view.index, view.id, view);
 			setDisplayView(view);
 			if(!parent){
 				parent = view.node.parentNode;

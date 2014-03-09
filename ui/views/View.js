@@ -2,9 +2,10 @@ define([
 	'core/dcl',
 	'core/dom',
 	'core/parser/main',
+	'core/parser/parser-attributes',
 	'core/Widget',
 	'./manager'
-], function(dcl, dom, parser, Widget, manager){
+], function(dcl, dom, parser, dataAttr, Widget, manager){
 
 	return dcl(Widget, {
 		declaredClass:'View',
@@ -15,8 +16,9 @@ define([
 		containerClass:'base-view-container',
 		footerClass:'base-view-footer',
 		navButtonClass:'base-view-nav-button',
-		back:'',
 		
+		title:'',
+		back:'',
 		backText:'Back',
 		
 		
@@ -29,6 +31,8 @@ define([
 		headerContent:null,
 		content:null,
 		footerContent:null,
+		icon:null,
+		headerIcon:null,
 		
 		buttons:null,
 		
@@ -41,12 +45,12 @@ define([
 				this.containerNode.appendChild(this.content.node);
 			}else{
 				this.containerNode.innerHTML = this.content || '';
-				parser.parse(this.containerNode);
+				this.parseChildNodes(this.containerNode);
 			}
 			if(this.headerContent || this.back){
 				if(this.headerContent){
 					this.headerNode.innerHTML = this.headerContent;
-					parser.parse(this.headerNode);
+					this.parseChildNodes(this.headerNode);
 				}
 				if(this.back){
 					this.backNode = dom('div', {css:'base-view-back', html:'<span>'+this.backText+'</span>'});
@@ -54,12 +58,14 @@ define([
 					this.on(this.backNode, 'click', function(){
 						this.emit('navigate', this.back);
 					}, this);
+				}else if(this.headerIcon){
+					dom('div', {css:this.headerIcon}, this.headerNode);
 				}
 				this.node.classList.add('hasHeader');
 			}
 			if(this.footerContent){
 				this.footerNode.innerHTML = this.footerContent;
-				parser.parse(this.footerNode);
+				this.parseChildNodes(this.footerNode);
 				this.node.classList.add('hasFooter');
 			}
 			
@@ -69,30 +75,30 @@ define([
 				this.insertNavButtons(this.buttons);
 			}
 			
-			
+			// Note, children are not available here
 		},
 		
 		postRender: function(){
-			console.log('VIEW.parsedChildNodes', this.parsedChildNodes);
 			if(this.parsedChildNodes){
 				this.linkChildren();
 			}
 		},
 		
-		insertNavButton: function(viewId, label){
-			var btn = dom('button', {html:label, css:this.navButtonClass}, this.containerNode);
+		insertNavButton: function(child){
+			var
+				css = this.navButtonClass + (child.icon ? ' icon ' + child.icon : ''),
+				btn = dom('button', {html:child.title, css:css}, this.containerNode);
 			this.on(btn, 'click', function(){
-				manager.select(viewId);
+				manager.select(child.id);
 			}, this);
 		},
 		
 		linkChildren: function(){
-			var i, id, title, doParse = 0;
+			var i, doParse = 0, child;
 			for(i = 0; i < this.parsedChildNodes.length; i++){
 				if(dom.attr(this.parsedChildNodes[i], 'data-widget') === this.declaredClass){
-					id = dom.attr(this.parsedChildNodes[i], 'id');
-					title = dom.attr(this.parsedChildNodes[i], 'title');
-					this.insertNavButton(id, title);
+					child = this.getChildbyNode(this.parsedChildNodes[i]);
+					this.insertNavButton(child);
 				}else{
 					this.containerNode.appendChild(this.parsedChildNodes[i]);
 					doParse = 1;
@@ -100,7 +106,7 @@ define([
 			}
 			
 			if(doParse){
-				parser.parse(this.containerNode);
+				this.parseChildNodes(this.containerNode);
 			}
 		},
 		

@@ -11,6 +11,7 @@ define([
 		popupClass:'base-autocomplete-popup',
 		listClass:'base-autocomplete-list',
 		containerClass:'base-autocomplete-container',
+		inputWrapperClass:'base-autocomplete-inputwrap',
 		inputClass:'base-autocomplete-input base-field',
 		buttonClass:'base-autocomplete-done',
 		
@@ -131,7 +132,7 @@ define([
 			console.log('QUERY', this.inputNode.value);
 			
 			var
-				value,
+				//value,
 				words,
 				query = {};
 			
@@ -203,7 +204,8 @@ define([
 		
 		buildInput: function(){
 			this.containerNode = dom('div', {css:this.containerClass}, document.body);
-			this.inputNode = dom('input', {css:this.inputClass, attr:{placeholder:this.placeholder}}, this.containerNode);
+			this.inputWrap = dom('div', {css:this.inputWrapperClass}, this.containerNode);
+			this.inputNode = dom('input', {css:this.inputClass, attr:{placeholder:this.placeholder}}, this.inputWrap);
 			this.doneBtn = dom('button', {css:this.buttonClass, html:this.doneText}, this.containerNode);
 			this.on(this.inputNode, 'keydown', this.onKey, this);
 			this.on(this.doneBtn, 'click', function(){

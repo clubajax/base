@@ -108,7 +108,7 @@ define([
 		// get/set node attribute(s)
 		//      prop: string or object
 		//
-		var key, i, attribute, attrs, attsObject;
+		var key, i, attribute, attrs, attsObject, dataValue;
 		if(typeof prop === 'object'){
 			for(key in prop){
 				if(prop.hasOwnProperty(key)){
@@ -131,6 +131,10 @@ define([
 				attsObject[attribute.nodeName] = attribute.nodeValue;
 			}
 			return attsObject;
+		}
+		
+		if(prop.indexOf('data-') > -1){
+			dataValue = node.getAttribute(prop);
 		}
 		
 		// get single attribute

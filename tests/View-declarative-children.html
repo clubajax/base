@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>View Declarative Child Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		body{
+			overflow: hidden;
+		}
+		.btns{
+			position: fixed;
+			top:40px;
+			right: 20px;
+			width: 60px;
+			z-index: 100;
+		}
+		.btns button{
+			width: 70px;
+		}
+		
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '',
+			packages: [
+				{name: 'base', location: '../'},
+				{name: 'core', location: '../core'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body style='display: none;'>
+	<div id='views'>
+		<div id='home' data-widget='View' data-props='headerContent:Home'>
+			<div id='search' title='Search' data-widget='View' data-props='headerContent:Search,back:home,icon:iconsearch'>
+				Child
+			</div>
+		</div>
+	</div>
+	<script>
+		require([
+			'core/parser/main',
+			'core/dom',
+			'core/on',
+			'base/ui/views/View',
+			'base/ui/views/manager',
+			'core/xhr',
+			'ui/grid/Grid'
+		], function(parser, dom, on, View, mgr, xhr, Grid) {
+			// View needs to be preloaded to work
+			parser.parse();
+			dom.style(document.body, 'display', '');
+			
+		});
+</script>
+</body>
+</html>

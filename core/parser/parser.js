@@ -8,6 +8,7 @@ define([
 		WIDGET_ATTR = 'data-widget',
 		PROP_ATTR = 'data-props',
 		plugins = [],
+		spaces = '                                                                                   ', 
 		count = 0;
 		
 		function plugin(plug){
@@ -80,7 +81,7 @@ define([
 					//log('----node', node, node.getAttribute(WIDGET_ATTR), WIDGET_ATTR);
 					//console.log('parse node', node.getAttribute(ATTR), 'parsed:', node.getAttribute('parsed'));
 					if(node.getAttribute(ATTR)){
-                        console.log('widget node:', node);
+                        //console.log('widget node:', node);
                         node.setAttribute('parsed', true);
 						nodes.push(node);
 						//
@@ -97,7 +98,7 @@ define([
 		}
 		
 		function parse(parentNode, context){
-            console.log(' * parse');
+            //console.log(' * parse');
 
 			count++;
 			
@@ -113,13 +114,13 @@ define([
 				widgets = [],
 				widgetNodes,
                 widgetHasBeenParsed,
-				dent = count+'  ';
+				dent = spaces.substring(0, count);
 			
 			if(Array.isArray(parentNode)){
 				for(i = 0; i < parentNode.length; i++){
-					parse(parentNode[i], context);
+					widgets = widgets.concat(parse(parentNode[i], context));
 				}
-				return null;
+				return widgets;
 			}
 			
 			log(dent, 'parse');
@@ -138,14 +139,14 @@ define([
 				attsToObject(node.attributes);
 				handlePlugins('attributes', node.attributes, props);
                 //if(!widgetHasBeenParsed){
-                    log('    props', props );
+                    log(dent, 'props', props );
                     type = props[WIDGET_ATTR].replace(/\//g, '.');
                     Ctor = registry.getClass(type);
                     if(!Ctor){
                         console.error('cannot find Ctor:', type);
                         return;
                     }
-                    log('make widget', type);
+                    log(dent, 'make widget', type);
                     widget = new Ctor(props, node);
                     widgets.push(widget);
                 //}else{
@@ -154,7 +155,8 @@ define([
 			});
 			
 			handlePlugins('node', parentNode, context);
-			
+			//log(dent, 'widgets', widgets);
+			//if(widgets.length){ console.log('widgets', widgets); }
 			return widgets;
 		}
 	

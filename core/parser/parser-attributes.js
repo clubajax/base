@@ -7,8 +7,8 @@ define([
 		
 	
 	function assignProps(object, propObject){
-		//	currently only supports flat objects
-		//	deeper nesting could be done with:
+		//	currently only supports JSON or flat objects
+		//	deeper nesting should be done with:
 		//		JSON.parse('{' + propObject + '}');
 		
 		//console.log('PROPS:::', JSON.parse(json));
@@ -38,7 +38,7 @@ define([
 		
 	}
 	
-	function attsToObject(atts, props){
+	function addAttsToObject(atts, props){
 		var i, a;
 		for(i = 0; i < atts.length; i++){
 			a = atts[i];
@@ -51,10 +51,16 @@ define([
 		return props;
 	}
 	
+	function attsToObject(node){
+		return addAttsToObject(node.attributes, {});
+	}
+	
 	parser.plugin(function(attributes, propObject){
 		if(typeof attributes === 'object' && attributes instanceof window.NamedNodeMap){
-			attsToObject(attributes, propObject);
+			addAttsToObject(attributes, propObject);
 		}
 	});
+	
+	return attsToObject;
 
 });

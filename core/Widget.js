@@ -6,11 +6,13 @@ define([
 	'./Base',
 	'./parser/main'
 ], function(dcl, lang, dom, registry, Base, parser){
-	console.log('PARSER', parser);
+	
 	var Widget = dcl(Base, {
 		declaredClass:'Widget',
 		template:'<div>NO TEMPLATE</div>',
 		constructor: dcl.after(function(args){
+			
+			this.children = [];
 			
 			if(this.preRender){
 				this.preRender();
@@ -36,7 +38,7 @@ define([
 			if(typeof this.template === 'object'){
 				this.node = dom(this.template.nodeName, this.template);
 			}else{
-				console.log('this.template', this.template);
+				//console.log('this.template', this.template);
 				this.node = dom(this.template.replace(/\{\{\w*\}\}/g, function(word){
 					word = word.substring(2, word.length-2);
 					return this[word];
@@ -48,7 +50,7 @@ define([
 				// just check attrs and bindings
 				//
                // this.node.setAttribute('parsed', true);
-				parser.parse(this.node, this);
+				this.parseChildNodes(this.node, this);
 			}
 			
 				
@@ -75,7 +77,7 @@ define([
 							appendedNodes.push(childNode);
 						}else{
 							childrenNode.appendChild(childNode);
-							parser.parse(childNode);
+							this.parseChildNodes(childNode);
 						}
 					}else{
 						// to keep the while() moving
@@ -94,9 +96,8 @@ define([
 				}
 				
 				if(appendedNodes.length){
-					parser.parse(appendedNodes);
+					this.parseChildNodes(appendedNodes);
 					this.parsedChildNodes = appendedNodes;
-					console.log('this.parsedChildNodes', this.parsedChildNodes);
 				}
 			}else if(this.postCreate){
 				this.postCreate();
@@ -108,6 +109,26 @@ define([
 			// noop after creation
 			this.renderWidget = function(){};
 		
+		},
+		
+		getChildbyNode: function(node){
+			var i;
+			if(node && node.id && registry.getWidget(node.id)){
+				return registry.getWidget(node.id);
+			}
+			for(i = 0; i < this.children.length; i++){
+				if(this.children[i].node === node){
+					return this.children[i];
+				}
+			}
+			
+			return null;
+		},
+		
+		parseChildNodes: function(nodes, context){
+			var widgets = parser.parse(nodes, context);
+			this.children = this.children.concat(widgets);
+			return widgets;
 		}
 	});
 	
