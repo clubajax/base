@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Drop Down Select Declarative Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='./tests.css' rel='stylesheet' />
+	<style>
+		body{
+			overflow: hidden;
+			padding: 10px;
+			background: #fff;
+		}
+		
+	</style>
+	<script>
+		window.dojoConfig = {
+			async: true,
+			baseUrl: '../',
+			packages: [
+				{name: 'base', location: '.'},
+				{name: 'core', location: './core'}
+			]
+		};
+</script>
+	<script  src = "../../../dojo/dojo.js"></script>
+</head>
+<body>
+	<h1>Drop Down Select Declarative Test</h1>
+	<p></p>
+	<select data-widget='DropDown'>
+		<option value='florida'>Florida</option>
+		<option value='michigan'>Michigan</option>
+		<option value='texas'>Texas</option>
+		<option value='california'>California</option>
+		<option value='Maine'>maine</option>
+	</div>
+	<script>
+		require([
+			//'base/core/registry',
+			'base/ui/form/DropDown',
+			'base/core/parser/main'
+		], function(DropDown, parser) {
+			parser.parse();
+		});
+</script>
+</body>
+</html>

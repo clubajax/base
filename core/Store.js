@@ -1,5 +1,5 @@
 define([
-	'dcl/dcl',
+	'./dcl',
 	'./Base',
 	'./lang',
 	'./xhr',
