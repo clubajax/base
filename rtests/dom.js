@@ -1,5 +1,5 @@
 define([
-	'core/dom'
+	'base/core/dom'
 ], function(dom){
 
     return {

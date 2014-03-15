@@ -31,7 +31,7 @@
             paths,
             modules = 'Base,behavior,dcl,Evented,mouse,observable,on,parser/main,Store,Widget';
         modules = modules.split(',');
-        paths = modules.map(function(m){ return 'core/' + m; });
+        paths = modules.map(function(m){ return 'base/core/' + m; });
 
         require(paths, function() {
             var args = arguments;

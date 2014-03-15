@@ -1,5 +1,5 @@
 define([
-	'core/observable'
+	'base/core/observable'
 ], function(observable) {
 	
     return {

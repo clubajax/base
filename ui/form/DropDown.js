@@ -1,7 +1,7 @@
 define([
-	'core/dcl',
-	'core/dom',
-	'core/Widget',
+	'base/core/dcl',
+	'base/core/dom',
+	'base/core/Widget',
 	'../common/Menu'
 ], function(dcl, dom, Widget, Menu){
 	

@@ -1,7 +1,7 @@
 define([
 	'test/domShim',
-	'core/dom',
-	'core/parser/parser'
+	'base/core/dom',
+	'base/core/parser/parser'
 ], function(shim, dom, parser){
 	var
 	

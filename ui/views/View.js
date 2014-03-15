@@ -1,9 +1,9 @@
 define([
-	'core/dcl',
-	'core/dom',
-	'core/parser/main',
-	'core/parser/parser-attributes',
-	'core/Widget',
+	'base/core/dcl',
+	'base/core/dom',
+	'base/core/parser/main',
+	'base/core/parser/parser-attributes',
+	'base/core/Widget',
 	'./manager'
 ], function(dcl, dom, parser, dataAttr, Widget, manager){
 

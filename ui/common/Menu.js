@@ -1,7 +1,7 @@
 define([
-	'core/dcl',
-	'core/dom',
-	'core/Widget'
+	'base/core/dcl',
+	'base/core/dom',
+	'base/core/Widget'
 ], function(dcl, dom, Widget){
 	
 	// https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement

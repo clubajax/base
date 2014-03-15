@@ -1,7 +1,7 @@
 define([
 	'test/domShim',
-	'core/dom',
-	'core/Widget'
+	'base/core/dom',
+	'base/core/Widget'
 ], function(shim, dom, Widget){
 	var
 	
