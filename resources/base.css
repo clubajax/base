@@ -375,3 +375,190 @@ input.base-field{
 	background: #1C2E7F;
 	color: #fff;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.off{
+	display: none;
+}
+.ChildWidget{
+	border: 1px solid #ccc;
+	background: #eee;
+	padding: 3px;
+}
+.ParentWidget{
+	border: 1px solid #FFAFAF;
+	background: #FCFFCE;
+	padding: 3px;
+	margin: 10px 0;
+}
+.ParentWidget h3{
+	background: #494E9B;
+	color: #fff;
+	padding: 3px;
+	margin: 3px 0;
+}
+.footer{
+	background: #ff0000;
+	color: #fff;
+	padding: 3px;
+	margin-top: 5px;
+}
+.basic{
+	font-size: 12px;
+}
+.big{
+	font-size: 18px;
+}
+.small{
+	font-size: 9px;
+}
+
+.base-list-row{
+	padding: 3px;
+}
+.base-list-header{
+	background: #eee;
+	padding: 3px;
+}
+.base-list-row:nth-child(even){
+	background: #eee;
+}
+.base-list-row.selected,
+.base-list-row.selected:nth-child(even){
+	background: #C6EFF4;
+}
+
+.base-list-pair{
+	display: inline-block;
+}
+.base-list-label{
+	display: inline-block;
+	color: #999;
+	margin-right: 3px;
+}
+.base-list-text{
+	display: inline-block;
+	color: #333;
+	margin-right: 6px;
+}
+
+.base-grid{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+.base-grid-row:nth-child(even){
+	background: #eee;
+}
+.base-grid-row.selected,
+.base-grid-row.selected:nth-child(even){
+	background: #C6EFF4;
+}
+
+.base-grid-container{
+	height: auto;
+	width: auto;
+	position: absolute;
+	top:25px;
+	left:0;
+	right: 0;
+	bottom: 0;
+	overflow-y: auto;
+	overflow-x: auto;
+}
+.base-grid-header{
+	overflow: hidden;
+}
+.base-grid table{
+	border-collapse: collapse;
+}
+.base-grid th{
+	text-align: left;
+	background: #eee;
+	padding: 3px;
+	font-weight: normal;
+	border: 1px solid #ccc;
+	border-bottom-width: 0;
+}
+.base-grid td{
+	padding: 3px;
+	border: 1px solid #ccc;
+}
+
+
+
+.base-view.dev{
+	border: 1px solid #ccc;
+	background: #F3F4D2;
+	/*top:5px;
+	left:5px;
+	right:5px;
+	bottom: 5px;
+	padding: 10px;*/
+}
+.dev.devblue{
+	background: #C2C7ED;
+}
+.dev.devred{
+	background: #F2C9C9;
+}
+.dev.devgreen{
+	background: #D3F2D0;
+}
+
+
+.base-pane.home button{
+	display: block;
+	width: 100%;
+	margin: 10px 0;
+	border: 3px solid #999;
+	background: #fff;
+	border-radius: 8px;
+	box-sizing: border-box;
+	position: relative;
+	font-size: 18px;
+	text-align: left;
+	padding-left: 10px;
+	height: 50px;
+	line-height: 24px;
+	cursor: pointer;
+	font-weight: bold;
+	color: #333;
+}
+.base-pane.home button:hover{
+	background: #0000ff;
+	color: #fff;
+}
+.base-pane.home button:hover:after{
+	border-color: #fff;
+}
+.base-pane.home button:after{
+	content:'';
+	display: block;
+	width: 10px;
+	height: 10px;
+	border-width: 3px 3px 0px 0px;
+	border-style: solid;
+	border-color: #666;
+	position: absolute;
+	right: 10px;
+	top:50%;
+	margin-top: -7px;
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}

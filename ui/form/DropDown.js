@@ -106,7 +106,6 @@ define([
 			this.options.push(item);
 			this.optionsMap[value] = item;
 			
-			
 			if(this.options.length - 1 === this.selectedIndex){
 				item.selected = true;
 				this.value = item.value;
