@@ -33,6 +33,7 @@ define([
 			this.options = this.options || [];
 			this.optionsMap = {};
 			this.optionsArray = options.list || options.options;
+			this.appendNode  = dom('div');
 			
 		},
 		
@@ -57,9 +58,27 @@ define([
 				this.node.innerHTML = item.text;
 			}, this);
 			
+			if(this.appendNode.children.length){
+				console.log('CHILLEN');
+				var
+					i = 0,
+					list = [];
+				for(i = 0; i < this.appendNode.children.length; i++){
+					list.push({
+						value: this.appendNode.children[i].getAttribute('value'),
+						text: this.appendNode.children[i].innerHTML,
+						selected: this.appendNode.children[i].getAttribute('selected')
+					});
+				}
+				this.add(list);
+				dom.destroy(this.appendNode);
+			}
 		},
 		
 		add: function(option){
+			if(!option){
+				return;
+			}
 			if(Array.isArray(option)){
 				option.forEach(function(o){ this.add(o); }, this);
 				return;
