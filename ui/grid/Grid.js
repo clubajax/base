@@ -1,7 +1,7 @@
 define([
-	'../../core/dcl',
-	'../../core/dom',
-	'../../core/has',
+	'base/core/dcl',
+	'base/core/dom',
+	'base/core/has',
 	'./List'
 ], function(dcl, dom, has, List){
 

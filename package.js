@@ -21,9 +21,9 @@ var profile = {
 		// are typically binaries (images, etc.) and may be corrupted by the build system if it attempts to process
 		// them and naively assumes they are scripts.
 		copyOnly: function (filename, mid) {
-			var cpy = /\.html/.test(filename) || (!/\.css/.test(filename) && /\/resources\//.test(filename));
+			var cpy = (/\.html/.test(filename) && !/test/.test(filename) ) || (!/\.css/.test(filename) && /\/resources\//.test(filename));
 			if(cpy){
-				console.log('   mobile copy:', filename);
+				console.log('   base copy:', filename);
 			}
 			return cpy;
 		},
@@ -34,7 +34,9 @@ var profile = {
 		amd: function (filename, mid, resource) {
 			var isAMD = /\.js/.test(filename) && !this.ignore(filename);
 			if(!isAMD){
-				//console.log('not amd:', filename);
+				//console.log(' --- not amd:', filename);
+			}else{
+				console.log(' > amd', filename);
 			}
 			return isAMD;
 		},
@@ -47,9 +49,9 @@ var profile = {
 		// In this case, we are excluding this package configuration file which is not necessary in a built copy of
 		// the application.
 		miniExclude: function (filename, mid) {
-			return mid in {
-				'app/package': 1
-			};
+			//return mid in {
+			//	'app/package': 1
+			//};
 		}
 	}
 };

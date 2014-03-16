@@ -1,17 +1,13 @@
 {
-	"name": "mobile",
+	"name": "base",
 	"version":"0.1",
 	"mappings": {},
-	"description": "Mobile library developed by Mike Wilcox for Observato Systems.",
+	"description": "Base library for mobile developed by Mike Wilcox for Observato Systems.",
 	"licenses": [
 
 	],
 	"keywords": ["data", "crud"],
-	"homepage": "http://www.realisedatasystems.com/",
-	"dependencies": {
-		"dojo": "1.8",
-		"dijit": "1.8",
-		"dojox": "1.8"
-	},
+	"homepage": "",
+	"dependencies": {},
 	"dojoBuild":"package.js"
 }

@@ -53,7 +53,6 @@ define([
 				paused,
 				handle,
 				id = lang.uid();
-				console.log('name', name);
 			if(name instanceof window.Node){
 				handle = on.apply(null, arguments);
 				// need to collect and destroy

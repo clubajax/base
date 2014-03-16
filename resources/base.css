@@ -144,8 +144,8 @@ button, .base-button{
 	font-size: 11px;
 	width: 36px;
 	height: 25px;
-	line-height: 23px;
-	padding: 0 5px;
+	line-height: 26px;
+	padding-left: 5px;
 	cursor: pointer;
 	color: #fff;
 	background: url(./mobile_icons.png) no-repeat -40px -60px;

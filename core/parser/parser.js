@@ -75,6 +75,13 @@ define([
 				nodes.push(parentNode);
 			}
 			
+			// I think if !widgetHasBeenParsed I should handle plugins instead
+			//
+			//
+			//
+			//
+			// 
+			
 			var node = parentNode.firstChild;
 			while(node){
 				if(node.nodeType === 1){

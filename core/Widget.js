@@ -11,11 +11,9 @@ define([
 		declaredClass:'Widget',
 		template:'<div>NO TEMPLATE</div>',
 		constructor: dcl.after(function(args){
-			console.log('WIDGET!', this.declaredClass);
 			this.children = [];
 			
 			this.id = args[0] && args[0].id ? args[0].id : dom.uid(this.declaredClass.toLowerCase());
-			console.log('ID', this.id);
 			
 			if(this.preRender){
 				this.preRender();

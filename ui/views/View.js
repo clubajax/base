@@ -94,9 +94,11 @@ define([
 		},
 		
 		linkChildren: function(){
-			var i, doParse = 0, child;
+			var i, doParse = 0, child, dc;
 			for(i = 0; i < this.parsedChildNodes.length; i++){
-				if(dom.attr(this.parsedChildNodes[i], 'data-widget') === this.declaredClass){
+				dc = dom.attr(this.parsedChildNodes[i], 'data-widget');
+				//console.log('View ATTR', dc);
+				if(dc === this.declaredClass || /View/.test(dc)){ // need a better test, like instanceOf of something
 					child = this.getChildbyNode(this.parsedChildNodes[i]);
 					this.insertNavButton(child);
 				}else{
