@@ -95,7 +95,7 @@ define([
 						// stop searching child nodes if we hit a widget to parse
 						// may not work for non-widget attrs
 						// 
-					}else if(node.childNodes.length){
+					}else if(node.children.length){
 						walkDom(node, ATTR, nodes);
 					}
 				}
@@ -105,7 +105,7 @@ define([
 		}
 		
 		function parse(parentNode, context){
-            //console.log(' * parse');
+            console.log(' * parse', count);
 
 			count++;
 			
@@ -120,7 +120,7 @@ define([
 				widget,
 				widgets = [],
 				widgetNodes,
-                widgetHasBeenParsed,
+				widgetHasBeenParsed,
 				dent = spaces.substring(0, count);
 			
 			if(Array.isArray(parentNode)){
@@ -132,7 +132,7 @@ define([
 			
 			log(dent, 'parse');
 			
-            widgetHasBeenParsed = parentNode && parentNode.getAttribute('parsed');
+			widgetHasBeenParsed = parentNode && parentNode.getAttribute('parsed');
             
 			parentNode = parentNode || document.body;
 			
@@ -145,20 +145,16 @@ define([
 				props = {};
 				attsToObject(node.attributes);
 				handlePlugins('attributes', node.attributes, props);
-                //if(!widgetHasBeenParsed){
-                    log(dent, 'props', props );
-                    type = props[WIDGET_ATTR].replace(/\//g, '.');
-                    Ctor = registry.getClass(type);
-                    if(!Ctor){
-                        console.error('cannot find Ctor:', type);
-                        return;
-                    }
-                    log(dent, 'make widget', type);
-                    widget = new Ctor(props, node);
-                    widgets.push(widget);
-                //}else{
-                //    console.log('..........already parsed', node);
-                //}
+					log(dent, 'props', props );
+					type = props[WIDGET_ATTR].replace(/\//g, '.');
+					Ctor = registry.getClass(type);
+					if(!Ctor){
+						console.error('cannot find Ctor:', type);
+						return;
+					}
+					log(dent, 'make widget', type);
+					widget = new Ctor(props, node);
+					widgets.push(widget);
 			});
 			
 			handlePlugins('node', parentNode, context);

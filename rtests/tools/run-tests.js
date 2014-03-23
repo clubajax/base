@@ -16,9 +16,7 @@ define([], function(){
 			suiteDivider = '------------------------------------------------------------------------',
 			defaultTests = [
 				'observable',
-				'dom'/*
-				'example-syntax-error',
-				'example-path-error'*/
+				'dom'
 			],
 			options = {
 				assert: function(exp, msg){
@@ -99,14 +97,16 @@ define([], function(){
 		}
 		
 		function argsToPaths(){
+			console.log('args to paths', args);
 			if(!args.length){
+				console.log('default tests loaded');
 				args = defaultTests;
 			}
 			
 			for(i = 0; i < args.length; i++){
 				args[i] = 'base/rtests/'+args[i];
 			}
-			console.log('ARGS', args);
+			console.log(' > ARGS', args);
 			return args;
 		}
 		
@@ -114,7 +114,7 @@ define([], function(){
 		
 			var
 				args = argsToPaths();
-				console.log('ARGS', args);
+			
 			requirejs(args, function(){
 				for(var i = 0; i < arguments.length; i++){
 					suitesSuccess++;

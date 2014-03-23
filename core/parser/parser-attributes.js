@@ -43,9 +43,9 @@ define([
 		for(i = 0; i < atts.length; i++){
 			a = atts[i];
 			if(a.localName === PROP_ATTR){
-				assignProps(props, a.value);
+				assignProps(props, a.localValue || a.value); // weird. Node vs Browser.
 			}else{
-				props[a.localName] = a.value;
+				props[a.localName] = a.localValue || a.value;
 			}
 		}
 		return props;
@@ -56,8 +56,15 @@ define([
 	}
 	
 	parser.plugin(function(attributes, propObject){
-		if(typeof attributes === 'object' && attributes instanceof window.NamedNodeMap){
-			addAttsToObject(attributes, propObject);
+		if(!!window.NamedNodeMap){
+			if(typeof attributes === 'object' && attributes instanceof window.NamedNodeMap){
+				addAttsToObject(attributes, propObject);
+			}
+		}else{
+			// for tests
+			if(Array.isArray(attributes)){
+				addAttsToObject(attributes, propObject);
+			}
 		}
 	});
 	

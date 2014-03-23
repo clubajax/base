@@ -38,8 +38,11 @@ define([
 				node = null;
 			}
 			
-			//console.log('render!', node);
-			node = typeof node === 'string' ? document.getElementById(node) : node;
+			if(typeof node === 'string' && document.getElementById(node)){
+				node = document.getElementById(node);
+			}else if(typeof node === 'string'){
+				console.warn('* node not found:', node);
+			}
 			
 			if(typeof this.template === 'object'){
 				this.node = dom(this.template.nodeName, this.template);

@@ -127,7 +127,7 @@ define([
 			attrs = node.attributes;
 			attsObject = {};
 			for (i = 0; i < attrs.length; i++){
-				attribute = attrs.item(i);
+				attribute = attrs[i];//attrs.item(i); // why was I doing it this way?
 				attsObject[attribute.nodeName] = attribute.nodeValue;
 			}
 			return attsObject;

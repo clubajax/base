@@ -16,8 +16,16 @@
 			},
 			waitSeconds: 3
 		});
+		
+		var tests = location.search;
+		if(tests){
+			tests = tests.replace('?', '').replace('tests=', '');
+			tests = tests.split(',').map(function(t){ return t.trim()});
+		}
+		console.log('tests:', tests);
+		
 		require(['require', './rtests/tools/run-tests'], function(requirejs, runTests){
-			runTests(requirejs, ['dom', 'Widget']);
+			runTests(requirejs, tests);
 		});
 	</script>
 </body>
