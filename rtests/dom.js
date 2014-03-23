@@ -34,25 +34,11 @@ define([
                     var
                         value = 'MyId',
                         node = dom('div', {attr:{id:value}});
-                    t.assert(node.id === value, 'node.id = ' + value);
+						//console.log('node', node);
+						t.assert(node.id === value, 'node.id = ' + value);
                     t.assert(node.getAttribute('id') === value, 'node.getAttribute(id) = ' + value);
                 }
 			},
         ]
     };
-
-	var testName = 'dom';
-	
-	return function(options){
-		options.begin(testName);
-		
-		var node = dom('div', {css:'test', html:'test', style:{color:'#fff'}, attr:{id:'test'}});
-		console.log('node:', node);
-		
-		console.log('get color', dom.style(node, 'color'));
-		console.log('get id', dom.attr(node, 'id'));
-		console.log('destroy:', dom.destroy(node));
-		
-		options.end(testName);
-	};
 });
