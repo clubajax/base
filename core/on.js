@@ -187,7 +187,7 @@ define(['./has'], function(has){
 				node = document.getElementById(str);
 			}
 			if(!node){
-				console.error('base/core/on Could not find:', str);
+				console.error('base/core/on Could not find node:', str);
 			}
 			return node;
 		},

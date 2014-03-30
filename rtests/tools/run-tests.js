@@ -64,11 +64,12 @@ define([], function(){
 		
 		function runTests(){
 			function runTest(testMethod){
-				setSuiteName(testMethod.suiteName);
-				setTitle(testMethod.title);
-				total++;
-				testMethod(options);
-				
+				if(!testMethod.skip){
+					setSuiteName(testMethod.suiteName);
+					setTitle(testMethod.title);
+					total++;
+					testMethod(options);
+				}
 				// Can test for ticks or async callback here
 				
 				if(tests.length){
@@ -92,6 +93,7 @@ define([], function(){
 				testMethod = suite.tests[i].run;
 				testMethod.suiteName = suiteName;
 				testMethod.title = suite.tests[i].title;
+				testMethod.skip = suite.tests[i].skip;
 				tests.push(testMethod);
 			}
 		}
@@ -104,7 +106,11 @@ define([], function(){
 			}
 			
 			for(i = 0; i < args.length; i++){
-				args[i] = 'base/rtests/'+args[i];
+				if(args[i] === 'browser'){
+					args[i] = 'base/rtests/HeadlessBrowser/test';
+				}else{
+					args[i] = 'base/rtests/'+args[i];
+				}
 			}
 			console.log(' > ARGS', args);
 			return args;

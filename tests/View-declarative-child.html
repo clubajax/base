@@ -22,17 +22,24 @@
 		}
 		
 	</style>
+	<script  src = "./tools/requirejs.js"></script>
 	<script>
-		window.dojoConfig = {
-			async: true,
-			baseUrl: '',
-			packages: [
-				{name: 'base', location: '../'},
-				{name: 'core', location: '../core'}
-			]
-		};
+		requirejs.config({
+			config: {
+				//Set the config for the i18n
+				//module ID
+				i18n: {
+					locale: 'ru'
+				}
+			},
+			baseUrl:'../',
+			paths:{
+				base:'.',
+				resources:'./resources'
+			}
+		});
 </script>
-	<script  src = "../../../dojo/dojo.js"></script>
+	
 </head>
 <body style='display: none;'>
 	<div id='views'>
@@ -72,6 +79,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<div id='rawData' title='Raw Data' data-widget='View' data-props='headerContent:Raw Data,back:home,icon:raw-data'>
 				<div class='test-form'>
 					<div class='row'>
@@ -86,8 +94,8 @@
 					<a href='javascript:void(0)'>Revisions</a>
 					<a href='javascript:void(0)'>Entities</a>
 				</div>
-				
 			</div>
+			
 			<div id='charts' title='Charts' data-widget='View' data-props='headerContent:Charts,back:home,icon:charts'>
 				<div class='test-form'>
 					<div class='row'>
@@ -121,9 +129,9 @@
 				</div>
 			</div>	
 		</div>
-		<div id='devGrid' title='Raw Data/Properties' data-widget='View' data-props='headerContent:Raw Data/Properties,back:rawData'>
+		<!--<div id='devGrid' title='Raw Data/Properties' data-widget='View' data-props='headerContent:Raw Data/Properties,back:rawData'>
 			<div id='grid'>A GRID GOES HERE</div>
-		</div>
+		</div>-->
 	</div>
 	<script>
 		require([
@@ -138,7 +146,7 @@
 			// View needs to be preloaded to work
 			parser.parse();
 			dom.style(document.body, 'display', '');
-			
+			return;
 			var grid, built = 0;
 			function buildGrid(){
 				if(built){
@@ -172,6 +180,9 @@
 					}	
 				});
 			}
+			
+			console.log('\n\nWHERE IS RAWDATA VIEW WIDGET???');
+			return
 			on('rawData', 'click a', function(e){
 				console.log('LINK', e);
 				buildGrid();

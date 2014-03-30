@@ -88,14 +88,14 @@ define([
 					//log('----node', node, node.getAttribute(WIDGET_ATTR), WIDGET_ATTR);
 					//console.log('parse node', node.getAttribute(ATTR), 'parsed:', node.getAttribute('parsed'));
 					if(node.getAttribute(ATTR)){
-                        //console.log('widget node:', node);
-                        node.setAttribute('parsed', true);
+						node.setAttribute('parsed', true);
 						nodes.push(node);
 						//
 						// stop searching child nodes if we hit a widget to parse
 						// may not work for non-widget attrs
 						// 
 					}else if(node.children.length){
+						//console.log('not widget', node);
 						walkDom(node, ATTR, nodes);
 					}
 				}
@@ -105,11 +105,12 @@ define([
 		}
 		
 		function parse(parentNode, context){
-            console.log(' * parse', count);
-
+			//console.log(' * parse', count);
+			//console.trace('');
 			count++;
 			
-			if(count > 100){
+			if(count > 50){
+				//console.trace('');
 				throw new Error('TOO MUCH RECURSION');
 			}
 			var
@@ -143,7 +144,7 @@ define([
 			widgetNodes.forEach(function(node){
 				//console.log('node.attributes', node.attributes, node.attributes instanceof window.NamedNodeMap );
 				props = {};
-				attsToObject(node.attributes);
+				//attsToObject(node.attributes);
 				handlePlugins('attributes', node.attributes, props);
 					log(dent, 'props', props );
 					type = props[WIDGET_ATTR].replace(/\//g, '.');

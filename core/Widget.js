@@ -31,7 +31,8 @@ define([
 				childNode,
 				childrenNode,
 				appendedNodes = [],
-				attrObject;
+				attrObject,
+				recursivelyParseChildNodes;
 			
 			if(this.nodeIsReference){
 				// nodeIsReference means the node is not going to be a parent
@@ -62,6 +63,38 @@ define([
 				this.parseChildNodes(this.node, this);
 			}
 			
+			recursivelyParseChildNodes = function(node){
+				if(node){
+					var
+						i,
+						childNode,
+						children = Array.prototype.slice.call(node.children);
+					
+					for(i = 0; i < children.length; i++){
+						childNode = children[i];
+						if(childNode.nodeType === 1){
+							if(this.appendNode){
+								this.appendNode.appendChild(childNode);
+								appendedNodes.push(childNode);
+							}else{
+								childrenNode.appendChild(childNode);
+								this.parseChildNodes(childNode);
+							}
+							// don't recurse! (despite this method name)
+							// we want the children to be parsed by their parents,
+							// not their grandparents
+							//if(childNode.children.length){
+							//	//recursivelyParseChildNodes(childNode);
+							//}
+							
+							// TODO!
+							//
+							// I think I want to recurse *if* the node is not a widget.
+							// else, it will never get to a nested widget
+						}
+					}
+				}
+			}.bind(this);
 				
 			if(node){
 				// associated with a dom node to replace
@@ -75,24 +108,36 @@ define([
 				
 				childrenNode = this.containerNode || this.container || this.node;
 				
-				while(node.firstChild){
-					// TODO: Include comments and white space?
-					// TODO: If frag just contains text, this may be used for
-					// things like button labels or input values
-					childNode = node.firstChild;
-					if(childNode.nodeType === 1){
-						if(this.appendNode){
-							this.appendNode.appendChild(childNode);
-							appendedNodes.push(childNode);
-						}else{
-							childrenNode.appendChild(childNode);
-							this.parseChildNodes(childNode);
-						}
-					}else{
-						// to keep the while() moving
-						node.removeChild(childNode);
-					}
-				}
+				childNode = node.firstChild;
+				
+				recursivelyParseChildNodes(node);
+				
+				//while(childNode){
+				//	
+				//	// TODO: Include comments and white space?
+				//	// TODO: If frag just contains text, this may be used for
+				//	// things like button labels or input values
+				//	
+				//	if(childNode.nodeType === 1){
+				//		if(this.appendNode){
+				//			this.appendNode.appendChild(childNode);
+				//			appendedNodes.push(childNode);
+				//		}else{
+				//			childrenNode.appendChild(childNode);
+				//			
+				//			console.log('    parse child');
+				//			//childNode.log();
+				//			
+				//			this.parseChildNodes(childNode);
+				//		}
+				//	}else{
+				//		console.log('remove');
+				//		// to keep the while() moving
+				//		node.removeChild(childNode);
+				//	}
+				//	
+				//	childNode = childNode.firstChild;
+				//}
 				
 				dom.attr(this.node, attrObject);
 				

@@ -128,8 +128,9 @@ define([
 			attsObject = {};
 			for (i = 0; i < attrs.length; i++){
 				attribute = attrs[i];//attrs.item(i); // why was I doing it this way?
-				attsObject[attribute.nodeName] = attribute.nodeValue;
+				attsObject[attribute.nodeName || attribute.localName] = attribute.nodeValue || attribute.localValue;
 			}
+			//attsObject.id = node.id;
 			return attsObject;
 		}
 		

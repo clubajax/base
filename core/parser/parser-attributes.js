@@ -11,7 +11,6 @@ define([
 		//	deeper nesting should be done with:
 		//		JSON.parse('{' + propObject + '}');
 		
-		//console.log('PROPS:::', JSON.parse(json));
 		var
 		i, key, value,
 		parsedJson,

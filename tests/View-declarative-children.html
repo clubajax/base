@@ -22,23 +22,29 @@
 		}
 		
 	</style>
+	<script  src = "./tools/requirejs.js"></script>
 	<script>
-		window.dojoConfig = {
-			async: true,
-			baseUrl: '',
-			packages: [
-				{name: 'base', location: '../'},
-				{name: 'core', location: '../core'}
-			]
-		};
+		window.requirejs.config({
+			config: {
+				//Set the config for the i18n
+				//module ID
+				i18n: {
+					locale: 'ru'
+				}
+			},
+			baseUrl:'../',
+			paths:{
+				base:'.',
+				resources:'./resources'
+			}
+		});
 </script>
-	<script  src = "../../../dojo/dojo.js"></script>
 </head>
 <body style='display: none;'>
 	<div id='views'>
 		<div id='home' data-widget='View' data-props='headerContent:Home'>
 			<div id='search' title='Search' data-widget='View' data-props='headerContent:Search,back:home,icon:iconsearch'>
-				Child
+				<div>Child</div>
 			</div>
 		</div>
 	</div>
@@ -47,11 +53,8 @@
 			'base/core/parser/main',
 			'base/core/dom',
 			'base/core/on',
-			'base/ui/views/View',
-			'base/ui/views/manager',
-			'base/core/xhr',
-			'ui/grid/Grid'
-		], function(parser, dom, on, View, mgr, xhr, Grid) {
+			'base/ui/views/View'
+		], function(parser, dom, on, View, mgr) {
 			// View needs to be preloaded to work
 			parser.parse();
 			dom.style(document.body, 'display', '');

@@ -97,7 +97,6 @@ define([
 			var i, doParse = 0, child, dc;
 			for(i = 0; i < this.parsedChildNodes.length; i++){
 				dc = dom.attr(this.parsedChildNodes[i], 'data-widget');
-				//console.log('View ATTR', dc);
 				if(dc === this.declaredClass || /View/.test(dc)){ // need a better test, like instanceOf of something
 					child = this.getChildbyNode(this.parsedChildNodes[i]);
 					this.insertNavButton(child);
@@ -110,6 +109,7 @@ define([
 			if(doParse){
 				this.parseChildNodes(this.containerNode);
 			}
+			
 		},
 		
 		insertNavButtons: function(buttons){

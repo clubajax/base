@@ -24,6 +24,8 @@
 		}
 		console.log('tests:', tests);
 		
+		Node.prototype.log = function(){}
+		
 		require(['require', './rtests/tools/run-tests'], function(requirejs, runTests){
 			runTests(requirejs, tests);
 		});
