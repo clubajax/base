@@ -35,6 +35,7 @@
 			tests = tests.split(',').map(function(t){ return t.trim()});
 		}
 		console.log('tests:', tests);
+		document.title = 'tests/' + tests[0];
 		
 		console.log('test vars', 'a', 'b');
 		
