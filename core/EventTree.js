@@ -1,6 +1,7 @@
 define([
-	'dcl/dcl'
-], function(dcl){
+	'dcl/dcl',
+	'./on'
+], function(dcl, on){
     // EventTree
     //      EventTree is a typical event emitter with additional functionality
     //      of generating child EventTrees. A child event will propogate up the tree
@@ -137,40 +138,47 @@ define([
 		},
 
 		on: function(name, callback, context){
-            if(this.__events && !this.__events[name]){
-                console.warn('Possible incorrect event name:  on('+name+')');
-            }
-            var
-                handles = this.handles,
-                handle,
+			var
+				handles = this.handles,
+				handle,
 				listeners = this.listeners,
 				paused,
 				id = uid('listener-');
-
+				
+			if(name instanceof window.Node){
+				handle = on.apply(null, arguments);
+				// need to collect and destroy
+				return handle;
+			}
+			if(this.__events && !this.__events[name]){
+				console.warn('Possible incorrect event name:  on('+name+')');
+			}
+		
 			this.listeners[name] = this.listeners[name] || {};
 			if(context){
+				console.log('args', arguments);
 				callback = callback.bind(context);
 			}
-
+	
 			listeners[name][id] = callback;
-
+	
 			handle = {
-                id: uid('handle'),
+				id: uid('handle'),
 				remove: function(){
-                    this.pause();
+					this.pause();
 					delete listeners[name][id];
-                    delete handles[this.id];
-                    paused = noop;
+					delete handles[this.id];
+					paused = noop;
 				},
 				pause: function(){
-                    paused = listeners[name][id];
+					paused = listeners[name][id];
 					listeners[name][id] = noop;
 				},
 				resume: function(){
-                    listeners[name][id] = paused;
-                }
+					listeners[name][id] = paused;
+				}
 			};
-
+	
 			handles[handle.id] = handle;
 			return handle;
 		},
