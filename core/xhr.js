@@ -64,6 +64,10 @@ define([
 					setTimeout(function(){
 						options.callback(result);
 					}, 1);
+				}else{
+					setTimeout(function(){
+						options.callback(req.responseText);
+					}, 1);	
 				}
 			}
 		}
