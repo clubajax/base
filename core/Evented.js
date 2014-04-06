@@ -19,11 +19,12 @@ define([
 				key,
 				listeners = this.listeners[name],
 				args = Array.prototype.slice.call(arguments);
-			//console.log('dojoConfig', dojoConfig);
 			args.shift();
 			if(listeners){
 				for(key in listeners){
-					if(listeners.hasOwnProperty(key)){
+					if(listeners.hasOwnProperty(key) && listeners[key]){
+						// key may still exist, since handle is being held
+						// by another party
 						listeners[key].apply(null, args);
 					}
 				}
@@ -45,8 +46,6 @@ define([
             return tree;
         },
 		
-		// this.on(node, 'click', 'doFoo', this)
-		
 		on: function(name, callback, context){
 			var
 				listeners = this.listeners,
@@ -64,12 +63,12 @@ define([
 				callback = callback.bind(context);
 			}
 			
-			
-			
 			listeners[name][id] = callback;
 			
 			return {
 				remove: function(){
+					console.log('REMOVE', id);
+					listeners[name][id] = noop;
 					delete listeners[name][id];
 				},
 				pause: function(){

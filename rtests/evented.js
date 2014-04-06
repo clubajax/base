@@ -93,6 +93,23 @@ define([
 				}
 			},{
 				skip:skip,
+				title:'it should not resume after remove',
+				run: function(t){
+					var
+						h, result = true,
+						ev = new Evented();
+					h = ev.on('foo', function(){
+						result = false;	
+					});
+					h.remove();
+					ev.emit('foo');
+					t.assert(result, 'should not emit');
+					h.resume();
+					ev.emit('foo');
+					t.assert(result, 'it should still not emit');
+				}
+			},{
+				skip:skip,
 				title:'it should remove all listeners',
 				run: function(t){
 					var
@@ -104,7 +121,6 @@ define([
 					h2 = ev.on('foo', function(){
 						result2 = false;	
 					});
-					
 					
 					ev.emit('foo');
 					t.assert(result === false && result2 === false, 'it emits...');
