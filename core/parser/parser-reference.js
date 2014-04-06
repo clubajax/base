@@ -21,7 +21,6 @@ define([
 					console.error('parser: Method "'+method+'" missing from widget:', context);
 				}
 				if(object instanceof window.Node){
-					console.log('CONNECT!');
 					context.own(context.on(object, event, context[method], context));
 				}else{
 					context.own(object.on(event, context[method], context));

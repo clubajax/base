@@ -29,11 +29,13 @@ define([
 		
 		template:'<div id="{{id}}" class="{{baseClass}}" data-ref="click:onClick">{{label}}</div>',
 		
-		constructor: function(options){
+		constructor: function(options, node){
 			this.options = this.options || [];
 			this.optionsMap = {};
+			this.selectedItem = null;
 			this.optionsArray = options.list || options.options;
 			this.appendNode  = dom('div');
+			console.log('node', node);
 			
 		},
 		
@@ -46,7 +48,8 @@ define([
 			}
 		},
 		
-		postCreate: function(){
+		postRender: function(){
+			console.log('this.node', this.node);
 			this.menu = new Menu({}, this.node);
 			this.add(this.optionsArray);
 			
@@ -70,9 +73,27 @@ define([
 						selected: this.appendNode.children[i].getAttribute('selected')
 					});
 				}
+				console.log('list', list);
 				this.add(list);
 				dom.destroy(this.appendNode);
 			}
+			if(!this.selectedItem){
+				this.setSelectedItem(this.options[0]);
+			}
+		},
+		
+		setSelectedItem: function(item){
+			if(!item){
+				return;
+			}
+			item.selected = true;
+			this.selectedItem = item;
+			this.value = item.value;
+			this.label = item.text;
+			this.node.innerHTML = this.label;
+			//console.log('selected', this.label, this.node);
+			//setTimeout(function(){ console.log('selected', this.label, this.node); }.bind(this), 100);
+			
 		},
 		
 		add: function(option){
@@ -107,10 +128,7 @@ define([
 			this.optionsMap[value] = item;
 			
 			if(this.options.length - 1 === this.selectedIndex){
-				item.selected = true;
-				this.value = item.value;
-				this.label = item.text;
-				this.node.innerHTML = this.label;
+				this.setSelectedItem(item);
 			}
 			this.menu.add(item);
 		}

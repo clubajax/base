@@ -133,11 +133,20 @@ define([
 		build: function(){
 			console.log('build!');
 			this.containerNode.innerHTML = '';
-			var i, css;
+			var
+				i,
+				css,
+				pos = dom.box(this.refNode);
 			for(i = 0; i < this.options.length; i++){
 				css = this.options[i].selected ? this.menuItemClass + ' selected' : this.menuItemClass;
 				dom('div', {css:css, attr:{html:this.options[i].text, value:this.options[i].value}}, this.containerNode);
 			}
+			
+			dom.style(this.node, {
+				top: pos.top + pos.height,
+				left: pos.left
+			});
+			
 			this.built = true;
 		}
 	});

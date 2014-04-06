@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+    <title>Drop Down</title>
+	<style>
+		textarea{
+			position: absolute;
+			left:10px;
+			top:250px;
+			height: 400px;
+		}
+	</style>
+	<script>
+		if(/Android/.test(navigator.userAgent)){
+			console.log('ANDROID');
+			
+			console._log = console.log;
+			console.log = function(){
+				var args = Array.prototype.slice.apply(arguments);
+				console._log(args.join(' '));
+			};
+		}
+	</script>
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='../rtests/assets/tests.css' rel='stylesheet' />
+	<script src='../rtests/tools/requirejs.js'></script>
+	<script>
+		requirejs.config({
+			baseUrl: '../',
+			paths: {
+				'base': './',
+				//'core':'./base/core',
+				//'test':'./base/rtests'
+			},
+			waitSeconds: 3
+		});
+	</script>
+</head>
+<body>
+	<h1>Drop Down Select Test</h1>
+	<p></p>
+	<input id='dd' />
+	<script>
+		require([
+			'base/ui/form/DropDown'
+		], function(DropDown) {
+			
+			var
+				list = ['Texas', 'California', 'Oregon', 'Michigan', 'Florida'],
+				dropdown = new DropDown({
+					list:list
+				}, 'dd');		
+			
+			console.log('dropdown', dropdown);
+		});
+</script>
+</body>
+</html>

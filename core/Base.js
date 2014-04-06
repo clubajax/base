@@ -33,7 +33,11 @@
 			this.emit = function(){
 				this.tree.emit.apply(this.tree, arguments);
 			};
-	
+			
+			this.own = function(handle){
+				this.tree.addHandle(handle);
+			};
+			
 			this.child = function(){
 				return this.tree.child();
 			};

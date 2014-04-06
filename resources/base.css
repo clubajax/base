@@ -43,6 +43,7 @@ button, .base-button{
 	padding: 5px;
 	border: 1px solid #ccc;
 	box-shadow: 1px 2px 2px rgba(0,0,0,0.2);
+	background: #fff;
 }
 .menu-item{
 	font-size: 12px;
@@ -288,6 +289,14 @@ input.base-field{
 	border-color: #ff0000;
 	background: #FCEDED;
 }
+.base-input-wrap{
+	
+}
+.base-input-wrap input{
+	width: 100%;
+}
+
+
 .base-autocomplete{
 	/*width: 120px;*/
 	cursor: text;
@@ -317,6 +326,7 @@ input.base-field{
 .base-autocomplete-container.show{
 	top:0px;
 }
+
 .base-autocomplete-inputwrap{
 	display: block;
 	position: absolute;
