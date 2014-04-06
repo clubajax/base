@@ -1,70 +1,63 @@
-define([
+	define([
 	'./dcl',
 	'./on',
-	'./Evented',
-	'./observable'
-], function(dcl, on, Evented, observable){
-
-	return dcl(Evented, {
+	'./EventTree'
+	], function(dcl, on, EventTree){
+	
+	// Base is a subclass that mixes in an EventTree child instance
+	// so that events can be handled as if they are native to the inheriting
+	// class
+	//
+	
+	function noop(){}
+	
+	return dcl(null, {
 		declaredClass:'Base',
-		constructor: function(options, n){
+		constructor: function(options){
+			var _oldDispose, _dispose, prop;
 			options = options || {};
-			//console.log('base!', n);
-			var
-				tempDispose,
-				oldDispose,
-				handles = [],
-				prop,
-				observables = options.observables ||  this.observables || {};
 			
 			for(prop in options){
 				if(options.hasOwnProperty(prop)){
-					if(this[prop] !== undefined && observables[prop] !== undefined){
-						//console.error('Property assignment conflict with observable assignment:', prop);
-						observables[prop] = this[prop];
-					}
-					else if(this[prop] !== undefined){
+					if(this[prop] !== undefined){
 						this[prop] = options[prop];
 					}
-					else if(observables[prop] !== undefined){
-						this[prop] = observable(options[prop]);
-						//delete observables[prop];
-					}
 				}
 			}
 			
-			for(prop in observables){
-				if(this[prop] !== undefined && observables[prop] !== undefined){
-					//console.error('Property conflict with observable namespace:', prop);
-					//delete this[prop];
-				}
-				else if(observables.hasOwnProperty(prop)){
-					this[prop] = observable(observables[prop]);
-				}
-			}
-			
-			// NOTE:
-			// don't delete this.observables or its props or it removes it from future prototypes
-			//delete this.observables;
-			
-			this.own = function(handle){
-				handles.push(handle);
+			this.tree = options.tree || new EventTree(options);
+			this.on = function(){
+				return this.tree.on.apply(this.tree, arguments);
 			};
-			
-			
-			tempDispose = function(){
-				on.remove(handles);
+	
+			this.emit = function(){
+				this.tree.emit.apply(this.tree, arguments);
+			};
+	
+			this.child = function(){
+				return this.tree.child();
+			};
+	
+			_dispose = function(){
+				if(this.tree){
+					this.tree.dispose();
+				}
+				this.tree = null;
+				this.emit = noop;
+				this.on = noop;
+				this.child = noop;
+				this.dispose = noop;
 			}.bind(this);
-			
+	
 			if(this.dispose){
-				oldDispose = this.dispose;
+				_oldDispose = this.dispose.bind(this);
 				this.dispose = function(){
-					oldDispose();
-					tempDispose();
+					_oldDispose();
+					_dispose();
 				};
 			}else{
-				this.dispose = tempDispose;
+				this.dispose = _dispose;
 			}
 		}
 	});
-});
+	});
