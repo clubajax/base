@@ -1,6 +1,6 @@
 define([], function(){
 
-	return function(requirejs, args){
+	return function(requirejs, args, isNode){
 		var
 			i,
 			tests = [],
@@ -26,6 +26,7 @@ define([], function(){
 					}else{
 						fail++;
 						console.log('*FAIL*:', msg || currentTestName);
+						throw new Error('*FAIL*: ' + ( msg || currentTestName ));
 					}
 				}	
 			};
@@ -64,7 +65,9 @@ define([], function(){
 		
 		function runTests(){
 			function runTest(testMethod){
-				if(!testMethod.skip){
+				var skip = testMethod.skip;
+				skip = 'node' ? isNode : skip;
+				if(!skip){
 					setSuiteName(testMethod.suiteName);
 					setTitle(testMethod.title);
 					total++;

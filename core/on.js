@@ -325,10 +325,10 @@ define(['./has'], function(has){
 				}
 			}
 	
-			if(eventType === 'scroll'){
-				// TODO! different than wheel?
-				console.log('on.scroll not implemented');
-			}
+			//if(eventType === 'scroll'){
+			//	// TODO! different than wheel?
+			//	console.log('on.scroll not implemented');
+			//}
 	
 			node.addEventListener(eventType, callback, false);
 			

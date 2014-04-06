@@ -73,12 +73,13 @@ define([
 			var
 				container = this.container,
 				header = this.header,
-				useTransform = /Android/.test(navigator.userAgent),
+				useTransform = 0,///Android/.test(navigator.userAgent),
 				scroll = useTransform ? function(e){
 					// Android does not support node.scrollLeft. How IE6-like of them.
 					dom.style(header, has('transform'), 'translateX('+(-container.scrollLeft)+'px)');	
 				} : function(e){
 					// For sane browsers and devices
+					// Android seems to recognize scrollLeft if overflow:hidden
 					header.scrollLeft = container.scrollLeft;
 				};
 				

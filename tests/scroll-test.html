@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+    <title>Test Runner</title>
+	<style>
+		textarea{
+			position: absolute;
+			left:10px;
+			top:250px;
+			height: 400px;
+		}
+	</style>
+	<script>
+		if(/Android/.test(navigator.userAgent)){
+			console.log('ANDROID');
+			
+			console._log = console.log;
+			console.log = function(){
+				var args = Array.prototype.slice.apply(arguments);
+				console._log(args.join(' '));
+			};
+		}
+	</script>
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='../rtests/assets/tests.css' rel='stylesheet' />
+	<script src='../rtests/tools/requirejs.js'></script>
+	<script>
+		requirejs.config({
+			baseUrl: '../',
+			paths: {
+				'base': './',
+				//'core':'./base/core',
+				//'test':'./base/rtests'
+			},
+			waitSeconds: 3
+		});
+	</script>
+</head>
+<body>
+	<div class='wrap test-scroll'><div id='list'>
+	<div class='test-head' id='test-head'>
+		<table>
+			<thead>
+				<tr>
+					<th>1</th>
+					<th>2</th>
+					<th>3</th>
+					<th>4</th>
+					<th>5</th>
+					<th>6</th>
+					<th>7</th>
+					<th>8</th>
+					<th>9</th>
+					<th>10</th>
+					<th>11</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div class='test-body' id='test-body'>
+		<table id='test-scroll-body'>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>2</td>
+					<td>3</td>
+					<td>4</td>
+					<td>5</td>
+					<td>6</td>
+					<td>7</td>
+					<td>8</td>
+					<td>9</td>
+					<td>10</td>
+					<td>11</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div></div>
+	<textarea id='ta'>
+		
+	</textarea>
+	<script>
+		require([
+			'base/core/dom',
+			'base/core/on',
+			'base/core/xhr',
+		], function(dom, on, xhr){
+			
+			var
+				count = 0,
+				ta = dom.byId('ta'),
+				head = dom.byId('test-head'),
+				body = dom.byId('test-body');
+			
+			ta.value = '';
+			on(body, 'scroll', function(){
+				if(count++ >= 29){
+					count = 0;
+					ta.value = '';
+				}
+				head.scrollLeft = body.scrollLeft;
+				ta.value += 'scroll ' + head.scrollLeft + ' '+ body.scrollLeft + '\n';
+			});
+		});
+	</script>
+</body>
+</html>
