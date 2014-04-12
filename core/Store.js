@@ -38,6 +38,9 @@ define([
 		
 		url:'',
 		
+		// use an id to set this store in the registry
+		id:'',
+		
 		// url path
 		target: '',
 		

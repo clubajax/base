@@ -181,6 +181,7 @@ define([
 		
 		parseChildNodes: function(nodes, context){
 			var widgets = parser.parse(nodes, context);
+			console.log('parseChildNodes widgets', widgets);
 			this.children = this.children.concat(widgets);
 			return widgets;
 		}

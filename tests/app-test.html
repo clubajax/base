@@ -16,7 +16,6 @@
 		}
 </script>
 	<link href='../resources/base.css' rel='stylesheet' />
-	<link href='../rtests/assets/tests.css' rel='stylesheet' />
 	<script src='../rtests/tools/requirejs.js'></script>
 	<script>
 		requirejs.config({
@@ -33,6 +32,42 @@
 		});
 </script>
 	<style>
+		html, body{
+	margin: 0;
+	padding: 0;
+}
+body{
+	font-family: sans-serif;
+	padding: 20px;
+	overflow: hidden;
+}
+#home{
+	background: #FFBFBF;
+	padding: 5px;
+}
+
+.btns{
+	position: fixed;
+	top:40px;
+	right: 20px;
+	width: 60px;
+	z-index: 100;
+}
+.btns button{
+	width: 70px;
+}
+
+.buttonRow{
+	margin-top: 15px;
+	text-align: right;
+}
+
+label{
+	font-size: 13px;
+}
+.base-dropdown{
+	margin-bottom: 10px;
+}
 		body{
 			overflow: hidden;
 		}
@@ -49,20 +84,19 @@
 		
 	</style>
 </head>
-<body style='display: none;'>
+<body style='display: block;'>
 	<div id='views'>
 		<div id='home' data-widget='View' data-props='headerContent:Home,headerIcon:observato-logo'>
 			<div id='search' title='Search' data-widget='View' data-props='headerContent:Search,back:home,icon:search'>
 				<div class='test-form'>
-					<form>
 					<div class='row'>
 						<label>Resource</label>
-						<select>
+						<!--<div id='main_drop'></div>-->
+						<select data-widget='DropDown'>
 							<option value='main'>main</option>
 							<option value='archive'>archive</option>
 						</select>
 					</div>
-					</form>
 					<div class='row'>
 						<label>Source</label>
 						<select>
@@ -79,8 +113,10 @@
 						</select>
 					</div>
 					<div class='row'>
-						<label>Reference</label>
-						<input />
+						<label style='display: block;'>Reference</label>
+						<div class='base-input-wrap'>
+							<input class='base-field'/>
+						</div>
 					</div>
 					<div class='buttonRow'>
 						<button>Search Entities</button>
@@ -137,66 +173,33 @@
 				</div>
 			</div>	
 		</div>
-		<!--<div id='devGrid' title='Raw Data/Properties' data-widget='View' data-props='headerContent:Raw Data/Properties,back:rawData'>
-			<div id='grid'>A GRID GOES HERE</div>
-		</div>-->
 	</div>
 	<script>
 		require([
 			'base/core/parser/main',
 			'base/core/dom',
+			'base/ui/form/DropDown',
 			'base/core/on',
 			'base/ui/views/View',
 			'base/ui/views/manager',
-			'base/core/xhr',
-			'ui/grid/Grid'
-		], function(parser, dom, on, View, mgr, xhr, Grid) {
+			'base/core/xhr'
+			//'ui/grid/Grid'
+		], function(parser, dom, DropDown) {
 			// View needs to be preloaded to work
 			parser.parse();
-			dom.style(document.body, 'display', '');
-			return;
-			var grid, built = 0;
-			function buildGrid(){
-				if(built){
-					return;
-				}
-				built = 1;
-				
 			
-				grid = new Grid({
-					columns:[{
-						label:'reference'
-					},{
-						label:'name'
-					},{
-						label:'type'
-					},{
-						label:'value'
-					},{
-						label:'timestamp'
-					},{
-						label:'schema'
-					},{
-						label:'source'
-					}]
-				}, 'grid');
-				
-				xhr.get('./data/grid.json', {
-					callback: function(data){
-						console.log('JSON', data);
-						grid.render(data);
-					}	
-				});
-			}
-			
-			console.log('\n\nWHERE IS RAWDATA VIEW WIDGET???');
-			return
-			on('rawData', 'click a', function(e){
-				console.log('LINK', e);
-				buildGrid();
-				mgr.select('devGrid');
-			});
+			//new DropDown({
+			//	list:['main', 'archive']	
+			//}, 'main_drop');
+			//new DropDown({
+			//	list:['click', 'CRM']	
+			//}, 'source_drop');
+			//new DropDown({
+			//	list:['Engineer', 'Assignment', 'Order', 'Task', 'Customer']	
+			//}, 'schema_drop');
+			//dom.style(document.body, 'display', '');
 		});
 </script>
 </body>
+
 </html>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+    <title>AutoComplete</title>
+	<style>
+		textarea{
+			position: absolute;
+			left:10px;
+			top:250px;
+			height: 400px;
+		}
+	</style>
+	<script>
+		if(/Android/.test(navigator.userAgent)){
+			console.log('ANDROID');
+			
+			console._log = console.log;
+			console.log = function(){
+				var args = Array.prototype.slice.apply(arguments);
+				console._log(args.join(' '));
+			};
+		}
+	</script>
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='../rtests/assets/tests.css' rel='stylesheet' />
+	<script src='../rtests/tools/requirejs.js'></script>
+	<script>
+		requirejs.config({
+			baseUrl: '../',
+			paths: {
+				'base': './',
+				//'core':'./base/core',
+				//'test':'./base/rtests'
+			},
+			waitSeconds: 3
+		});
+	</script>
+</head>
+<body>
+	<h1>AutoComplete Test</h1>
+	<p>This uses "Path" for testing. So start by typing "@"</p>
+	<input id='ac' />
+	<p>These are non-functioning; used for visual comparison</p>
+	<input value='compare field' class='base-field'/><br>
+	<input value='compare style' />
+	<script>
+		require([
+			'base/core/Store',
+			'base/ui/form/AutoComplete'
+		], function(Store, AutoComplete) {
+			
+			var store = new Store({
+				testForProxy:true,
+				url:'/observato/web/rest/resources',
+				database:'main',
+				target: '/dictionaries',
+				pagingStartProp:'start',
+				pagingEndProp:'max',
+				pagingDefaultMax:50
+			});
+			
+			new AutoComplete({
+				store:store,
+				queryName:'Path',
+				value:'Kevin',
+				delimeter:','
+			}, 'ac');
+		});
+</script>
+</body>
+</html>

@@ -1,8 +1,9 @@
 define([
 	'base/core/dcl',
 	'base/core/dom',
-	'base/core/Widget'
-], function(dcl, dom, Widget){
+	'base/core/Widget',
+	'base/core/registry'
+], function(dcl, dom, Widget, registry){
 
 	return dcl(Widget, {
 		declaredClass:'AutoComplete',
@@ -25,6 +26,9 @@ define([
 		
 		// Data store (required)
 		store:null,
+		// or...
+		// Data store fetched from registry
+		storeId:'',
 		
 		// delimeter
 		// If set, assumes multiple selections are allowed
@@ -53,13 +57,22 @@ define([
 		},
 		
 		constructor: function(){
-			this.store.on('items', function(items){
-				//console.log('store data:\n'+( items.map(function(item){ return item.value; }).join('  \n'))); 
-				
-				this.onItems(items);
-			}, this);
+			if(this.store){
+				this.setStore(this.store);
+			}else if(this.storeId){
+				registry.getStore(this.storeId, this.setStore.bind(this));
+			}else{
+				console.warn('no store asscoiated with AutoComplete');
+			}
 			
 			console.log('TEST:', this.value());
+		},
+		
+		setStore: function(store){
+			this.store = store;
+			this.store.on('items', function(items){
+				this.onItems(items);
+			}, this);
 		},
 		
 		onItems: function(items){

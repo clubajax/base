@@ -25,12 +25,14 @@ define([
 			}	
 		}else{
 			for(i = 0; i < props.length; i++){
-				key = props[i].split(':')[0].trim();
-				value = props[i].split(':')[1].trim();
-				if(value !== '' && !isNaN(Number(value))){
-					value = Number(value);
+				if(props[i].indexOf(':') > -1){
+					key = props[i].split(':')[0].trim();
+					value = props[i].split(':')[1].trim();
+					if(value !== '' && !isNaN(Number(value))){
+						value = Number(value);
+					}
+					object[key] = value;
 				}
-				object[key] = value;
 			}	
 		}
 		

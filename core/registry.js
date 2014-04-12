@@ -8,8 +8,12 @@ define([], function(){
 	var
 		classes = {},
 		widgets = {},
+		stores = {},
+		callbacks = {},
 		registry = {
 			classes:classes,
+			widgets: widgets,
+			stores: stores,
 			addClass: function(name, Class){
 				classes[name] = Class;
 			},
@@ -21,6 +25,23 @@ define([], function(){
 			},
 			getWidget: function(id){
 				return widgets[id];
+			},
+			setStore: function(store){
+				stores[store.id] = store;
+				if(callbacks[store.id]){
+					callbacks[store.id](store);
+				}
+			},
+			getStore: function(id, callback){
+				var store = stores[id];
+				if(callback){
+					if(store){
+						callback(store);
+					}else{
+						callbacks[id] = callback;
+					}
+				}
+				return store;
 			},
 			log: function(what){
 				// for testin'

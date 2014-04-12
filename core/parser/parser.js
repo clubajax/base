@@ -142,20 +142,39 @@ define([
 			log(dent, 'parse complete, widgetNodes:', widgetNodes.length);
 			
 			widgetNodes.forEach(function(node){
+				
+				//if(!node.getAttribute(WIDGET_ATTR)){
+				//	console.log(' *** already parsed!', node);
+				//	return;
+				//}
+				//if(node.getAttribute('parsed')){
+				//	console.log(' *** already parsed!', node);
+				//	widget = registry.getWidget(node.getAttribute('widgetId'));
+				//	widgets.push(widget);
+				//	console.log(' here is proof:', widget);
+				//	return;
+				//}
 				//console.log('node.attributes', node.attributes, node.attributes instanceof window.NamedNodeMap );
 				props = {};
 				//attsToObject(node.attributes);
 				handlePlugins('attributes', node.attributes, props);
-					log(dent, 'props', props );
-					type = props[WIDGET_ATTR].replace(/\//g, '.');
-					Ctor = registry.getClass(type);
-					if(!Ctor){
-						console.error('cannot find Ctor:', type);
-						return;
-					}
-					log(dent, 'make widget', type);
-					widget = new Ctor(props, node);
-					widgets.push(widget);
+				
+				log(dent, 'props', props );
+				type = props[WIDGET_ATTR].replace(/\//g, '.');
+				Ctor = registry.getClass(type);
+				if(!Ctor){
+					console.error('cannot find Ctor:', type);
+					return;
+				}
+				log(dent, 'make widget', type);
+				console.log('parse widget', type, props,  node);
+				
+				//node.setAttribute('data-parsed', props['data-widget']);
+				//node.removeAttribute('data-widget');
+				//delete props['data-widget'];
+				
+				widget = new Ctor(props, node);
+				widgets.push(widget);
 			});
 			
 			handlePlugins('node', parentNode, context);

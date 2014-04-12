@@ -93,15 +93,7 @@ button, .base-button{
 	display: none;
 	border-bottom: 1px solid #999;
 }
-.observato-logo{
-	position: absolute;
-	top:0;
-	left:2px;
-	width: 43px;
-	height: 45px;
-	z-index: 100;
-	background: url(./logo.png) no-repeat;
-}
+
 .base-view-container{
 	position: absolute;
 	top:5px;

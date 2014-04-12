@@ -101,13 +101,15 @@ define([
 					child = this.getChildbyNode(this.parsedChildNodes[i]);
 					this.insertNavButton(child);
 				}else{
+					console.log('PARSE DIS', this.parsedChildNodes[i]);
 					this.containerNode.appendChild(this.parsedChildNodes[i]);
 					doParse = 1;
 				}
 			}
 			
 			if(doParse){
-				this.parseChildNodes(this.containerNode);
+				//this.parseChildNodes(this.parsedChildNodes);
+				//this.parseChildNodes(this.containerNode);
 			}
 			
 		},

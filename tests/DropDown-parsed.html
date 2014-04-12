@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+    <title>Drop Down Parsed</title>
+	<style>
+		textarea{
+			position: absolute;
+			left:10px;
+			top:250px;
+			height: 400px;
+		}
+	</style>
+	<script>
+		if(/Android/.test(navigator.userAgent)){
+			console.log('ANDROID');
+			
+			console._log = console.log;
+			console.log = function(){
+				var args = Array.prototype.slice.apply(arguments);
+				console._log(args.join(' '));
+			};
+		}
+	</script>
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='../rtests/assets/tests.css' rel='stylesheet' />
+	<script src='../rtests/tools/requirejs.js'></script>
+	<script>
+		requirejs.config({
+			baseUrl: '../',
+			paths: {
+				'base': './',
+				//'core':'./base/core',
+				//'test':'./base/rtests'
+			},
+			waitSeconds: 3
+		});
+	</script>
+</head>
+<body>
+	<h1>Drop Down Select Parsed Test</h1>
+	<p></p>
+	<div id='widget01' data-widget='ParentWidget'>
+	<div data-widget='ChildWidget'>
+		<div data-widget='GrandChildWidget' data-props='displayText:Grand Child Widget!'>
+			<select data-widget='DropDown'>
+				<option value='florida'>Florida</option>
+				<option value='michigan'>Michigan</option>
+				<option value='texas'>Texas</option>
+				<option value='california'>California</option>
+				<option value='Maine'>maine</option>
+			</select>
+		</div>	
+	</div>
+	
+	<script>
+		require([
+			'base/core/dcl',
+			'base/core/Widget',
+			'base/ui/form/DropDown',
+			'base/core/parser/main'
+		], function(dcl, Widget, DropDown, parser) {
+			
+			dcl(Widget, {
+				declaredClass:'GrandChildWidget',
+				displayText:'Defult Display Text',
+				template:'<div class="GrandChildWidget"><h3>{{displayText}}</h3></div>'
+			});
+			
+			dcl(Widget, {
+				declaredClass:'ChildWidget',
+				template:'<div class="ChildWidget">' +
+								'<h3>Child Widget</h3>' +
+							'</div>'
+			});
+			
+			dcl(Widget, {
+				declaredClass:'ParentWidget',
+				template:	'<div class="ParentWidget">' +
+								'<h3>Parent Widget</h3>' +
+							'</div>'
+			});
+			
+			parser.parse();
+			
+		});
+</script>
+</body>
+</html>

@@ -1,8 +1,9 @@
 	define([
 	'./dcl',
 	'./on',
-	'./EventTree'
-	], function(dcl, on, EventTree){
+	'./EventTree',
+	'./observable'
+	], function(dcl, on, EventTree, observable){
 	
 	// Base is a subclass that mixes in an EventTree child instance
 	// so that events can be handled as if they are native to the inheriting
@@ -14,14 +15,24 @@
 	return dcl(null, {
 		declaredClass:'Base',
 		constructor: function(options){
-			var _oldDispose, _dispose, prop;
+			var _oldDispose, _dispose, prop, observables = this.observables || {};
 			options = options || {};
 			
 			for(prop in options){
 				if(options.hasOwnProperty(prop)){
-					if(this[prop] !== undefined){
+					if(observables[prop]){
+						this[prop] = observable(observables[prop]);
+					}else if(this[prop] !== undefined){
 						this[prop] = options[prop];
 					}
+				}
+			}
+			
+			for(prop in observables){
+				if(observables.hasOwnProperty(prop)){
+					if(!this[prop]){
+						this[prop] = observable(observables[prop]);
+					}	
 				}
 			}
 			

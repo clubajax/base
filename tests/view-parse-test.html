@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>View Declarative Child Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<script>
+		if(/Android/.test(navigator.userAgent)){
+			console.log('ANDROID');
+			
+			console._log = console.log;
+			console.log = function(){
+				var args = Array.prototype.slice.apply(arguments);
+				console._log(args.join(' '));
+			};
+		}
+</script>
+	<link href='../resources/base.css' rel='stylesheet' />
+	<script src='../rtests/tools/requirejs.js'></script>
+	<script>
+		requirejs.config({
+			config: {
+				i18n: {
+					locale: 'en'
+				}
+			},
+			baseUrl:'../',
+			paths:{
+				base:'.',
+				resources:'./resources'
+			}
+		});
+</script>
+	<style>
+		html, body{
+	margin: 0;
+	padding: 0;
+}
+body{
+	font-family: sans-serif;
+	padding: 20px;
+	overflow: hidden;
+}
+#home{
+	background: #FFBFBF;
+	padding: 5px;
+}
+
+.btns{
+	position: fixed;
+	top:40px;
+	right: 20px;
+	width: 60px;
+	z-index: 100;
+}
+.btns button{
+	width: 70px;
+}
+
+.buttonRow{
+	margin-top: 15px;
+	text-align: right;
+}
+
+label{
+	font-size: 13px;
+}
+.base-dropdown{
+	margin-bottom: 10px;
+}
+		body{
+			overflow: hidden;
+		}
+		.btns{
+			position: fixed;
+			top:40px;
+			right: 20px;
+			width: 60px;
+			z-index: 100;
+		}
+		.btns button{
+			width: 70px;
+		}
+		
+	</style>
+</head>
+<body style='display: block;'>
+	<div id='views'>
+		<div id='search' title='Search' data-widget='View' data-props='headerContent:Search,back:home,icon:search'>
+			<div class='test-form'>
+				<div class='row'>
+					<label>Resource</label>
+					<!--<div id='main_drop'></div>-->
+					<select data-widget='DropDown'>
+						<option value='main'>main</option>
+						<option value='archive'>archive</option>
+					</select>
+				</div>
+				<div class='row'>
+					<label>Source</label>
+					<select>
+						<option value='crm'>CRM</option>
+						<option value='click'>Click</option>
+					</select>
+				</div>
+				<div class='row'>
+					<label>Schema</label>
+					<select>
+						<option value='assn'>Assignment</option>
+						<option value='eng'>Engineer</option>
+						<option value='task'>Task</option>
+					</select>
+				</div>
+				<div class='row'>
+					<label style='display: block;'>Reference</label>
+					<div class='base-input-wrap'>
+						<input class='base-field'/>
+					</div>
+				</div>
+				<div class='buttonRow'>
+					<button>Search Entities</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		require([
+			'base/core/parser/main',
+			'base/core/dom',
+			'base/ui/form/DropDown',
+			'base/core/on',
+			'base/ui/views/View',
+			'base/ui/views/manager',
+			'base/core/xhr'
+			//'ui/grid/Grid'
+		], function(parser, dom, DropDown) {
+			// View needs to be preloaded to work
+			parser.parse();
+			
+			//dom.style(document.body, 'display', '');
+		});
+</script>
+</body>
+
+</html>
