@@ -18,7 +18,7 @@ define([
 	}
 	
 	function xhr(url, options){
-		
+		options = options || {};
 		var
 			req = new XMLHttpRequest(),
 			handleAs = options.handleAs || 'json';

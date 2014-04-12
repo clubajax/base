@@ -170,6 +170,7 @@ define([
 			if(node && node.id && registry.getWidget(node.id)){
 				return registry.getWidget(node.id);
 			}
+			console.warn('getChildbyNode may not be effective without a node.id');
 			for(i = 0; i < this.children.length; i++){
 				if(this.children[i].node === node){
 					return this.children[i];
@@ -181,7 +182,6 @@ define([
 		
 		parseChildNodes: function(nodes, context){
 			var widgets = parser.parse(nodes, context);
-			console.log('parseChildNodes widgets', widgets);
 			this.children = this.children.concat(widgets);
 			return widgets;
 		}

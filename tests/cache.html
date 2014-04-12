@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+    <title>Cache Test</title>
+	<style>
+		textarea{
+			position: absolute;
+			left:10px;
+			top:250px;
+			height: 400px;
+		}
+	</style>
+	<script>
+		if(/Android/.test(navigator.userAgent)){
+			console.log('ANDROID');
+			
+			console._log = console.log;
+			console.log = function(){
+				var args = Array.prototype.slice.apply(arguments);
+				console._log(args.join(' '));
+			};
+		}
+	</script>
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='../rtests/assets/tests.css' rel='stylesheet' />
+	<script src='../rtests/tools/requirejs.js'></script>
+	<script>
+		requirejs.config({
+			baseUrl: '../',
+			paths: {
+				'base': './'
+			},
+			waitSeconds: 3
+		});
+	</script>
+</head>
+<body>
+	<h1>Cache Test</h1>
+	<p>Results in the console</p>
+	
+	<script>
+		require([
+			'base/core/cache'
+		], function(cache) {
+			
+			
+			var promise = cache('/observato/web/rest/resources', '1 min');
+			promise.then(function(data, details){
+				console.log('loaded', data);
+				console.log('from cache:', promise.cache);
+			});
+			
+
+		});
+</script>
+</body>
+</html>

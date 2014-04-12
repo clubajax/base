@@ -167,7 +167,6 @@ define([
 					return;
 				}
 				log(dent, 'make widget', type);
-				console.log('parse widget', type, props,  node);
 				
 				//node.setAttribute('data-parsed', props['data-widget']);
 				//node.removeAttribute('data-widget');

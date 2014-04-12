@@ -44,6 +44,13 @@ define([
 			return this;
 		};
 		
+		this.call = function(){
+			var args = Array.prototype.splice.call(arguments, 0);
+			setTimeout(function(){
+				this.resolve.apply(this, args);	
+			}.bind(this), 1);
+		};
+		
 		this.reject = function(){
 			for(i = 0; i < errbacks.length; i++){
 				errbacks[i].apply(null, arguments);
