@@ -42,18 +42,29 @@
 	<h1>Drop Down Select Test</h1>
 	<p></p>
 	<input id='dd' />
+	<input id='dds' />
 	<script>
 		require([
-			'base/ui/form/DropDown'
-		], function(DropDown) {
+			'base/ui/form/DropDown',
+			'base/core/Store'
+		], function(DropDown, Store) {
 			
 			var
 				list = ['Texas', 'California', 'Oregon', 'Michigan', 'Florida'],
-				dropdown = new DropDown({
+				d1 = new DropDown({
 					list:list
-				}, 'dd');		
+				}, 'dd'),
+				store = new Store({
+					itemsProperty:null
+				}),
+				d2 = new DropDown({store:store}, 'dds');
+				
+			setTimeout(function(){
+				store.setData(['apples', 'oranges', 'grapes', 'duriands', 'bananas']);
+			}, 500);
 			
-			console.log('dropdown', dropdown);
+			
+			console.log('dropdown', d1, d2);
 		});
 </script>
 </body>

@@ -65,6 +65,15 @@ define([
 			return true;
 		},
 		
+		clear: function(){
+			this.optionsMap = {};
+			this.options.length = 0;
+			
+			this.value = '';
+			this.label = '';
+			
+		},
+		
 		add: function(option){
 			if(Array.isArray(option)){
 				option.forEach(function(o){ this.add(o); }, this);

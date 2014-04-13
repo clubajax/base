@@ -2,8 +2,9 @@ define([
 	'base/core/dcl',
 	'base/core/dom',
 	'base/core/Widget',
-	'../common/Menu'
-], function(dcl, dom, Widget, Menu){
+	'../common/Menu',
+	'base/core/registry'
+], function(dcl, dom, Widget, Menu, registry){
 	
 	// https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement
 	
@@ -17,6 +18,8 @@ define([
 		name:'',
 		disabled:false,
 		value:null,
+		
+		store:null,
 		
 		// non standard
 		label:'',
@@ -36,11 +39,24 @@ define([
 			this.optionsArray = options.list || options.options;
 			this.appendNode  = dom('div');
 			console.log('node', node);
+			if(this.store){
+				this.setStore(this.store);
+			}else if(this.storeId){
+				registry.getStore(this.storeId, this.setStore.bind(this));
+			}
 			
 		},
 		
+		setStore: function(store){
+			console.log('STORE');
+			this.store = store;
+			this.store.getData(this.setOptions.bind(this));
+			this.store.on('items', function(items){
+				this.setOptions(items);
+			}, this);
+		},
+		
 		onClick: function(){
-			console.log('drop click!');
 			if(!this.menuShowing){
 				this.menu.show();
 			}else{
@@ -56,13 +72,13 @@ define([
 			this.menu.on('change-visible', function(value){
 				this.menuShowing = value;
 			}, this);
+			
 			this.menu.on('change', function(value){
 				var item = this.optionsMap[value];
 				this.node.innerHTML = item.text;
 			}, this);
 			
 			if(this.appendNode.children.length){
-				console.log('CHILLEN');
 				var
 					i = 0,
 					list = [];
@@ -73,7 +89,6 @@ define([
 						selected: this.appendNode.children[i].getAttribute('selected')
 					});
 				}
-				console.log('list', list);
 				this.add(list);
 				dom.destroy(this.appendNode);
 			}
@@ -84,6 +99,7 @@ define([
 		
 		setSelectedItem: function(item){
 			if(!item){
+				this.node.innerHTML = '';
 				return;
 			}
 			item.selected = true;
@@ -96,7 +112,20 @@ define([
 			
 		},
 		
+		setOptions: function(options){
+			this.menu.clear();
+			this.clear();
+			this.add(options);
+		},
+		
+		clear: function(){
+			this.options.length = 0;
+			this.optionsMap = {};
+			this.setSelectedItem('');
+		},
+		
 		add: function(option){
+			console.log('ADD');
 			if(!option){
 				return;
 			}

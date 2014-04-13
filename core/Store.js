@@ -2,9 +2,10 @@ define([
 	'./dcl',
 	'./Base',
 	'./lang',
+	'./cache',
 	'./xhr',
 	'./logger'
-], function(dcl, Base, lang, xhr, logger){
+], function(dcl, Base, lang, cache, xhr, logger){
 	// Store
 	// Simple Memory Store. Does not support REST functionality
 	// 
@@ -37,6 +38,11 @@ define([
 		testForProxy:false,
 		
 		url:'',
+		
+		// expires: Set this to avoid fetching from the server on
+		// every same request
+		// See base/core/cache for options 
+		expires: false,
 		
 		// use an id to set this store in the registry
 		id:'',
@@ -79,12 +85,20 @@ define([
 			}
 		},
 		
+		//
+		// add store to DropDown
+		// need an async way of getting data
+		// need a cache option
+		// add an event for when store updates
+		
+		
 		processResults: function(data){
 			// to be over written by extending objects
 			return data;
 		},
 		
-		storeItems: function(items){
+		stashItems: function(items){
+			// set items to memory for later retrieval
 			var i, id, value;
 			for(i = 0; i < items.length; i++){
 				id = this.getId(items[i]);
@@ -109,18 +123,30 @@ define([
 			this.query(this.lastQuery, params);
 		},
 		
-		onResults: function(data){
-			console.timeEnd(this.url);
-			data = this.processResults(data);
-			//console.log('Store data:', JSON.stringify(data));
-			//console.log('Store data:', data);
-			this.emit('data', data);
-			this.emit('data-end', data);
-			this.data = data;
-			
-			this.items = !!this.itemsProperty ? data[this.itemsProperty] : data;
-			this.storeItems(this.items);
-			this.emit('items', this.items);
+		getData: function(callback){
+			// async way to get (all of the) data, in case it is
+			// not yet loaded
+			if(this.data){
+				callback(this.data);
+			}else{
+				var h = this.on('data', function(data){
+					callback(data);
+					h.remove();
+				});	
+			}
+		},
+		
+		getItems: function(callback){
+			// async way to get (all of the) items, in case it is
+			// not yet loaded
+			if(this.items){
+				callback(this.items);
+			}else{
+				var h = this.on('items', function(items){
+					callback(items);
+					h.remove();
+				});	
+			}
 		},
 		
 		getId: function(item){
@@ -141,13 +167,35 @@ define([
 			return this.idMap[id];
 		},
 		
+		setData: function(data){
+			// called when xhr resolves, but could be used
+			// to programmatically set data
+			// 
+			console.timeEnd(this.url);
+			data = this.processResults(data);
+			this.data = data;
+			this.items = !!this.itemsProperty ? data[this.itemsProperty] : data;
+			this.stashItems(this.items);
+			
+			this.emit('data', data);
+			this.emit('data-end', data);
+			this.emit('items', this.items);
+		},
+		
 		query: function(query, params, successCallback){
+			// nullify data as an indication that we are in the
+			// process of fetching data
+			// 
+			this.data = null;
+			this.items = null;
+			
 			this.emit('data-begin');
 			
 			query = query || this.lastQuery || {};
 			params = params || this.lastParams || {};
 			
 			var
+				promise,
 				allParams, delimeter, url,
 				target = this.target || '';
 			
@@ -192,14 +240,20 @@ define([
 			
 			console.time(this.url);
 			
-			xhr.get(url, {
+			promise = cache(url, this.expires, null, this.proxy);
+			
+			promise.then(this.setData.bind(this), function(e){
+				console.error('Store error', e);
+				this.emit('data-end', e);
+			}.bind(this));
+			/*xhr.get(url, {
 				proxy:this.proxy,
-				callback: this.onResults.bind(this),
+				callback: this.setData.bind(this),
 				errback: function(e){
 					console.error('Store error', e);
 					this.emit('data-end', e);
 				}.bind(this)
-			});
+			});*/
 		}
 	});
 	

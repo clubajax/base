@@ -53,7 +53,7 @@ define([
 		return now.getTime() > info.date.getTime();
 	}
 	
-	function load(url, promise, expires, handleAs){
+	function load(url, promise, expires, handleAs, proxy){
 		function store(data){
 			storage.set(url, {
 				timestamp: new Date().toISOString(),
@@ -62,6 +62,7 @@ define([
 			});
 		}
 		xhr.get(url, {
+			proxy: proxy,
 			handleAs:handleAs,
 			callback: function(data){
 				store(data);
@@ -74,7 +75,7 @@ define([
 		});
 	}
 	
-	return function(url, expires, handleAs){
+	return function(url, expires, handleAs, proxy){
 		var
 			promise = new Promise(),
 			object = storage.get(url);
@@ -85,7 +86,7 @@ define([
 				console.log('expired!');
 				storage.remove(url);
 				promise.cache = 'expired';
-				load(url, promise, expires, handleAs);
+				load(url, promise, expires, handleAs, proxy);
 			}else{
 				console.log('from cache');
 				promise.cache = 'from cache';
@@ -93,7 +94,7 @@ define([
 			}
 		}else{
 			promise.cache = 'from server';
-			load(url, promise, expires, handleAs);
+			load(url, promise, expires, handleAs, proxy);
 		}
 		
 		return promise;
