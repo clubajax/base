@@ -37,7 +37,9 @@ define([
 		buttons:null,
 		
 		constructor: function(options, node){
-			this.appendNode = node.parentNode;
+			if(node){
+				this.appendNode = node.parentNode;
+			}
 		},
 		
 		postCreate: function(){

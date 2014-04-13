@@ -192,11 +192,19 @@ define([
 		},
 		
 		select: function(view){
+			if(!this.contains(view)){
+				console.error('View not found:', view);
+				return null;
+			}
 			setTransitionView(view);
 			return view;
 		},
 		
 		contains: function(id){
+			return viewMap[id];
+		},
+		
+		byId: function(id){
 			return viewMap[id];
 		},
 		

@@ -17,16 +17,16 @@ define([
 		
 		columns:null,
 		
-		observables:{
-			title:'NOTSET'
-		},
+		//observables:{
+		//	title:'NOTSET'
+		//},
 		
 		baseClass:'base-list',
 		rowClass:'base-list-row',
 		headerClass:'base-list-header',
 		containerClass:'base-list-container',
 		
-		template:'<div class="{{baseClass}}"><div data-ref="header" class="{{headerClass}}"></div><div data-ref="container" class="{{containerClass}}"></div></div>',
+		template:'<div class="{{baseClass}}"><div data-ref="container" class="{{containerClass}}"></div></div>',
 		
 		rowTemplate:'<div class="base-list-pair"><div class="base-list-label">{LABEL}</div><div class="base-list-text">{TEXT}</div></div>',
 		
@@ -37,10 +37,10 @@ define([
 		postRender: function(){
 			this.connectClickEvents();
 			
-			this.title.sub(function(value){
-				this.header.innerHTML = value;
-			}, this);
-			this.title.pub();
+			//this.title.sub(function(value){
+			//	this.header.innerHTML = value;
+			//}, this);
+			//this.title.pub();
 		},
 		
 		setStore: function(store){

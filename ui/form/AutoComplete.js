@@ -1,9 +1,10 @@
 define([
 	'base/core/dcl',
 	'base/core/dom',
+	'base/core/on',
 	'base/core/Widget',
 	'base/core/registry'
-], function(dcl, dom, Widget, registry){
+], function(dcl, dom, on, Widget, registry){
 
 	return dcl(Widget, {
 		declaredClass:'AutoComplete',
@@ -53,7 +54,7 @@ define([
 		debounce:400,
 		
 		observables:{
-			value:'TEST'
+			value:''
 		},
 		
 		constructor: function(){
@@ -65,7 +66,18 @@ define([
 				console.warn('no store asscoiated with AutoComplete');
 			}
 			
-			console.log('TEST:', this.value());
+			this.clickoffHandle = on(document.body, 'click', function(e){
+				//console.log('DOCCLICK', e.target,
+				//	(this.containerNode && this.containerNode.contains(e.target)),
+				//	(this.listNode && this.listNode.contains(e.target)));
+				//
+				if((this.containerNode && this.containerNode.contains(e.target)) || (this.listNode && this.listNode.contains(e.target))){
+					return;
+				}
+				this.hideInput();
+				this.hidePopup();
+			}, this);
+			this.clickoffHandle.pause();
 		},
 		
 		setStore: function(store){
@@ -170,17 +182,19 @@ define([
 				dom.show(this.popupNode);
 			}
 			this.popupShowing = true;
-			console.log('show');
 		},
 		
 		hidePopup: function(){
-			dom.hide(this.popupNode);
+			//if(!this.popupShowing){ return; }
+			if(this.popupNode){
+				dom.hide(this.popupNode);
+			}
 			this.popupShowing = false;
 			this.lastValue = '';
-			console.log('hide');
 		},
 		
 		showInput: function(){
+			if(this.inputShowing){ return; }
 			if(!this.containerNode){
 				this.buildInput();
 			}
@@ -190,12 +204,20 @@ define([
 			window.requestAnimationFrame(function(){
 				this.containerNode.classList.add('show');	
 			}.bind(this));
+			
+			setTimeout(function(){
+				this.clickoffHandle.resume();
+				this.inputNode.focus();
+			}.bind(this), 300);
+			
 		},
 		
 		hideInput: function(){
+			//if(!this.inputShowing){ return; }
 			this.containerNode.classList.remove('show');
 			this.node.classList.remove('disabled');
 			this.inputShowing = false;
+			this.clickoffHandle.pause();
 		},
 		
 		
@@ -224,16 +246,16 @@ define([
 			this.on(this.doneBtn, 'click', function(){
 				this.onEnter(this.inputNode.value);	
 			}, this);
+			
 		},
 		
 		onClick: function(e){
-			console.log('focus');
 			this.showInput();
 		},
 		
 		onKeyup: function(e){
-			console.log('key', e);
-			console.log('value', this.node.value);
+			//	console.log('key', e);
+			//	console.log('value', this.node.value);
 		}
 	});
 });

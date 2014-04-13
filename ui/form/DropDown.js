@@ -38,7 +38,6 @@ define([
 			this.selectedItem = null;
 			this.optionsArray = options.list || options.options;
 			this.appendNode  = dom('div');
-			console.log('node', node);
 			if(this.store){
 				this.setStore(this.store);
 			}else if(this.storeId){
@@ -48,7 +47,6 @@ define([
 		},
 		
 		setStore: function(store){
-			console.log('STORE');
 			this.store = store;
 			this.store.getData(this.setOptions.bind(this));
 			this.store.on('items', function(items){
@@ -65,7 +63,6 @@ define([
 		},
 		
 		postRender: function(){
-			console.log('this.node', this.node);
 			this.menu = new Menu({}, this.node);
 			this.add(this.optionsArray);
 			
@@ -74,8 +71,7 @@ define([
 			}, this);
 			
 			this.menu.on('change', function(value){
-				var item = this.optionsMap[value];
-				this.node.innerHTML = item.text;
+				this.setValue(value);
 			}, this);
 			
 			if(this.appendNode.children.length){
@@ -97,6 +93,12 @@ define([
 			}
 		},
 		
+		setValue: function(value){
+			var item = this.optionsMap[value];
+			this.node.innerHTML = item.text;
+			this.value = item.value;
+		},
+		
 		setSelectedItem: function(item){
 			if(!item){
 				this.node.innerHTML = '';
@@ -107,9 +109,6 @@ define([
 			this.value = item.value;
 			this.label = item.text;
 			this.node.innerHTML = this.label;
-			//console.log('selected', this.label, this.node);
-			//setTimeout(function(){ console.log('selected', this.label, this.node); }.bind(this), 100);
-			
 		},
 		
 		setOptions: function(options){
@@ -125,7 +124,6 @@ define([
 		},
 		
 		add: function(option){
-			console.log('ADD');
 			if(!option){
 				return;
 			}

@@ -64,3 +64,55 @@ body{
 	width: 100px;
 	height: 100px;
 }
+
+
+.ChildWidget{
+	border: 1px solid #ccc;
+	background: #eee;
+	padding: 3px;
+}
+.ParentWidget{
+	border: 1px solid #FFAFAF;
+	background: #FCFFCE;
+	padding: 3px;
+	margin: 10px 0;
+}
+.ParentWidget h3{
+	background: #494E9B;
+	color: #fff;
+	padding: 3px;
+	margin: 3px 0;
+}
+.footer{
+	background: #ff0000;
+	color: #fff;
+	padding: 3px;
+	margin-top: 5px;
+}
+.basic{
+	font-size: 12px;
+}
+.big{
+	font-size: 18px;
+}
+.small{
+	font-size: 9px;
+}
+.base-view.dev{
+	border: 1px solid #ccc;
+	background: #F3F4D2;
+	/*top:5px;
+	left:5px;
+	right:5px;
+	bottom: 5px;
+	padding: 10px;*/
+}
+.dev.devblue{
+	background: #C2C7ED;
+}
+.dev.devred{
+	background: #F2C9C9;
+}
+.dev.devgreen{
+	background: #D3F2D0;
+}

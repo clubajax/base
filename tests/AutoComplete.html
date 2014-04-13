@@ -52,6 +52,7 @@
 		], function(Store, AutoComplete) {
 			
 			var store = new Store({
+				expires: '15 secs',
 				testForProxy:true,
 				url:'/observato/web/rest/resources',
 				database:'main',
@@ -62,7 +63,6 @@
 			});
 			
 			new AutoComplete({
-				expires: '15 secs',
 				store:store,
 				queryName:'Path',
 				value:'Kevin',
