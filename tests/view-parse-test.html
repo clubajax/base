@@ -4,33 +4,9 @@
 	<title>View Declarative Child Test</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<meta name="format-detection" content="telephone=no">
-	<script>
-		if(/Android/.test(navigator.userAgent)){
-			console.log('ANDROID');
-			
-			console._log = console.log;
-			console.log = function(){
-				var args = Array.prototype.slice.apply(arguments);
-				console._log(args.join(' '));
-			};
-		}
-</script>
+	
 	<link href='../resources/base.css' rel='stylesheet' />
-	<script src='../rtests/tools/requirejs.js'></script>
-	<script>
-		requirejs.config({
-			config: {
-				i18n: {
-					locale: 'en'
-				}
-			},
-			baseUrl:'../',
-			paths:{
-				base:'.',
-				resources:'./resources'
-			}
-		});
-</script>
+	
 	<style>
 		html, body{
 	margin: 0;
@@ -123,22 +99,48 @@ label{
 			</div>
 		</div>
 	</div>
-	<script>
-		require([
-			'base/core/parser/main',
-			'base/core/dom',
-			'base/ui/form/DropDown',
-			'base/core/on',
-			'base/ui/views/View',
-			'base/ui/views/manager',
-			'base/core/xhr'
-			//'ui/grid/Grid'
-		], function(parser, dom, DropDown) {
-			// View needs to be preloaded to work
-			parser.parse();
-			
-			//dom.style(document.body, 'display', '');
-		});
+<script>
+	if(/Android/.test(navigator.userAgent)){
+		console.log('ANDROID');
+		
+		console._log = console.log;
+		console.log = function(){
+			var args = Array.prototype.slice.apply(arguments);
+			console._log(args.join(' '));
+		};
+	}
+</script>
+<script src='../rtests/tools/requirejs.js'></script>
+<script>
+	requirejs.config({
+		config: {
+			i18n: {
+				locale: 'en'
+			}
+		},
+		baseUrl:'../',
+		paths:{
+			base:'.',
+			resources:'./resources'
+		}
+	});
+</script>
+<script>
+	require([
+		'base/core/parser/main',
+		'base/core/dom',
+		'base/ui/form/DropDown',
+		'base/core/on',
+		'base/ui/views/View',
+		'base/ui/views/manager',
+		'base/core/xhr'
+		//'ui/grid/Grid'
+	], function(parser, dom, DropDown) {
+		// View needs to be preloaded to work
+		parser.parse();
+		
+		//dom.style(document.body, 'display', '');
+	});
 </script>
 </body>
 

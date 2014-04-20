@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Store Test</title>
+</head>
+<body>
+	<h1>Store Test</h1>
+	<p>Results are in the console.</p>
+	<div id='results'></div>
+	
+<script src='./android.js'></script>
+<script src='../rtests/tools/requirejs.js'></script>
+<script>
+	requirejs.config({
+		config: {
+			i18n: {
+				locale: 'en'
+			}
+		},
+		baseUrl:'../',
+		paths:{
+			base:'.',
+			resources:'./resources'
+		}
+	});
+
+	require([
+			'base/core/Store'
+		], function(Store) {
+			
+			var
+				proxyURL = './../resources/proxy.php?url=',
+				serverURL = 'https://gadi:demo@demo.observato.realisedatasystems.com',
+				store2,
+				store;
+				
+			store = new Store({
+				url:'/observato/web/rest/resources',
+				database:'main',
+				target: '/entities',
+				proxy: function(url){
+					if(/\d+\.\d+\.\d+\.\d+/.test(location.host) || /mikewilcox/.test(location.host)){
+						//return './js/resources/test.json';
+						return proxyURL + window.escape(serverURL + url);
+					}
+					return url;
+				}
+			});
+			store.on('data', function(data){
+				console.log('store data:', data.items);
+				document.getElementById('results').innerHTML = JSON.stringify(data);
+			});
+			store.query({
+				source:'CRM',
+				schema:'Order'
+			});
+			
+			return;
+			
+			// Testing autocomplete calls and pagination
+			//// /observato/web/rest/resources/main/dictionaries?name=Path&start=0&value=%40*&max=50
+			
+			store2 = new Store({
+				url:'/observato/web/rest/resources',
+				database:'main',
+				target: '/dictionaries',
+				pagingStartProp:'start',
+				pagingEndProp:'max',
+				pagingDefaultMax:5
+			});
+			
+			store2.on('data', function(data){
+				console.log('store2 data:\n'+( data.items.map(function(item){ return item.value; }).join('  \n'))); 
+			});
+			
+			store2.query({
+				name:'Path',
+				value:'%40*'
+			});
+			
+			setTimeout(function(){
+				store2.query({
+					name:'Path',
+					value:'%40%3A2*'
+				});
+				setTimeout(function(){
+					store2.page(6, 10);
+					setTimeout(function(){
+						store2.page(11, 15);
+					}, 500);
+				}, 500);
+				
+			}, 500);
+		});
+</script>
+</body>
+</html>

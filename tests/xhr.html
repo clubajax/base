@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>xhr test</title>
+</head>
+<body>
+	<h1>xhr test</h1>
+	<p>Results are in the console.</p>
+	<div id='results'></div>
+<script src='./android.js'></script>
+<script src='../rtests/tools/requirejs.js'></script>
+<script>
+	requirejs.config({
+		config: {
+			i18n: {
+				locale: 'en'
+			}
+		},
+		baseUrl:'../',
+		paths:{
+			base:'.',
+			resources:'./resources'
+		}
+	});
+
+	require([
+		'base/core/xhr'
+		//'ui/grid/Grid'
+	], function(xhr) {
+		var url;
+			url = '../rtests/assets/grid.json';
+			url = 'http://192.168.0.12/observato-dojo/observato.web.mobile.build/src/main/webapp/js/resources/proxy.php?url=https%3A//gadi%3Ademo@demo.observato.realisedatasystems.com/observato/web/rest/resources/main/dictionaries%3Fname%3DSource%26value%3Dc*%26start%3D0%26max%3D50';
+		
+		xhr.get(url, {
+			callback: function(data){
+				console.log('data', data);
+				document.getElementById('results').innerHTML = JSON.stringify(data);
+			}	
+		});
+			
+			//xhr.get('./data-bad-url.json', {
+			//	callback: function(data){
+			//		console.log('data', data);	
+			//	},
+			//	errback: function(e){
+			//		console.log('error handled:', e);
+			//	}
+			//});
+			
+	});
+</script>
+</body>
+</html>

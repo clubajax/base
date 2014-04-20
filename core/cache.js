@@ -26,7 +26,7 @@ define([
 	function expired(object){
 		console.log('expired?');
 		if(!object.expires){
-			console.log('!object.expires');
+			console.log('object not expired');
 			return false;
 		}
 		var
@@ -55,11 +55,13 @@ define([
 	
 	function load(url, promise, expires, handleAs, proxy){
 		function store(data){
-			storage.set(url, {
-				timestamp: new Date().toISOString(),
-				data:data,
-				expires: expires
-			});
+			if(expires){
+				storage.set(url, {
+					timestamp: new Date().toISOString(),
+					data:data,
+					expires: expires
+				});
+			}
 		}
 		xhr.get(url, {
 			proxy: proxy,
@@ -78,7 +80,8 @@ define([
 	return function(url, expires, handleAs, proxy){
 		var
 			promise = new Promise(),
-			object = storage.get(url);
+			object = !!expires ? storage.get(url) : null;
+		console.log('expire request', expires);
 		console.log('object', object);
 		
 		if(object){
@@ -94,6 +97,7 @@ define([
 			}
 		}else{
 			promise.cache = 'from server';
+			console.log('from server');
 			load(url, promise, expires, handleAs, proxy);
 		}
 		

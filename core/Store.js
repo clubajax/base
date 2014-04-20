@@ -34,8 +34,8 @@ define([
 		proxy:false,
 		
 		// for development - tests domain for whether this
-		// shoudl use a proxy or not
-		testForProxy:false,
+		// should use a proxy or not
+		//testForProxy:false,
 		
 		url:'',
 		
@@ -78,19 +78,7 @@ define([
 		constructor: function(options){
 			this.idMap = {};
 			this.valueMap = {};
-			if(this.testForProxy){
-				if(/\d+\.\d+\.\d+\.\d+/.test(location.host) || /mikewilcox/.test(location.host)){
-					this.proxy = true;
-				}
-			}
 		},
-		
-		//
-		// add store to DropDown
-		// need an async way of getting data
-		// need a cache option
-		// add an event for when store updates
-		
 		
 		processResults: function(data){
 			// to be over written by extending objects
@@ -238,22 +226,25 @@ define([
 				
 			log('query', this.url, '\n\tdatabase', this.database, '\n\ttarget', this.target, '\n\tparams', allParams );
 			
+			url = this.checkForProxyUrl(url);
+			
+			console.log('PROXY URL', url);
+			
 			console.time(this.url);
 			
-			promise = cache(url, this.expires, null, this.proxy);
+			promise = cache(url, this.expires, null);
 			
 			promise.then(this.setData.bind(this), function(e){
 				console.error('Store error', e);
 				this.emit('data-end', e);
 			}.bind(this));
-			/*xhr.get(url, {
-				proxy:this.proxy,
-				callback: this.setData.bind(this),
-				errback: function(e){
-					console.error('Store error', e);
-					this.emit('data-end', e);
-				}.bind(this)
-			});*/
+		},
+		
+		checkForProxyUrl: function(url){
+			if(this.proxy){
+				return this.proxy(url);
+			}
+			return url;
 		}
 	});
 	

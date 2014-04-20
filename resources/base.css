@@ -1,8 +1,16 @@
 .off{
 	display: none;
 }
-
-
+.base-link{
+	/*div styled as a link*/
+	text-decoration: underline;
+	color: #0000CE;
+	cursor: pointer;
+	padding: 5px 0;
+}
+.base-link:hover{
+	color: #0000ff;
+}
 button, .base-button{
 	position: relative;
 	border: 1px solid #ccc;
