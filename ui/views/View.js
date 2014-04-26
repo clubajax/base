@@ -7,7 +7,7 @@ define([
 	'./manager'
 ], function(dcl, dom, parser, dataAttr, Widget, manager){
 
-	return dcl(Widget, {
+	var View = dcl(Widget, {
 		declaredClass:'View',
 		
 		baseClass:'base-view',
@@ -99,7 +99,9 @@ define([
 			var i, doParse = 0, child, dc;
 			for(i = 0; i < this.parsedChildNodes.length; i++){
 				dc = dom.attr(this.parsedChildNodes[i], 'data-widget');
-				if(dc === this.declaredClass || /View/.test(dc)){ // need a better test, like instanceOf of something
+				child = this.getChildbyNode(this.parsedChildNodes[i]);
+				
+				if(dc && child && child instanceof View){
 					child = this.getChildbyNode(this.parsedChildNodes[i]);
 					this.insertNavButton(child);
 				}else{
@@ -124,4 +126,6 @@ define([
 			}
 		}
 	});
+	
+	return View;
 });
