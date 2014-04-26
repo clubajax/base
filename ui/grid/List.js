@@ -55,14 +55,18 @@ define([
 				}, this);
 			}
 		},
-		render: function(data){
-			var i, col, row, html, label, text;
+		render: function(data, columns){
+			var i, col, row, html, label, text, key;
 			this.container.innerHTML = '';
+			if(columns){
+				this.columns = columns;
+			}
 			for(i = 0; i < data.items.length; i++){
 				row = dom('div', {css:this.rowClass, attr:{'data-item-index':i}});
 				for(col = 0; col < this.columns.length; col++){
 					label = this.columns[col].label;
-					text = data.items[i][label];
+					key = this.columns[col].key || label;
+					text = data.items[i][key];
 					html = this.rowTemplate.replace('{LABEL}', label).replace('{TEXT}', text);
 					row.innerHTML += html;
 				}
