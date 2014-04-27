@@ -73,6 +73,12 @@ define([
 		setStore: function(store){
 			this.store = store;
 			this.store.getData(this.setOptions.bind(this));
+			this.store.on('data-begin', function(){
+				this.setLoading(true);
+			}, this);
+			this.store.on('data-end', function(){
+				this.setLoading(false);
+			}, this);
 			this.store.on('items', function(items){
 				this.setOptions(items);
 			}, this);
@@ -130,6 +136,18 @@ define([
 				this.node.classList.add('disabled');
 			}else{
 				this.node.classList.remove('disabled');
+			}
+		},
+		
+		setLoading: function(loading){
+			if(this.loading === loading){
+				return;
+			}
+			this.loading = loading;
+			if(loading){
+				this.node.classList.add('loading');
+			}else{
+				this.node.classList.remove('loading');
 			}
 		},
 		
