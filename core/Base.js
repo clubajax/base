@@ -15,7 +15,13 @@
 	return dcl(null, {
 		declaredClass:'Base',
 		constructor: function(options){
-			var _oldDispose, _dispose, prop, observables = this.observables || {};
+			var
+				_oldDispose,
+				_dispose,
+				prop,
+				observables = this.observables || {},
+				properties = this.properties || {};
+			
 			options = options || {};
 			
 			for(prop in options){
@@ -33,6 +39,15 @@
 					if(!this[prop]){
 						this[prop] = observable(observables[prop]);
 					}	
+				}
+			}
+			
+			for(prop in properties){
+				if(properties.hasOwnProperty(prop)){
+					Object.defineProperty(this, prop, {
+						get: properties[prop].get,
+						set: properties[prop].set
+					});
 				}
 			}
 			
