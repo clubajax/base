@@ -40,7 +40,7 @@ define([
 		url:'',
 		
 		// expires: Set this to avoid fetching from the server on
-		// every same request
+		// every, same request
 		// See base/core/cache for options 
 		expires: false,
 		
@@ -87,12 +87,14 @@ define([
 		
 		stashItems: function(items){
 			// set items to memory for later retrieval
-			var i, id, value;
-			for(i = 0; i < items.length; i++){
-				id = this.getId(items[i]);
-				value = this.getValue(items[i]);
-				this.idMap[id] = items[i];
-				this.valueMap[value] = items[i];
+			if(items && items.length){
+				var i, id, value;
+				for(i = 0; i < items.length; i++){
+					id = this.getId(items[i]);
+					value = this.getValue(items[i]);
+					this.idMap[id] = items[i];
+					this.valueMap[value] = items[i];
+				}
 			}
 		},
 		
@@ -194,7 +196,7 @@ define([
 				target = (target + '/' + query.target).replace('//', '/');
 			}
 			
-			if(!this.database){
+			if(this.database === ''){
 				console.error('database not provided to Store');
 			}
 			
