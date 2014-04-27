@@ -1,5 +1,6 @@
 define([
-], function(dcl){
+	'./Promise'
+], function(Promise){
 	
 	function toQuery(obj){
 		var key, i, params = [];
@@ -19,7 +20,9 @@ define([
 	
 	function xhr(url, options){
 		options = options || {};
+		options.type = options.type || 'GET';
 		var
+			promise = new Promise(),
 			req = new XMLHttpRequest(),
 			handleAs = options.handleAs || 'json';
 		
@@ -27,48 +30,45 @@ define([
 			url += '?' + toQuery(options.params);
 		}
 		
+		function callback(result){
+			if(options.callback){
+				options.callback(result);
+			}
+			promise.resolve(result);
+		}
+		
+		function errback(err){
+			console.error('XHR ERROR:', err);
+			if(options.errback){
+				options.errback(err);
+			}
+			promise.reject(err);
+		}
+		
 		function onload(request) {
 			var req = request.currentTarget, result, err;
-			//console.log(this.responseText);
-			//console.log('onload', req);
-			
+	
 			if(req.status !== 200){
 				err = {
 					status: req.status,
 					message: req.statusText,
 					request:req
 				};
-				if(options.errback){
-					options.errback(err);
-				}else{
-					console.error('XHR ERROR:', err);
-				}
+				errback(err);
 			}
-			
-			if(options.callback){
+			else {
 				if(handleAs === 'json'){
 					try{
 						result = JSON.parse(req.responseText);
 					}catch(e){
 						console.error('XHR PARSE ERROR:', req.responseText);
-						if(options.errback){
-							options.errback(e);
-						}else{
-							console.error('XHR ERROR:');
-							console.dir(e);
-						}
-						return;
+						errback(e);
+						// return?
 					}
 				}
-				if(result){
-					setTimeout(function(){
-						options.callback(result);
-					}, 1);
-				}else{
-					setTimeout(function(){
-						options.callback(req.responseText);
-					}, 1);	
-				}
+				setTimeout(function(){
+					callback(result || req.responseText);
+				}, 1);
 			}
 		}
 		
@@ -76,12 +76,12 @@ define([
 		req.open(options.type, url, true);
 		
 		req.send();
-		return req;
+		
+		promise.request = promise.req = req;
+		return promise;
 	}
 	
 	function get(url, options){
-		options = options || {};
-		options.type = 'GET';
 		return xhr(url, options);
 	}
 	
@@ -91,9 +91,8 @@ define([
 		return xhr(url, options);
 	}
 	
-	return {
-		get:get,
-		post: post,
-		toQuery:toQuery
-	};
+	xhr.get = get;
+	xhr.post = post;
+	xhr.toQuery = toQuery;
+	return xhr;
 });
