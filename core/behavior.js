@@ -131,13 +131,15 @@ define([
 						dom.style(node, transform, '');
 						dom.style(node, transition, '');
 					}, 100);
-					
 				}
 			});
 			
-			window.requestAnimationFrame(function(){
+			//window.requestAnimationFrame does not always allow time
+			//for promise to be returned
+			//
+			setTimeout(function(){
 				dom.style(node, transform, transformToProps.join(' '));
-			});
+			},1);
 			
 			return promise;
 		},

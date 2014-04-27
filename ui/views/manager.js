@@ -50,7 +50,6 @@ define([
 	
 	
 	function setSelected(view){
-		//if(view){ console.log('setSelected', view.id);}
 		var i;
 		for(i = 0; i < viewList.length; i++){
 			viewList[i].selected = false;
@@ -64,7 +63,8 @@ define([
 			selected = viewList[0];
 			selected.selected = true;
 		}
-	
+		
+		log('setSelected', selected.id);
 		return selected;
 	}
 	
@@ -90,7 +90,7 @@ define([
 	
 	function setTransitionView(view){
 		view = typeof view === 'string' ? viewMap[view] : view;
-		log('\nsetTransitionView', view.index, view.id);
+		log('\n * setTransitionView', view.index, view.id);
 		var
 			duration = 600,
 			direction = 1,
@@ -133,38 +133,14 @@ define([
 			to:{ x: to }
 		}));
 		
-		/*
-		Object.keys(viewMap).forEach(function(viewId, i){
-			var
-				v = viewMap[viewId],
-				from = x * (i-fromIndex),
-				to = (x * (i-fromIndex)) - x * direction;
-			
-			log('    idx', i);
-			log('      view', viewId, from, 'to', to);
-			
-			
-			dom.show(v.node);
-			
-			moves.push(behavior.move(v.node, {
-				duration: duration,
-				resetOnFinish:true,
-				from:{
-					x: from
-				},
-				to:{
-					x: to
-				}
-			}));
-		});
-		*/
-		
 		behavior.all(moves).then(function(){
+			log('done animating');
 			setDisplayView(setSelected(view));
 		});
 	}
 	
 	function addView(view){
+		log('addView', view.id);
 		viewMap[view.id] = view;
 		viewList.push(view);
 		view.on('navigate', setTransitionView);

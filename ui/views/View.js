@@ -96,7 +96,7 @@ define([
 		},
 		
 		linkChildren: function(){
-			var i, doParse = 0, child, dc;
+			var i, child, dc;
 			for(i = 0; i < this.parsedChildNodes.length; i++){
 				dc = dom.attr(this.parsedChildNodes[i], 'data-widget');
 				child = this.getChildbyNode(this.parsedChildNodes[i]);
@@ -106,15 +106,8 @@ define([
 					this.insertNavButton(child);
 				}else{
 					this.containerNode.appendChild(this.parsedChildNodes[i]);
-					doParse = 1;
 				}
 			}
-			
-			if(doParse){
-				//this.parseChildNodes(this.parsedChildNodes);
-				//this.parseChildNodes(this.containerNode);
-			}
-			
 		},
 		
 		insertNavButtons: function(buttons){
