@@ -19,11 +19,16 @@ define([
 		disabled:false,
 		value:null,
 		
+		
 		store:null,
 		
 		// non standard
 		label:'',
 		menuShowing: false,
+		
+		// if true, value will remain blank until user selected
+		noDefault:false,
+		
 		
 		// not impl
 		selectedOptions:null,
@@ -31,6 +36,25 @@ define([
 		autofocus:false,
 		
 		template:'<div id="{{id}}" class="{{baseClass}}" data-ref="click:onClick">{{label}}</div>',
+		
+		properties:{
+			value:{
+				get: function(){
+					return this.__value;
+				},
+				set: function(v){
+					this.setValue(v, true);
+				}
+			},
+			disabled:{
+				get: function(){
+					return this.__disabled;
+				},
+				set: function(v){
+					this.setDisabled(v, true);
+				}
+			}
+		},
 		
 		constructor: function(options, node){
 			this.options = this.options || [];
@@ -55,6 +79,9 @@ define([
 		},
 		
 		onClick: function(){
+			if(this.__disabled){
+				return;
+			}
 			if(!this.menuShowing){
 				this.menu.show();
 			}else{
@@ -63,7 +90,8 @@ define([
 		},
 		
 		postRender: function(){
-			this.menu = new Menu({}, this.node);
+			this.setDisabled(true); // disabled until there are options
+			this.menu = new Menu({noDefault:this.noDefault}, this.node);
 			this.add(this.optionsArray);
 			
 			this.menu.on('change-visible', function(value){
@@ -93,10 +121,25 @@ define([
 			}
 		},
 		
-		setValue: function(value){
+		setDisabled: function(disabled){
+			if(this.__disabled === disabled){
+				return;
+			}
+			this.__disabled = disabled;
+			if(disabled){
+				this.node.classList.add('disabled');
+			}else{
+				this.node.classList.remove('disabled');
+			}
+		},
+		
+		setValue: function(value, silent){
 			var item = this.optionsMap[value];
 			this.node.innerHTML = item.text;
-			this.value = item.value;
+			this.__value = item.value;
+			if(!silent){
+				this.emit('change', this.__value);
+			}
 		},
 		
 		setSelectedItem: function(item){
@@ -106,12 +149,16 @@ define([
 			}
 			item.selected = true;
 			this.selectedItem = item;
-			this.value = item.value;
+			this.__value = item.value;
 			this.label = item.text;
 			this.node.innerHTML = this.label;
 		},
 		
 		setOptions: function(options){
+			if(this.noDefault){
+				this.selectedIndex = -1;
+				this.menu.selectedIndex = -1;
+			}
 			this.menu.clear();
 			this.clear();
 			this.add(options);
@@ -158,6 +205,7 @@ define([
 				this.setSelectedItem(item);
 			}
 			this.menu.add(item);
+			this.setDisabled(false);
 		}
 	});
 

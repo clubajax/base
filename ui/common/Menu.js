@@ -17,6 +17,9 @@ define([
 		
 		nodeIsReference:true,
 		
+		// if true, value will remain blank until user selected
+		noDefault:false,
+		
 		// not impl
 		selectedOptions:null,
 		multiple:false,
@@ -48,13 +51,14 @@ define([
 		
 		onClick: function(event){
 			var value = event.target.getAttribute('value');
-			console.log('CLICK', value);
 			
 			if(value === undefined || value === null || !this.optionsMap[value]){
 				return true;
 			}
 			
-			this.options[this.selectedIndex].selected = false;
+			if(this.selectedIndex > -1){
+				this.options[this.selectedIndex].selected = false;
+			}
 			this.selectedIndex = this.optionsMap[value].index;
 			this.options[this.selectedIndex].selected = true;
 			console.log('selected', this.selectedIndex, this.options[this.selectedIndex]);

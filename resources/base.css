@@ -38,11 +38,14 @@ button, .base-button{
 	text-align: right;
 	left: 1px;
 }
-.base-button:disabled, button:disabled{
+.base-button:disabled,
+button:disabled,
+.base-dropdown.disabled{
 	background: #eee;
 	color: #ccc;
 	cursor: default;
 }
+
 
 /* dropdown */
 .base-dropdown{
@@ -79,6 +82,7 @@ button, .base-button{
 	padding: 5px 8px 5px 15px;
 	position: relative;
 	cursor: pointer;
+	white-space: nowrap;
 }
 .menu-item:hover{
 	background: #484675;
