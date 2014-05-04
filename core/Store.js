@@ -210,8 +210,6 @@ define([
 			//console.log('this.extraParams', this.extraParams);
 			//console.log('target', target);
 			
-			
-			
 			allParams = cleanObject(lang.mix({}, query, params, this.extraParams));
 				
 			delimeter = this.url.indexOf('?') > -1 || target.indexOf('?') > -1 ? '&' : '?';
@@ -227,6 +225,12 @@ define([
 			url = this.checkForProxyUrl(url);
 			
 			//console.log('PROXY URL', url);
+			
+			if(url === this._lastUrl){
+				console.log('prevent duplicate query');
+				return;
+			}
+			this._lastUrl = url;
 			
 			console.time(this.url);
 			

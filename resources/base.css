@@ -81,6 +81,8 @@ button:disabled,
 .base-menu{
 	position: absolute;
 	z-index: 1000;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 .menu-container{
 	position: absolute;
@@ -92,7 +94,7 @@ button:disabled,
 	background: #fff;
 }
 .menu-item{
-	font-size: 12px;
+	font-size: 14px;
 	padding: 5px 8px 5px 15px;
 	position: relative;
 	cursor: pointer;

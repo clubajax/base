@@ -161,7 +161,7 @@
 				paused,
 				id = uid('listener-');
 				
-			if(name instanceof window.Node){
+			if(name instanceof window.Node || name === window){
 				handle = on.apply(null, arguments);
 				// need to collect and destroy
 				return handle;

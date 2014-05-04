@@ -1,8 +1,9 @@
 define([
+	'base/core/on',
 	'base/core/dcl',
 	'base/core/dom',
 	'base/core/Widget'
-], function(dcl, dom, Widget){
+], function(on, dcl, dom, Widget){
 	
 	// https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement
 	
@@ -34,6 +35,8 @@ define([
 			if(options.list){
 				this.add(options.list);
 			}
+			
+			this.on(window, 'resize', this.hide.bind(this));
 		},
 		
 		postCreate: function(){
@@ -123,6 +126,7 @@ define([
 				this.build();
 			}
 			document.body.appendChild(this.node);
+			this.position();
 			setTimeout(function(){
 				this.clickOffHandle.resume();
 			}.bind(this), 300);
@@ -137,23 +141,53 @@ define([
 			document.body.removeChild(this.node);
 			this.clickOffHandle.pause();
 			this.emit('change-visible', false);
+			console.log('HIDE');
+		},
+		
+		position: function(){
+			var
+				padding = dom.computed(this.containerNode, 'padding-left') +
+					dom.computed(this.containerNode, 'padding-right'),
+				menuBox = dom.box(this.containerNode),
+				winBox = dom.box(window),
+				btnBox = dom.box(this.refNode),
+				botSpace = winBox.height - (btnBox.top + btnBox.height),
+				topSpace = btnBox.top,
+				w = btnBox.width - padding - 2,
+				options = {
+					top: btnBox.top + btnBox.height,
+					left: btnBox.left,
+					width: w
+				};
+			
+			if(menuBox.height > botSpace){
+				if(menuBox.height < topSpace){
+					// top, full size
+					options.top = btnBox.top - menuBox.height;
+				}else if(botSpace > topSpace){
+					// bottom, but scroll
+					options.height = botSpace;
+				}else{
+					// top, scroll
+					options.height = topSpace - 3;
+					options.top = 3;
+				}
+			}
+			
+			dom.style(this.node, options);
+			dom.style(this.containerNode, 'width', w); // assume 2px border
+			console.log('POS', this.node);
 		},
 		
 		build: function(){
 			this.containerNode.innerHTML = '';
 			var
 				i,
-				css,
-				pos = dom.box(this.refNode);
+				css;
 			for(i = 0; i < this.options.length; i++){
 				css = this.options[i].selected ? this.menuItemClass + ' selected' : this.menuItemClass;
 				dom('div', {css:css, attr:{html:this.options[i].text, value:this.options[i].value}}, this.containerNode);
 			}
-			
-			dom.style(this.node, {
-				top: pos.top + pos.height,
-				left: pos.left
-			});
 			
 			this.built = true;
 		}

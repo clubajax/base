@@ -103,6 +103,11 @@ define([
 	
 		return node.style[prop];
 	}
+	
+	function computed(node, prop){
+		var value = window.getComputedStyle(node)[prop];
+		return parseInt(value, 10);
+	}
 
 	function attr(node, prop, value){
 		// get/set node attribute(s)
@@ -242,6 +247,7 @@ define([
 		}
 	}
 	
+	dom.computed = computed;
 	dom.attr = attr;
 	dom.box = box;
 	dom.style = style;

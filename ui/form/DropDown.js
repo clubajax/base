@@ -165,6 +165,7 @@ define([
 				}
 				this.node.innerHTML = item.text;
 			}
+			
 			this.__value = item.value;
 			if(!silent){
 				this.emit('change', this.__value);
