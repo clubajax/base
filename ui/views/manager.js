@@ -3,8 +3,9 @@ define([
 	'../../core/has',
 	'../../core/mouse',
 	'../../core/behavior',
+	'../../core/Promise',
 	'../../core/logger'
-], function(dom, has, mouse, behavior, logger){
+], function(dom, has, mouse, behavior, Promise, logger){
 	
 	var
 		log = logger('VMN', 0, 'View Manager'),
@@ -92,6 +93,7 @@ define([
 		view = typeof view === 'string' ? viewMap[view] : view;
 		log('\n * setTransitionView', view.index, view.id);
 		var
+			promise = new Promise(),
 			duration = 600,
 			direction = 1,
 			toIndex = view.index,
@@ -102,7 +104,8 @@ define([
 			from, to;
 			
 		if(toIndex === fromIndex){
-			return;
+			promise.call(view);
+			return promise;
 		}
 		
 		if(toIndex > fromIndex){
@@ -136,13 +139,17 @@ define([
 		behavior.all(moves).then(function(){
 			log('done animating');
 			setDisplayView(setSelected(view));
+			promise.resolve(view);
 		});
+		return promise;
 	}
 	
 	function addView(view){
 		log('addView', view.id);
 		viewMap[view.id] = view;
 		viewList.push(view);
+		// for when view emits an event that it wants to
+		// navigate somewhere else (like 'home')
 		view.on('navigate', setTransitionView);
 	}
 	
@@ -172,7 +179,10 @@ define([
 				console.error('View not found:', view);
 				return null;
 			}
-			setTransitionView(view);
+			var
+				promise = setTransitionView(view);
+			view = this.byId(view);
+			promise.inject(view);
 			return view;
 		},
 		
@@ -181,6 +191,7 @@ define([
 		},
 		
 		byId: function(id){
+			if(typeof id === 'object'){ return id; }
 			return viewMap[id];
 		},
 		
