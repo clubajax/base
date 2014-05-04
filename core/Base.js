@@ -55,6 +55,10 @@
 			this.on = function(){
 				return this.tree.on.apply(this.tree, arguments);
 			};
+			
+			this.once = function(){
+				return this.tree.once.apply(this.tree, arguments);
+			};
 	
 			this.emit = function(){
 				this.tree.emit.apply(this.tree, arguments);

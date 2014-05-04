@@ -1,8 +1,11 @@
 define([
 	'./storage',
 	'./xhr',
-	'./Promise'
-], function(storage, xhr, Promise){
+	'./Promise',
+	'./logger'
+], function(storage, xhr, Promise, logger){
+	
+	var log = logger('CHE', 0, 'base/core/cache');
 	
 	function parseExpiration(object){
 		var
@@ -24,16 +27,16 @@ define([
 	}
 	
 	function expired(object){
-		console.log('expired?');
+		log('expired?');
 		if(!object.expires){
-			console.log('object not expired');
+			log('object not expired');
 			return false;
 		}
 		var
 			info = parseExpiration(object),
 			now = new Date();
 			
-		console.log('info', info);
+		log('info', info);
 		
 		switch(info.unit){
 			case 'sec':
@@ -49,7 +52,7 @@ define([
 				info.date.setDate(info.date.getDate() + info.interval);
 				break;
 		}
-		console.log('comp', now, info.date);
+		log('comp', now, info.date);
 		return now.getTime() > info.date.getTime();
 	}
 	
@@ -81,23 +84,23 @@ define([
 		var
 			promise = new Promise(),
 			object = !!expires ? storage.get(url) : null;
-		console.log('expire request', expires);
-		console.log('object', object);
+		log('expire request', expires);
+		log('object', object);
 		
 		if(object){
 			if(expired(object) || expires === -1){
-				console.log('expired!');
+				log('expired!');
 				storage.remove(url);
 				promise.cache = 'expired';
 				load(url, promise, expires, handleAs, proxy);
 			}else{
-				console.log('from cache');
+				log('from cache');
 				promise.cache = 'from cache';
 				promise.call(object.data);
 			}
 		}else{
 			promise.cache = 'from server';
-			console.log('from server');
+			log('from server');
 			load(url, promise, expires, handleAs, proxy);
 		}
 		
