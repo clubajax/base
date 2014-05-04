@@ -61,7 +61,6 @@ define([
 			}
 			this.selectedIndex = this.optionsMap[value].index;
 			this.options[this.selectedIndex].selected = true;
-			console.log('selected', this.selectedIndex, this.options[this.selectedIndex]);
 			this.built = false;
 			this.build();
 			this.hide();
@@ -117,10 +116,8 @@ define([
 		
 		show: function(){
 			if(this.showing){
-				console.log('showin already');
 				return;
 			}
-			console.log('show!');
 			this.showing = true;
 			if(!this.built){
 				this.build();
@@ -136,7 +133,6 @@ define([
 			if(!this.showing){
 				return;
 			}
-			console.log('hide!');
 			this.showing = false;
 			document.body.removeChild(this.node);
 			this.clickOffHandle.pause();
@@ -144,7 +140,6 @@ define([
 		},
 		
 		build: function(){
-			console.log('build!');
 			this.containerNode.innerHTML = '';
 			var
 				i,

@@ -62,6 +62,13 @@ define([
 			
 		};
 		
+		this.inject = function(object){
+			// promise-ify's an object
+			// adding then()
+			// (what else? status?)
+			object.then = this.then;
+		};
+		
 		
 		//
 		// handle Promise.all

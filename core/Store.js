@@ -33,10 +33,6 @@ define([
 		// for development - switches to PHP page
 		proxy:false,
 		
-		// for development - tests domain for whether this
-		// should use a proxy or not
-		//testForProxy:false,
-		
 		url:'',
 		
 		// expires: Set this to avoid fetching from the server on
@@ -168,8 +164,8 @@ define([
 			this.stashItems(this.items);
 			
 			this.emit('data', data);
-			this.emit('data-end', data);
 			this.emit('items', this.items);
+			this.emit('data-end', data);
 		},
 		
 		query: function(query, params, successCallback){
@@ -209,10 +205,10 @@ define([
 				params[this.pagingEndProp] = this.pagingDefaultMax;
 			}
 			
-			console.log('query', query);
-			console.log('params', params);
-			console.log('this.extraParams', this.extraParams);
-			console.log('target', target);
+			//console.log('query', query);
+			//console.log('params', params);
+			//console.log('this.extraParams', this.extraParams);
+			//console.log('target', target);
 			
 			
 			
@@ -230,7 +226,7 @@ define([
 			
 			url = this.checkForProxyUrl(url);
 			
-			console.log('PROXY URL', url);
+			//console.log('PROXY URL', url);
 			
 			console.time(this.url);
 			
