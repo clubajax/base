@@ -33,6 +33,7 @@
 			this.listeners = {};
 			this.handles = {};
 			this.children = {};
+			this._previousEvents = {};
 			if(options.events){
 				this.setEventNames(options.events);
 			}
@@ -89,7 +90,6 @@
 		emit: function(name, event){
 			if(this.__events && !this.__events[name]){
 				this.missingEventName(name);
-				//console.log(this.events);
 			}
 			var
 				stopBubbling,
@@ -98,7 +98,9 @@
 				args = Array.prototype.slice.call(arguments);
 	
 			args.shift();
-	
+			
+			this._previousEvents[name] = args;
+			
 			// adds ancestors to create a hierarchy
 			// event may look like:
 			// event = {
@@ -144,7 +146,14 @@
 			this.listeners = {};
 		},
 	
-		on: function(name, callback, context){
+		once: function(name, callback, context, includeMissed){
+			var handle = this.on(name, function(){
+				callback.apply(context, arguments);
+				handle.remove();
+			}, this);	
+		},
+		
+		on: function(name, callback, context, includeMissed){
 			var
 				handles = this.handles,
 				handle,
@@ -160,6 +169,11 @@
 			if(this.__events && !this.__events[name]){
 				console.warn('Possible incorrect event name:  on('+name+')');
 			}
+			
+			if(context === true){
+				includeMissed = true;
+				context = false;
+			}
 		
 			this.listeners[name] = this.listeners[name] || {};
 			if(context){
@@ -167,6 +181,11 @@
 			}
 	
 			listeners[name][id] = callback;
+
+			if(includeMissed && this._previousEvents[name]){
+				callback(this._previousEvents[name]);
+				this._previousEvents[name] = null; // so it won't fire again... I think...
+			}
 	
 			handle = {
 				id: uid('handle'),
