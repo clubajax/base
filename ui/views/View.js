@@ -36,6 +36,21 @@ define([
 		
 		buttons:null,
 		
+		properties:{
+			value:{
+				get: function(){
+					return this.__value;
+				},
+				set: function(v){
+					this.setValue(v);
+				}
+			}
+		},
+		
+		setValue: function(value){
+			// to be over written
+		},
+		
 		constructor: function(options, node){
 			if(node){
 				this.appendNode = node.parentNode;
