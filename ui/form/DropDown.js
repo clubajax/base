@@ -43,7 +43,7 @@ define([
 					return this.__value;
 				},
 				set: function(v){
-					this.setValue(v, true);
+					this.setValue(v);
 				}
 			},
 			disabled:{
@@ -72,8 +72,9 @@ define([
 		
 		setStore: function(store){
 			this.store = store;
-			this.store.getData(this.setOptions.bind(this));
+			this.store.getItems(this.setOptions.bind(this));
 			this.store.on('data-begin', function(){
+				this.setValue('');
 				this.setLoading(true);
 			}, this);
 			this.store.on('data-end', function(){
@@ -152,8 +153,18 @@ define([
 		},
 		
 		setValue: function(value, silent){
-			var item = this.optionsMap[value];
-			this.node.innerHTML = item.text;
+			var item;
+			if(value === null || value === '' || value === undefined){
+				this.node.innerHTML = '';
+				item = {value:''};
+			}else{
+				item = this.optionsMap[value];
+				if(!item){
+					console.warn('Attempt to set invalid property "',value,'" for options:', this.options);
+					return;
+				}
+				this.node.innerHTML = item.text;
+			}
 			this.__value = item.value;
 			if(!silent){
 				this.emit('change', this.__value);
@@ -180,12 +191,15 @@ define([
 			this.menu.clear();
 			this.clear();
 			this.add(options);
+			
+			this.emit('options-add', options);
 		},
 		
 		clear: function(){
 			this.options.length = 0;
 			this.optionsMap = {};
 			this.setSelectedItem('');
+			this.emit('options-clear');
 		},
 		
 		add: function(option){
@@ -224,6 +238,7 @@ define([
 			}
 			this.menu.add(item);
 			this.setDisabled(false);
+			this.emit('option-add', item);
 		}
 	});
 
