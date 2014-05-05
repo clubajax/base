@@ -164,6 +164,8 @@ define([
 				if(menuBox.height < topSpace){
 					// top, full size
 					options.top = btnBox.top - menuBox.height;
+					options.overflowX = 'visible';
+					options.overflowY = 'visible';
 				}else if(botSpace > topSpace){
 					// bottom, but scroll
 					options.height = botSpace;
@@ -172,6 +174,10 @@ define([
 					options.height = topSpace - 3;
 					options.top = 3;
 				}
+			}else{
+				// default, bottom, full
+				options.overflowX = 'visible';
+				options.overflowY = 'visible';
 			}
 			
 			dom.style(this.node, options);
