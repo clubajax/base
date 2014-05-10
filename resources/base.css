@@ -66,7 +66,8 @@ button:disabled,
     0%   {-webkit-transform: rotate(0deg)}
     100% {-webkit-transform: rotate(360deg)}
 }
-.base-dropdown.loading:after{
+.base-dropdown.loading:after,
+.base-field.loading:after{
 	content:'\21BB';
 	font-size: 18px;
 	top: 8px;
@@ -83,14 +84,11 @@ button:disabled,
 	z-index: 1000;
 	overflow-y: auto;
 	overflow-x: hidden;
-}
-.menu-container{
-	position: absolute;
-	top:0;
-	left:0;
-	padding: 5px;
 	border: 1px solid #ccc;
 	box-shadow: 1px 2px 2px rgba(0,0,0,0.2);
+}
+.menu-container{
+	padding: 5px;
 	background: #fff;
 }
 .menu-item{
@@ -147,7 +145,6 @@ input.base-field{
 	background: #FCEDED;
 }
 .base-input-wrap{
-	
 	box-sizing: border-box;
 }
 .base-input-wrap input{
@@ -171,6 +168,9 @@ input.base-field{
 	background-image: url(./mobile_icons.png);
 	background-position: 0 -90px;
 	
+}
+.base-autocomplete.loading:after{
+	background-image: none;
 }
 .base-autocomplete-container{
 	position: absolute;

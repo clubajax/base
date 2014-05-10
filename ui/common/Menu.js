@@ -21,10 +21,14 @@ define([
 		// if true, value will remain blank until user selected
 		noDefault:false,
 		
+		// do not use checkmarks to inidcate selected item
+		hideChecked: false,
+		
 		// not impl
 		selectedOptions:null,
 		multiple:false,
 		autofocus:false,
+		
 		
 		template:'<div id="{{id}}" class="{{baseClass}}" ><div class="{{containerClass}}" data-ref="containerNode"></div></div>',
 		
@@ -169,13 +173,15 @@ define([
 				menuBox = dom.box(this.containerNode),
 				winBox = dom.box(window),
 				btnBox = dom.box(this.refNode),
-				botSpace = winBox.height - (btnBox.top + btnBox.height),
-				topSpace = btnBox.top,
+				botSpace = winBox.height - (btnBox.top + btnBox.height + winBox.scrollTop),
+				topSpace = btnBox.top - winBox.scrollTop,
 				w = btnBox.width - padding - 2,
 				options = {
-					top: btnBox.top + btnBox.height,
+					top: btnBox.top + btnBox.height + winBox.scrollTop,
 					left: btnBox.left,
-					width: w
+					width: w,
+					height:'',
+					overflow: ''
 				};
 			
 			if(menuBox.height > botSpace){
@@ -186,17 +192,23 @@ define([
 					options.overflowY = 'visible';
 				}else if(botSpace > topSpace){
 					// bottom, but scroll
+					console.log('bottom scroll');
 					options.height = botSpace;
+					options.overflowY = 'scroll';
+					options.overflowX = 'hidden';
 				}else{
 					// top, scroll
 					options.height = topSpace - 3;
 					options.top = 3;
 				}
 			}else{
+				console.log('bottom full');
 				// default, bottom, full
-				options.overflowX = 'visible';
-				options.overflowY = 'visible';
+				//options.overflowX = 'visible';
+				//options.overflowY = 'visible';
 			}
+			console.log('position', options);
+			console.log('bot space', botSpace);
 			
 			dom.style(this.node, options);
 			dom.style(this.containerNode, 'width', w); // assume 2px border
@@ -208,7 +220,7 @@ define([
 				i,
 				css;
 			for(i = 0; i < this.options.length; i++){
-				css = this.options[i].selected ? this.menuItemClass + ' selected' : this.menuItemClass;
+				css = this.options[i].selected && !this.hideChecked ? this.menuItemClass + ' selected' : this.menuItemClass;
 				dom('div', {css:css, attr:{html:this.options[i].text, value:this.options[i].value}}, this.containerNode);
 			}
 			

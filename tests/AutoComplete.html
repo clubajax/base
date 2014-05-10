@@ -4,12 +4,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<meta name="format-detection" content="telephone=no">
     <title>AutoComplete</title>
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='../rtests/assets/tests.css' rel='stylesheet' />
 	<style>
 		textarea{
 			position: absolute;
 			left:10px;
 			top:250px;
 			height: 400px;
+		}
+		body{
+			padding: 0 20px;
 		}
 	</style>
 	<script>
@@ -23,8 +28,7 @@
 			};
 		}
 	</script>
-	<link href='../resources/base.css' rel='stylesheet' />
-	<link href='../rtests/assets/tests.css' rel='stylesheet' />
+	
 	<script src='../rtests/tools/requirejs.js'></script>
 	<script>
 		requirejs.config({
@@ -66,8 +70,8 @@
 			}
 			
 			var store = new Store({
-				expires: '15 secs',
-				testForProxy:true,
+				database: false,
+				//expires: '15 secs',
 				url: 'http://observato.mobile/js/base/tests/ac_server.php',
 				
 				processResults: function(data){
@@ -79,7 +83,7 @@
 			
 			new AutoComplete({
 				store:store,
-				queryName:'Path',
+				queryName:'value',
 				value:'Kevin',
 				delimeter:','
 			}, 'ac');

@@ -152,7 +152,9 @@ define([
         if(node === window){
 			return {
 				width: node.innerWidth,
-				height: node.innerHeight
+				height: node.innerHeight,
+				scrollTop: document.body.scrollTop,
+				scrollLeft: document.body.scrollLeft
 			};
 		}
 		return getNode(node).getBoundingClientRect();

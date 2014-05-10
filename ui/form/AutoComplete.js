@@ -2,13 +2,16 @@ define([
 	'base/core/dcl',
 	'base/core/dom',
 	'base/core/on',
-	'base/core/Widget',
-	'base/core/registry'
-], function(dcl, dom, on, Widget, registry){
+	'base/core/registry',
+	'../common/Menu',
+	'./DropDown'
+], function(dcl, dom, on, registry, Menu, DropDown){
 
-	return dcl(Widget, {
+	return dcl(DropDown, {
 		declaredClass:'AutoComplete',
-		baseClass:'base-autocomplete base-field',
+		baseClass:'base-autocomplete-input base-field',
+		wrapClass:'base-input-wrap base-autocomplete base-field',
+		
 		itemClass:'base-autocomplete-item',
 		popupClass:'base-autocomplete-popup',
 		listClass:'base-autocomplete-list',
@@ -17,7 +20,7 @@ define([
 		inputClass:'base-autocomplete-input base-field',
 		buttonClass:'base-autocomplete-done',
 		
-		template:'<div class="{{baseClass}}" data-ref="click:onClick" data-bind=text:value></div>',
+		template:'<div class="{{wrapClass}}"><input class="{{baseClass}}" data-ref="inputNode,keyup:onKeyUp"  /></div>',
 		
 		// placeholder text
 		placeholder:'Type here',
@@ -53,8 +56,23 @@ define([
 		// fetching new data from the server
 		debounce:400,
 		
-		observables:{
-			value:''
+		properties:{
+			value:{
+				get: function(){
+					return this.__value;
+				},
+				set: function(v){
+					this.setValue(v);
+				}
+			},
+			disabled:{
+				get: function(){
+					return this.__disabled;
+				},
+				set: function(v){
+					this.setDisabled(v, true);
+				}
+			}
 		},
 		
 		constructor: function(){
@@ -65,19 +83,13 @@ define([
 			}else{
 				console.warn('no store asscoiated with AutoComplete');
 			}
-			
-			this.clickoffHandle = on(document.body, 'click', function(e){
-				//console.log('DOCCLICK', e.target,
-				//	(this.containerNode && this.containerNode.contains(e.target)),
-				//	(this.listNode && this.listNode.contains(e.target)));
-				//
-				if((this.containerNode && this.containerNode.contains(e.target)) || (this.listNode && this.listNode.contains(e.target))){
-					return;
-				}
-				this.hideInput();
-				this.hidePopup();
+		},
+		
+		postRender: function(){
+			this.menu = new Menu({noDefault:this.noDefault, hideChecked:true}, this.node);
+			this.menu.on('change', function(value){
+				this.setValue(value);
 			}, this);
-			this.clickoffHandle.pause();
 		},
 		
 		setStore: function(store){
@@ -85,33 +97,35 @@ define([
 			this.store.on('items', function(items){
 				this.onItems(items);
 			}, this);
+			this.store.on('data-begin', function(){
+				this.setLoading(true);
+			}, this);
+			this.store.on('data-end', function(){
+				this.setLoading(false);
+			}, this);
 		},
 		
 		onItems: function(items){
-			if(!this.inputShowing){
-				// typed and hit enter, before results returned
-				return;
-			}
-			this.showPopup();
-			this.listNode.innerHTML = '';
-			var i, id, value;
+			
+			var i, id, value, options = [];
 			for(i = 0; i < items.length; i++){
 				id = this.store.getId(items[i]);
 				value = this.store.getValue(items[i]);
-				dom('div', {css:this.itemClass, html:value, attr:{'data-id':id}}, this.listNode);
+				options.push({value:value, label:value});
 			}
+			this.menu.hide();
+			this.menu.clear();
+			this.menu.add(options);
+			this.menu.show();
 		},
 		
-		onKey: function(e){
+		onKeyUp: function(e){
 			clearTimeout(this.debounceHandle);
 			console.log('key', e.keyCode);
 			switch(e.keyCode){
 				case 27:
 					// ESC
-					//this.onEnter(this.value());
-					this.hidePopup();
-					this.hideInput();
-					this.inputNode.blur();
+					this.menu.hide();
 					break;
 				case 13:
 					// ENTER
@@ -124,23 +138,25 @@ define([
 						
 		},
 		
-		onEnter: function(value){
-			this.hidePopup();
-			this.hideInput();
-			this.inputNode.blur();
-			this.value(value);
-			this.node.classList.remove('invalid');
+		setValue: function(value){
+			this.inputNode.value = value;
+			this.__value = value;
 			if(!this.freetext){
 				//validate
 				if(!this.store.byValue(value)){
-					this.node.classList.add('invalid');
+					this.inputNode.classList.add('invalid');
 				}
 			}
 		},
 		
+		onEnter: function(value){
+			this.menu.hide();
+			this.setValue(value);
+		},
+		
 		query: function(){
 			if(this.inputNode.value === this.lastValue){
-				//console.log('BLOCK SAME');
+				console.log('BLOCK SAME');
 				return;
 			}
 			this.lastValue = this.inputNode.value;
@@ -172,88 +188,29 @@ define([
 			this.store.query(query);
 		},
 		
-		showPopup: function(){
-			if(!this.popupNode){
-				this.buildPopup();
-			}else if(!this.popupShowing){
-				this.listNode.innerHTML = '';
-				dom.show(this.popupNode);
+		setDisabled: function(disabled){
+			if(this.__disabled === disabled){
+				return;
 			}
-			this.popupShowing = true;
-		},
-		
-		hidePopup: function(){
-			//if(!this.popupShowing){ return; }
-			if(this.popupNode){
-				dom.hide(this.popupNode);
+			this.__disabled = disabled;
+			if(disabled){
+				this.node.classList.add('disabled');
+			}else{
+				this.node.classList.remove('disabled');
 			}
-			this.popupShowing = false;
-			this.lastValue = '';
 		},
 		
-		showInput: function(){
-			if(this.inputShowing){ return; }
-			if(!this.containerNode){
-				this.buildInput();
+		setLoading: function(loading){
+			if(this.loading === loading){
+				return;
 			}
-			this.node.classList.add('disabled');
-			this.inputNode.value = this.value();
-			this.inputShowing = true;
-			window.requestAnimationFrame(function(){
-				this.containerNode.classList.add('show');	
-			}.bind(this));
-			
-			setTimeout(function(){
-				this.clickoffHandle.resume();
-				this.inputNode.focus();
-			}.bind(this), 300);
-			
-		},
-		
-		hideInput: function(){
-			//if(!this.inputShowing){ return; }
-			this.containerNode.classList.remove('show');
-			this.node.classList.remove('disabled');
-			this.inputShowing = false;
-			this.clickoffHandle.pause();
-		},
-		
-		
-		buildPopup: function(){
-			this.popupNode = dom('div', {css:this.popupClass}, document.body);
-			this.listNode = dom('div', {css:this.listClass}, this.popupNode);
-			this.on(this.listNode, 'click div.'+this.itemClass, function(e){
-				var
-					id = dom.attr(e.selectorElement, 'data-id'),
-					item = this.store.byId(id),
-					value = this.store.getValue(item);
-					
-				console.log('click', value, e.selectorElement);
-				this.onEnter(value);
-				this.emit('value', value);
-				this.emit('item', item);
-			}, this);
-		},
-		
-		buildInput: function(){
-			this.containerNode = dom('div', {css:this.containerClass}, document.body);
-			this.inputWrap = dom('div', {css:this.inputWrapperClass}, this.containerNode);
-			this.inputNode = dom('input', {css:this.inputClass, attr:{placeholder:this.placeholder}}, this.inputWrap);
-			this.doneBtn = dom('button', {css:this.buttonClass, html:this.doneText}, this.containerNode);
-			this.on(this.inputNode, 'keydown', this.onKey, this);
-			this.on(this.doneBtn, 'click', function(){
-				this.onEnter(this.inputNode.value);	
-			}, this);
-			
-		},
-		
-		onClick: function(e){
-			this.showInput();
-		},
-		
-		onKeyup: function(e){
-			//	console.log('key', e);
-			//	console.log('value', this.node.value);
+			this.loading = loading;
+			if(loading){
+				this.node.classList.add('loading');
+			}else{
+				this.node.classList.remove('loading');
+			}
 		}
+		
 	});
 });

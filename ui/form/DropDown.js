@@ -19,16 +19,13 @@ define([
 		disabled:false,
 		value:null,
 		
-		
-		store:null,
-		
 		// non standard
+		store:null,
 		label:'',
 		menuShowing: false,
 		
 		// if true, value will remain blank until user selected
 		noDefault:false,
-		
 		
 		// not impl
 		selectedOptions:null,
@@ -61,7 +58,7 @@ define([
 			this.optionsMap = {};
 			this.selectedItem = null;
 			this.optionsArray = options.list || options.options;
-			this.appendNode  = dom('div');
+			this.appendNode = dom('div');
 			if(this.store){
 				this.setStore(this.store);
 			}else if(this.storeId){
