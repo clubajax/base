@@ -88,7 +88,6 @@ define([
 		},
 		
 		onItems: function(items){
-			console.log('items:', items.length);
 			if(!this.inputShowing){
 				// typed and hit enter, before results returned
 				return;
@@ -99,7 +98,6 @@ define([
 			for(i = 0; i < items.length; i++){
 				id = this.store.getId(items[i]);
 				value = this.store.getValue(items[i]);
-				//console.log('    - ', value);
 				dom('div', {css:this.itemClass, html:value, attr:{'data-id':id}}, this.listNode);
 			}
 		},
@@ -142,7 +140,7 @@ define([
 		
 		query: function(){
 			if(this.inputNode.value === this.lastValue){
-				console.log('BLOCK SAME');
+				//console.log('BLOCK SAME');
 				return;
 			}
 			this.lastValue = this.inputNode.value;
@@ -154,7 +152,7 @@ define([
 			// Probably a Store thing that should normalize different
 			// cases.
 			// 
-			console.log('QUERY', this.inputNode.value);
+			//console.log('QUERY', this.inputNode.value);
 			
 			var
 				//value,

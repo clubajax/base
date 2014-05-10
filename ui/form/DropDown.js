@@ -167,6 +167,7 @@ define([
 			}
 			
 			this.__value = item.value;
+			this.menu.setValue(this.__value);
 			if(!silent){
 				this.emit('change', this.__value);
 			}

@@ -227,7 +227,7 @@ define([
 			//console.log('PROXY URL', url);
 			
 			if(url === this._lastUrl){
-				console.log('prevent duplicate query');
+				//console.log('prevent duplicate query');
 				return;
 			}
 			this._lastUrl = url;

@@ -28,6 +28,16 @@ define([
 		
 		template:'<div id="{{id}}" class="{{baseClass}}" ><div class="{{containerClass}}" data-ref="containerNode"></div></div>',
 		
+		properties:{
+			value:{
+				get: function(){
+					return this.__value;
+				},
+				set: function(v){
+					this.setValue(v);
+				}
+			},
+		},
 		constructor: function(options, node){
 			this.options = this.options || [];
 			this.optionsMap = {};
@@ -59,16 +69,25 @@ define([
 				return true;
 			}
 			
-			if(this.selectedIndex > -1){
-				this.options[this.selectedIndex].selected = false;
-			}
-			this.selectedIndex = this.optionsMap[value].index;
-			this.options[this.selectedIndex].selected = true;
+			this.setValue(value);
+			
 			this.built = false;
 			this.build();
 			this.hide();
 			this.emit('change', value);
 			return true;
+		},
+		
+		setValue: function(value){
+			// sets value silently
+			this.__value = value;
+			if(this.options && this.options.length){
+				if(this.selectedIndex > -1){
+					this.options[this.selectedIndex].selected = false;
+				}
+				this.selectedIndex = this.optionsMap[value].index;
+				this.options[this.selectedIndex].selected = true;
+			}
 		},
 		
 		clear: function(){
@@ -108,7 +127,7 @@ define([
 			this.optionsMap[value] = item;
 			this.options.push(item);
 			
-			if(this.options.length - 1 === this.selectedIndex){
+			if(this.options.length - 1 === this.selectedIndex || this.__value === item.value ){
 				item.selected = true;
 				this.value = item.value;
 				this.label = item.text;
@@ -141,7 +160,6 @@ define([
 			document.body.removeChild(this.node);
 			this.clickOffHandle.pause();
 			this.emit('change-visible', false);
-			console.log('HIDE');
 		},
 		
 		position: function(){
@@ -182,7 +200,6 @@ define([
 			
 			dom.style(this.node, options);
 			dom.style(this.containerNode, 'width', w); // assume 2px border
-			console.log('POS', this.node);
 		},
 		
 		build: function(){
