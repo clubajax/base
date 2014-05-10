@@ -51,15 +51,30 @@
 			'base/ui/form/AutoComplete'
 		], function(Store, AutoComplete) {
 			
+			function toOptions(items, labelKey, valueKey){
+				var i, options = [];
+				labelKey = labelKey || 'name';
+				valueKey = valueKey || 'value';
+				for(i = 0; i < items.length; i++){
+					options.push({
+						label: items[i][labelKey] || items[i],
+						key: items[i][valueKey] || items[i],
+						value:items[i][valueKey] || items[i]
+					});
+				}
+				return options;
+			}
+			
 			var store = new Store({
 				expires: '15 secs',
 				testForProxy:true,
-				url:'/observato/web/rest/resources',
-				database:'main',
-				target: '/dictionaries',
-				pagingStartProp:'start',
-				pagingEndProp:'max',
-				pagingDefaultMax:50
+				url: 'http://observato.mobile/js/base/tests/ac_server.php',
+				
+				processResults: function(data){
+					data.items = toOptions(data.items);
+					console.log('data', data);
+					return data;
+				}
 			});
 			
 			new AutoComplete({
