@@ -11,6 +11,79 @@
 .base-link:hover{
 	color: #0000ff;
 }
+
+.base-form-list{
+	
+}
+.base-form-list label{
+	border: 0px solid #ff0000;
+	height: 20px;
+	position: relative;
+	padding-top: 5px;
+	max-width: 300px;
+	cursor: pointer;
+}
+.base-form-list label *{
+	vertical-align: middle;
+}
+.base-checkbox input[type=checkbox]{
+	display: none;
+}
+.base-switch{
+	position: absolute;
+	top:5px;
+	right: 1px;
+	display: inline-block;
+	width: 40px;
+	height: 20px;
+	border: 1px solid #ccc;
+	border-radius: 20px;
+	transition: background 500ms;
+}
+.base-switch:before{
+	content:'';
+	position: absolute;
+	top:4px;
+	left: 9px;
+	width: 0;
+	height: 10px;
+	border-left:3px solid #fff;
+}
+.base-switch:after{
+	content:'';
+	position: absolute;
+	top:5px;
+	right: 4px;
+	width: 7px;
+	height: 7px;
+	border: 2px solid #ccc;
+	border-radius: 10px;
+}
+.base-switch-highlight{
+	
+}
+.base-switch-handle{
+	position: absolute;
+	z-index: 1;
+	top:-1px;
+	left: -1px;
+	width: 20px;
+	height: 20px;
+	background: #fff;
+	border-radius: 20px;
+	border: 1px solid #ccc;
+	box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+	transition: left 500ms;
+}
+.base-checkbox input[type=checkbox]:checked + .base-switch .base-switch-handle{
+	left: 20px;
+	border-color: #5E5ED6;
+}
+.base-checkbox input[type=checkbox]:checked + .base-switch{
+	border-color: #0000ff;
+	background: #849BFF;
+}
+
 button, .base-button{
 	position: relative;
 	border: 1px solid #ccc;
@@ -407,6 +480,12 @@ input.base-field{
 }
 .base-view-nav-button.icon.charts:before{
 	background-position: -80px 0;
+}
+.base-view-nav-button.icon.legend:before{
+	background-position: -40px -87px;
+}
+.base-view-nav-button.icon.profile:before{
+	background-position: -80px -90px;
 }
 .base-view-nav-button:hover{
 	background: #ccc;
