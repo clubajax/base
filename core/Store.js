@@ -71,6 +71,8 @@ define([
 		// (must have pagingStartProp and pagingEndProp set)
 		pagingDefaultMax:0,
 		
+		_inflight: false,
+		
 		constructor: function(options){
 			this.idMap = {};
 			this.valueMap = {};
@@ -158,22 +160,20 @@ define([
 			// to programmatically set data
 			// 
 			console.timeEnd(this.url);
-			data = this.processResults(data);
+			
 			this.data = data;
 			this.items = !!this.itemsProperty ? data[this.itemsProperty] : data;
 			this.stashItems(this.items);
-			
 			this.emit('data', data);
 			this.emit('items', this.items);
 			this.emit('data-end', data);
 		},
 		
+		onQuerySuccess: function(data){
+			this.setData(this.processResults(data));
+		},
+		
 		query: function(query, params, successCallback){
-			// nullify data as an indication that we are in the
-			// process of fetching data
-			// 
-			this.data = null;
-			this.items = null;
 			
 			this.emit('data-begin');
 			
@@ -227,17 +227,31 @@ define([
 			//console.log('PROXY URL', url);
 			
 			if(url === this._lastUrl){
-				//console.log('prevent duplicate query');
+				//console.log('prevent duplicate query blocked');
+				if(!this._inflight){
+					this.setData(this.data);
+				}
 				return;
 			}
 			this._lastUrl = url;
 			
 			console.time(this.url);
 			
+			// nullify data as an indication that we are in the
+			// process of fetching data
+			//
+			this.data = null;
+			this.items = null;
+			this._inflight = true;
+			
 			promise = cache(url, this.expires, null);
 			
-			promise.then(this.setData.bind(this), function(e){
+			promise.then(function(data){
+				this._inflight = false;
+				this.onQuerySuccess(data);
+			}.bind(this), function(e){
 				console.error('Store error', e);
+				this._inflight = false;
 				this.emit('data-end', e);
 			}.bind(this));
 		},

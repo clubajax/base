@@ -59,11 +59,7 @@ define([
 			this.selectedItem = null;
 			this.optionsArray = options.list || options.options;
 			this.appendNode = dom('div');
-			if(this.store){
-				this.setStore(this.store);
-			}else if(this.storeId){
-				registry.getStore(this.storeId, this.setStore.bind(this));
-			}
+			
 			
 		},
 		
@@ -120,6 +116,13 @@ define([
 				this.add(list);
 				dom.destroy(this.appendNode);
 			}
+			
+			if(this.store){
+				this.setStore(this.store);
+			}else if(this.storeId){
+				registry.getStore(this.storeId, this.setStore.bind(this));
+			}
+			
 			if(!this.selectedItem){
 				this.setSelectedItem(this.options[0]);
 			}

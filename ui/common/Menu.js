@@ -89,8 +89,11 @@ define([
 				if(this.selectedIndex > -1){
 					this.options[this.selectedIndex].selected = false;
 				}
-				this.selectedIndex = this.optionsMap[value].index;
-				this.options[this.selectedIndex].selected = true;
+				this.selectedIndex = -1;
+				if(this.optionsMap[value]){
+					this.selectedIndex = this.optionsMap[value].index;
+					this.options[this.selectedIndex].selected = true;
+				}
 			}
 		},
 		

@@ -159,6 +159,7 @@
 				handle,
 				listeners = this.listeners,
 				paused,
+				deferredResult,
 				id = uid('listener-');
 				
 			if(name instanceof window.Node || name === window){
@@ -183,7 +184,10 @@
 			listeners[name][id] = callback;
 
 			if(includeMissed && this._previousEvents[name]){
-				callback(this._previousEvents[name]);
+				deferredResult = this._previousEvents[name];
+				setTimeout(function(){
+					callback(deferredResult);
+				}.bind(this), 100);
 				this._previousEvents[name] = null; // so it won't fire again... I think...
 			}
 	

@@ -182,6 +182,10 @@ define([
 			var
 				promise = setTransitionView(view);
 			view = this.byId(view);
+			if(view.onFirstDisplay && !view._displayed){
+				view.onFirstDisplay();
+				view._displayed = 1;
+			}
 			promise.inject(view);
 			return view;
 		},

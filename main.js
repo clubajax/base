@@ -4,7 +4,7 @@ require([
 	'base/core/behavior',
 	'base/core/Base',
 	'base/core/dom',
-	'base/core/Evented',
+	'base/core/EventTree',
 	'base/core/has',
 	'base/core/lang',
 	'base/core/logger',
