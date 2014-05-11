@@ -85,8 +85,15 @@ define([], function(){
 			return !Object.keys(obj).length;
 		},
 		
-		getObject: function(name){
-			return name;
+		getNamespaced: function(self, str){
+			var result = self;
+			if(str.indexOf('.') > -1){
+				str.split('.').forEach(function(word){
+					result = result[word];	
+				});
+				return result;
+			}
+			return self[str];
 		}
 	};
 });

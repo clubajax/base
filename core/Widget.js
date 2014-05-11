@@ -26,6 +26,15 @@ define([
 				this.postRender();
 			}
 		}),
+		
+		parseTemplate: function(template){
+			var node = dom(template.replace(/\{\{[\w\s\.]*\}\}/g, function(word){
+				word = word.substring(2, word.length-2);
+				return lang.getNamespaced(this, word);
+			}.bind(this)));
+			return node;
+		},
+		
 		renderWidget: function(node){
 			var
 				childNode,
@@ -48,11 +57,7 @@ define([
 			if(typeof this.template === 'object'){
 				this.node = dom(this.template.nodeName, this.template);
 			}else{
-				//console.log('this.template', this.template);
-				this.node = dom(this.template.replace(/\{\{[\w\s]*\}\}/g, function(word){
-					word = word.substring(2, word.length-2);
-					return this[word];
-				}.bind(this)));
+				this.node = this.parseTemplate(this.template);
 				
 				// causes a recursion in parser test
 				// attempting to parse a widget's properties
