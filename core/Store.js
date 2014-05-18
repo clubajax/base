@@ -192,6 +192,7 @@ define([
 				target = (target + '/' + query.target).replace('//', '/');
 			}
 			
+			this.database = query.database || params.database || this.database;
 			if(this.database === ''){
 				console.error('database not provided to Store');
 			}
