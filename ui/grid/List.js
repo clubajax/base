@@ -46,7 +46,7 @@ define([
 			this.store = store;
 			if(this.store){
 				this.storeHandle = this.store.on('data', function(data){
-					console.log('LIST DATA', data);
+					//console.log('LIST DATA', data);
 					this.render(data);
 				}, this);
 			}

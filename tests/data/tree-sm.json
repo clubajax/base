@@ -1,0 +1,41 @@
+{
+  "data": {
+    "key": "03863c3a26d342ca9044baa5943e8c62"
+  },
+  "folders": [
+    {
+      "name": "Engineers",
+      "state": "Create",
+      "id": "10998739782b4a58aa69a1ed2f57ed82",
+      "folders": [
+        {
+          "name": "AssignmentEngineer",
+          "state": "Create",
+          "id": "f488510c68aa45aca75834c77b7938c3",
+          "files": [
+            {
+              "name": "Engineer",
+              "state": "Create",
+              "type": "String",
+              "id": "696c8d6534de44e3b1a2422051a36277"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "name": "Task",
+      "state": "Create",
+      "type": "String",
+      "id": "076112822f4748f0a4a0e8b039773f18"
+    },
+    {
+      "name": "Postcode",
+      "state": "Create",
+      "type": "String",
+      "id": "96a6f323eefa4bc3ba9623660a8e5432"
+    }
+  ]
+}

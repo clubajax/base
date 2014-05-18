@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Tree CSS Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='../rtests/assets/tests.css' rel='stylesheet' />
+	<script src='../rtests/tools/requirejs.js'></script>
+	<script>
+		requirejs.config({
+			baseUrl: '../',
+			paths: {
+				'base': './'
+			},
+			waitSeconds: 3
+		});
+</script>
+</head>
+<body>
+	<div id='list'>
+		<div class='base-tree'>
+			<ul>
+				<li>
+					<div class='base-tree-row'>
+						<span class='base-tree-expander-open'></span>
+						<span class='base-tree-folder-open'></span>
+						<span class='base-tree-text'>world</span>
+					</div>
+					<ul>
+						<li>
+							<div class='base-tree-row'>
+								<span class='base-tree-expander-open'></span>
+								<span class='base-tree-folder-open'></span>
+								<span class='base-tree-text'>united states</span>
+							</div>
+							<ul>
+								<li>
+									<div class='base-tree-row'>
+										<span class='base-tree-expander-open'></span>
+										<span class='base-tree-folder-open'></span>
+										<span class='base-tree-text'>texas</span>
+									</div>
+									<ul>
+										<li>
+											<div class='base-tree-row'>
+												<span class='base-tree-file'></span>
+												<span class='base-tree-text'>dallas</span>
+											</div>
+										</li>
+										<li>
+											<div class='base-tree-row'>
+												<span class='base-tree-file'></span>
+												<span class='base-tree-text'>ft worth</span>
+											</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div class='base-tree-row'>
+								<span class='base-tree-file'></span>
+								<span class='base-tree-text'>canada</span>
+							</div>
+						</li>
+						<li>
+							<div class='base-tree-row'>
+								<span class='base-tree-file'></span>
+								<span class='base-tree-text'>mexico</span>
+							</div>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<div class='base-tree-row'>
+						<span class='base-tree-file'></span>
+						<span class='base-tree-text'>mars</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

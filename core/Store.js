@@ -76,6 +76,20 @@ define([
 		constructor: function(options){
 			this.idMap = {};
 			this.valueMap = {};
+			this.extraParams = {};
+		},
+		
+		expand: function(prop){
+			// adds expandable properties to query
+			if(!this.extraParams.expand){ this.extraParams.expand = []; }
+			if(Array.isArray(prop)){
+				prop.forEach(function(p){
+					this.extraParams.expand.push(p);		
+				}, this);
+			}else{
+				this.extraParams.expand.push(prop);
+			}
+			
 		},
 		
 		processResults: function(data){
@@ -188,8 +202,8 @@ define([
 			this.lastQuery = lang.copy(query);
 			this.lastParams = lang.copy(params);
 				
-			if(query.target){
-				target = (target + '/' + query.target).replace('//', '/');
+			if(query.target || params.target){
+				target = (target + '/' + (query.target || params.target)).replace('//', '/');
 			}
 			
 			this.database = query.database || params.database || this.database;
@@ -206,8 +220,8 @@ define([
 				params[this.pagingEndProp] = this.pagingDefaultMax;
 			}
 			
-			//console.log('query', query);
-			//console.log('params', params);
+			console.log('query', query);
+			console.log('params', params);
 			//console.log('this.extraParams', this.extraParams);
 			//console.log('target', target);
 			
@@ -225,7 +239,7 @@ define([
 			
 			url = this.checkForProxyUrl(url);
 			
-			//console.log('PROXY URL', url);
+			console.log('URL', url);
 			
 			if(url === this._lastUrl){
 				//console.log('prevent duplicate query blocked');

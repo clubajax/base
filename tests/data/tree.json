@@ -1,0 +1,107 @@
+{
+  "data": {
+    "key": "03863c3a26d342ca9044baa5943e8c62",
+  },
+  "folders": [
+    {
+      "name": "Engineers",
+      "state": "Create",
+      "id": "10998739782b4a58aa69a1ed2f57ed82",
+      "folders": [
+        {
+          "name": "AssignmentEngineer",
+          "state": "Create",
+          "id": "f488510c68aa45aca75834c77b7938c3",
+          "files": [
+            {
+              "name": "Engineer",
+              "state": "Create",
+              "type": "String",
+              "id": "696c8d6534de44e3b1a2422051a36277"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "name": "Task",
+      "state": "Create",
+      "type": "String",
+      "id": "076112822f4748f0a4a0e8b039773f18"
+    },
+    {
+      "name": "Postcode",
+      "state": "Create",
+      "type": "String",
+      "id": "96a6f323eefa4bc3ba9623660a8e5432"
+    },
+    {
+      "name": "Latitude",
+      "state": "Create",
+      "type": "Integer",
+      "id": "9e8ef96997104adcbefe9864dc0fec9b"
+    },
+    {
+      "name": "Comment",
+      "state": "Create",
+      "type": "String",
+      "id": "d0e255ff735b401b8f5ac438d9355f05"
+    },
+    {
+      "name": "Finish",
+      "state": "Create",
+      "type": "DateTime",
+      "id": "5e51242094424e8bb28ed5aa97e09a25"
+    },
+    {
+      "name": "State",
+      "state": "Create",
+      "type": "String",
+      "id": "9505708accbb4ee48e3569e71d1e8ccb"
+    },
+    {
+      "name": "Start",
+      "state": "Create",
+      "type": "DateTime",
+      "id": "39f1f72e951245479cc2607dbd06c1e2"
+    },
+    {
+      "name": "Street",
+      "state": "Create",
+      "type": "String",
+      "id": "badd8af480004a9696bb9cc19389425b"
+    },
+    {
+      "name": "City",
+      "state": "Create",
+      "type": "String",
+      "id": "b695bbda125742b8a26b2a0447b92406"
+    },
+    {
+      "name": "CountryID",
+      "state": "Create",
+      "type": "String",
+      "id": "26f21eb719d4416783e7ac4ca2ebe264"
+    },
+    {
+      "name": "Location",
+      "state": "Create",
+      "type": "String",
+      "id": "d43565e5ed534574a9d5c5fa09c642be"
+    },
+    {
+      "name": "LogicPolicy",
+      "state": "Create",
+      "type": "String",
+      "id": "60584e0eae4849d1a934101c3fab8bf1"
+    },
+    {
+      "name": "Longitude",
+      "state": "Create",
+      "type": "Integer",
+      "id": "5249d8d6a4d046c28b824ac8e5200a9f"
+    }
+  ]
+}

@@ -669,3 +669,45 @@ input.base-field{
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
+
+
+
+
+.base-tree ul{
+	list-style: none;
+	padding-left: 20px;
+}
+.base-tree-file,
+.base-tree-expander-open,
+.base-tree-folder-open{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-image: url(./base-icons.png);
+	background-repeat: no-repeat;
+}
+.base-tree-expander-open{
+	width: 11px;
+	background-position: -60px 0;
+}
+.base-tree-expander-closed{
+	width: 11px;
+	background-position: -40px 0;
+}
+.base-tree-folder-open{
+	background-position: 0 0;
+}
+.base-tree-folder-closed{
+	background-position: -20px 0;
+}
+.base-tree-file{
+	margin-left: 16px;
+	width: 11px;
+	background-position: -80px 0;
+}
+.base-tree-row{
+	margin-bottom: 5px;
+}
+.base-tree-row span{
+	vertical-align: text-top;
+}

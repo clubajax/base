@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Tree Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="format-detection" content="telephone=no">
+
+	<link href='../resources/base.css' rel='stylesheet' />
+	<link href='../rtests/assets/tests.css' rel='stylesheet' />
+	<script src='../rtests/tools/requirejs.js'></script>
+	<script>
+		requirejs.config({
+			baseUrl: '../',
+			paths: {
+				'base': './'
+			},
+			waitSeconds: 3
+		});
+</script>
+</head>
+<body>
+	<div id='list'></div>
+	<script>
+		require([
+			'base/core/xhr',
+			'base/ui/grid/Tree'
+		], function(xhr, List) {
+			
+			var
+			list;
+			xhr.get('./data/tree-sm.json', {
+				callback: function(data){
+					console.log('JSON', data);
+					tree.render(data);
+				}	
+			});
+						
+		});
+</script>
+</body>
+</html>
