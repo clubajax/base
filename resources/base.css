@@ -531,6 +531,22 @@ input.base-field{
 
 
 /* list */
+.base-list-header{
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	background: #eee;
+	padding: 3px;
+}
+.base-list-container{
+	position: absolute;
+	top:30px;
+	left:0;
+	right:0;
+	bottom: 0;
+	overflow: auto;
+}
 .base-list-row{
 	padding: 10px 3px;
 }
@@ -550,10 +566,7 @@ input.base-field{
 	color: #333;
 	margin-right: 6px;
 }
-.base-list-header{
-	background: #eee;
-	padding: 3px;
-}
+
 .base-list-row:nth-child(even){
 	background: #eee;
 }
