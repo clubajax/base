@@ -99,9 +99,9 @@ define([
 					var
 						Parent = dcl(Base, {}),
 						Child = dcl(Base, {}),
-						tree = new EventTree(),
-						parent = new Parent({tree:tree.child()}),
-						child = new Child({tree:parent.child()}),
+						eventTree = new EventTree(),
+						parent = new Parent({eventTree:eventTree.child()}),
+						child = new Child({eventTree:parent.child()}),
 						result = false;
 		
 					parent.on('foo', function(){

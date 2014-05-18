@@ -61,19 +61,19 @@
 		},
 	
 		removeChild: function(childId){
-			delete this.children[childId].tree;
+			delete this.children[childId].eventTree;
 			delete this.children[childId];
 		},
 	
 		child: function(options){
 			options = options || {};
 			options.events = this.__events;
-			var tree = new EventTree(options);
-			tree.parent = this;
-			this.children[tree.id] = {
-				tree: tree
+			var eventTree = new EventTree(options);
+			eventTree.parent = this;
+			this.children[eventTree.id] = {
+				eventTree: eventTree
 			};
-			return tree;
+			return eventTree;
 		},
 	
 		missingEventName: function(name){
@@ -161,8 +161,7 @@
 				paused,
 				deferredResult,
 				id = uid('listener-');
-				
-			if(name instanceof window.Node || name === window){
+			if(typeof name !== 'string' && (name instanceof window.Node || name === window)){
 				handle = on.apply(null, arguments);
 				// need to collect and destroy
 				return handle;

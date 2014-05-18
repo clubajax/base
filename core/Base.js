@@ -51,32 +51,32 @@
 				}
 			}
 			
-			this.tree = options.tree || new EventTree(options);
+			this.eventTree = options.eventTree || new EventTree(options);
 			this.on = function(){
-				return this.tree.on.apply(this.tree, arguments);
+				return this.eventTree.on.apply(this.eventTree, arguments);
 			};
 			
 			this.once = function(){
-				return this.tree.once.apply(this.tree, arguments);
+				return this.eventTree.once.apply(this.eventTree, arguments);
 			};
 	
 			this.emit = function(){
-				this.tree.emit.apply(this.tree, arguments);
+				this.eventTree.emit.apply(this.eventTree, arguments);
 			};
 			
 			this.own = function(handle){
-				this.tree.addHandle(handle);
+				this.eventTree.addHandle(handle);
 			};
 			
 			this.child = function(){
-				return this.tree.child();
+				return this.eventTree.child();
 			};
 	
 			_dispose = function(){
-				if(this.tree){
-					this.tree.dispose();
+				if(this.eventTree){
+					this.eventTree.dispose();
 				}
-				this.tree = null;
+				this.eventTree = null;
 				this.emit = noop;
 				this.on = noop;
 				this.child = noop;

@@ -2,7 +2,9 @@ var
 	requirejs = require('./r'),
 	defaultTests = [
 		'observable',
-        'dom'
+		'dom',
+		'base',
+		'eventTree'
 	];
 
 requirejs.config({
