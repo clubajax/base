@@ -68,13 +68,16 @@ define([
 		
 		onClick: function(event){
 			var value = event.target.getAttribute('value');
-			
+			this.exec(value);
+			return true;
+		},
+		
+		exec: function(value){
 			if(value === undefined || value === null || !this.optionsMap[value]){
+				console.warn('invalid input');
 				return true;
 			}
-			
 			this.setValue(value);
-			
 			this.built = false;
 			this.build();
 			this.hide();
