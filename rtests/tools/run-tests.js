@@ -26,7 +26,7 @@ define([], function(){
 					}else{
 						fail++;
 						console.log('*FAIL*:', msg || currentTestName);
-						throw new Error('*FAIL*: ' + ( msg || currentTestName ));
+						//throw new Error('*FAIL*: ' + ( msg || currentTestName ));
 					}
 				}	
 			};

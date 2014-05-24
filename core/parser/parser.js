@@ -64,7 +64,7 @@ define([
 			return props;
 		}
 		
-		function walkDom(parentNode, ATTR, nodes, widgetHasBeenParsed){
+		function walkDom(parentNode, ATTR, nodes, widgetHasBeenParsed, keepWalking){
 			// walks a dom tree from a certain point, and
 			// returns an array of nodes that contain a certain
 			// attribute
@@ -93,10 +93,14 @@ define([
 						//
 						// stop searching child nodes if we hit a widget to parse
 						// may not work for non-widget attrs
-						// 
+						//
+						// UNLESS we have keepWalking, which works with
+						// non-data-widget attributes (like data-ref)
+						if(keepWalking && node.children.length){
+							walkDom(node, ATTR, nodes, widgetHasBeenParsed, keepWalking);
+						}
 					}else if(node.children.length){
-						//console.log('not widget', node);
-						walkDom(node, ATTR, nodes);
+						walkDom(node, ATTR, nodes, widgetHasBeenParsed, keepWalking);
 					}
 				}
 				node = node.nextSibling;

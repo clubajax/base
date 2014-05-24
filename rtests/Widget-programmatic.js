@@ -29,6 +29,22 @@ define([
 					t.assert(!!w03.node.parentNode, 'has parentNode');
 
 				}
+			},{
+				title: 'Widget with template',
+				run: function(t){
+					document.body.innerHTML = "<div><div id='widget01'></div></div>";
+					var w;
+			
+					w = new Widget({
+						template: '<div><div data-ref="childNode"></div><div data-ref="siblingNode"><div data-ref="grandchildNode"></div></div></div>'	
+					}, 'widget01');
+					t.assert(!!w, 'created widget');
+					t.assert(!!w.node, 'widget has a node');
+					t.assert(!!w.childNode, 'widget has a childNode');
+					t.assert(!!w.siblingNode, 'widget has a siblingNode');
+					t.assert(!!w.grandchildNode, 'widget has a grandchildNode');
+					
+				}
 			}
         ]
     };
