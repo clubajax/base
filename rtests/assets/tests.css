@@ -116,3 +116,30 @@ body{
 .dev.devgreen{
 	background: #D3F2D0;
 }
+
+/*custom icons for tree tests*/
+.file-script,
+.file-page,
+.file-settings,
+.folder-blue{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 21px;
+	margin-right: 3px;
+	background-image: url(../../resources/base-icons.png);
+	background-repeat: no-repeat;
+}
+.folder-blue{
+	background-position: 0px -40px;
+	margin-left: 5px;
+}
+.file-script{
+	background-position: -80px -40px;
+}
+.file-page{
+	background-position: -140px -40px;
+}
+.file-settings{
+	background-position: -120px -40px;
+}

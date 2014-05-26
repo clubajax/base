@@ -4,8 +4,9 @@ define([
 	'./lang',
 	'./cache',
 	'./xhr',
+	'./Promise',
 	'./logger'
-], function(dcl, Base, lang, cache, xhr, logger){
+], function(dcl, Base, lang, cache, xhr, Promise, logger){
 	// Store
 	// Simple Memory Store. Does not support REST functionality
 	// 
@@ -77,6 +78,7 @@ define([
 			this.idMap = {};
 			this.valueMap = {};
 			this.extraParams = {};
+			this.readyCallbacks = [];
 		},
 		
 		expand: function(prop){
@@ -181,6 +183,9 @@ define([
 			this.emit('data', data);
 			this.emit('items', this.items);
 			this.emit('data-end', data);
+			
+			this.readyStatus = true;
+			this.checkReady();
 		},
 		
 		onQuerySuccess: function(data){
@@ -222,6 +227,7 @@ define([
 			
 			console.log('query', query);
 			console.log('params', params);
+			console.log('this.database', this.database);
 			//console.log('this.extraParams', this.extraParams);
 			//console.log('target', target);
 			
@@ -239,14 +245,16 @@ define([
 			
 			url = this.checkForProxyUrl(url);
 			
-			console.log('URL', url);
+			//console.log('URL', url);
 			
 			if(url === this._lastUrl){
 				//console.log('prevent duplicate query blocked');
 				if(!this._inflight){
 					this.setData(this.data);
 				}
-				return;
+				promise = new Promise();
+				promise.resolve(this.data);
+				return promise;
 			}
 			this._lastUrl = url;
 			
@@ -259,6 +267,7 @@ define([
 			this.items = null;
 			this._inflight = true;
 			
+			this.readyStatus = false;
 			promise = cache(url, this.expires, null);
 			
 			promise.then(function(data){
@@ -269,6 +278,21 @@ define([
 				this._inflight = false;
 				this.emit('data-end', e);
 			}.bind(this));
+			
+			return promise;
+		},
+		
+		ready: function(callback){
+			if(this.readyStatus){
+				callback();
+			}else{
+				this.readyCallbacks.push(callback);
+			}
+		},
+		
+		checkReady: function(){
+			this.readyCallbacks.forEach(function(cb){ cb(); });
+			this.readyCallbacks = [];
 		},
 		
 		checkForProxyUrl: function(url){

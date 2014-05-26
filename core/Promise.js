@@ -10,9 +10,11 @@ define([
 			callbacks = [],
 			errbacks = [],
 			progbacks = [];
+			
+		this.status = 'initialized';
 		
 		this.then = function(callback, errback, progback, context){
-			
+			this.status = 'pending';	
 			var ctx = context;
 			if(progback){
 				if(typeof progback === 'object'){
@@ -38,6 +40,7 @@ define([
 		};
 		
 		this.resolve = function(){
+			this.status = 'resolved';
 			for(i = 0; i < callbacks.length; i++){
 				callbacks[i].apply(null, arguments);
 			}

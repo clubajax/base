@@ -53,7 +53,17 @@ define([
 	}
 
 	function isNode(item){
-		return (/HTML/).test(Object.prototype.toString.call( item ));
+		if(typeof item === 'string'){
+			return false;
+		}
+		return (/HTML/).test(item.toString());
+	}
+	
+	function isWindow(item){
+		if(typeof item === 'string'){
+			return false;
+		}
+		return (/global|Window/).test(item.toString());
 	}
 	
 	function byId(id){
@@ -258,6 +268,8 @@ define([
 	dom.show = show;
 	dom.hide = hide;
 	dom.byId = byId;
+	dom.isNode = isNode;
+	dom.isWindow = isWindow;
 	
 	return dom;
 });

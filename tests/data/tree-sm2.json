@@ -1,0 +1,30 @@
+{
+  "folders": [
+    {
+      "name": "World",
+      "id": "1",
+      "folders": [
+        {
+          "name": "United States",
+          "id": "4",
+          "files": [
+            {
+              "name": "Texas",
+              "id": "5"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "name": "Mars",
+      "id": "2"
+    },
+    {
+      "name": "Venus",
+      "id": "3"
+    }
+  ]
+}

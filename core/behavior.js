@@ -92,6 +92,7 @@ define([
 		all: Promise.all,
 		move: function(node, options){
 			var
+				resolved = 0,
 				transform = has('transform'),
 				transition = has('transition'),
 				duration = options.d || options.dur || options.duration || 500,
@@ -124,22 +125,35 @@ define([
 			
 			dom.style(node, transition, transitionProps);
 			
+			//console.log(' - trans-start', node);
 			on.once(node, has('transitionend'), function(){
-				promise.resolve();
+				resolved = 1;
+				setTimeout(function(){
+					promise.resolve();
+				}, 100);
+				
 				if(options.resetOnFinish){
 					setTimeout(function(){
+						//console.log(' - trans-end', node);
 						dom.style(node, transform, '');
 						dom.style(node, transition, '');
 					}, 100);
 				}
 			});
 			
+			setTimeout(function(){
+				if(!resolved){
+					console.log('unresolved tramsition', node);	
+				}	
+			}, 1000);
+			
+			
 			//window.requestAnimationFrame does not always allow time
 			//for promise to be returned
 			//
 			setTimeout(function(){
 				dom.style(node, transform, transformToProps.join(' '));
-			},1);
+			},200);
 			
 			return promise;
 		},

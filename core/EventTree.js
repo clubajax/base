@@ -1,7 +1,8 @@
 	define([
 	'../dcl/dcl',
+	'./dom',
 	'./on'
-	], function(dcl, on){
+	], function(dcl, dom, on){
 	// EventTree
 	//      EventTree is a typical event emitter with additional functionality
 	//      of generating child EventTrees. A child event will propogate up the tree
@@ -161,7 +162,8 @@
 				paused,
 				deferredResult,
 				id = uid('listener-');
-			if(typeof name !== 'string' && (name instanceof window.Node || name === window)){
+			if(dom.isNode(name) || dom.isWindow(name)){
+			//if(typeof name !== 'string' && (name instanceof window.Node || name === window)){
 				handle = on.apply(null, arguments);
 				// need to collect and destroy
 				return handle;

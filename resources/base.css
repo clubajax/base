@@ -673,41 +673,91 @@ input.base-field{
 
 
 
-.base-tree ul{
-	list-style: none;
-	padding-left: 20px;
-}
+.base-tree{
+	padding: 5px;
+	font-size: 13px;
+} 
 .base-tree-file,
-.base-tree-expander-open,
-.base-tree-folder-open{
+.base-tree-expander,
+.base-tree-folder{
 	display: inline-block;
 	width: 16px;
 	height: 16px;
+	margin-left: 5px;
 	background-image: url(./base-icons.png);
 	background-repeat: no-repeat;
 }
-.base-tree-expander-open{
+.base-tree-expander{
+	background: none;
+}
+.open .base-tree-expander{
 	width: 11px;
-	background-position: -60px 0;
+	/*background-position: -60px -20px;*/
 }
-.base-tree-expander-closed{
+.open .base-tree-expander:before{
+	content: '\25BC';
+	font-size: 10px;
+}
+.closed .base-tree-expander{
 	width: 11px;
-	background-position: -40px 0;
+	/*background-position: -40px -20px;*/
 }
-.base-tree-folder-open{
-	background-position: 0 0;
+.closed .base-tree-expander:before{
+	content: '\25B6';
+	font-size: 10px;
 }
-.base-tree-folder-closed{
-	background-position: -20px 0;
+.base-tree-folder{
+	margin-right: 4px;
+}
+.closed .base-tree-folder{
+	background-position: 0 -20px;
+}
+.open .base-tree-folder{
+	background-position: -20px -20px;
 }
 .base-tree-file{
-	margin-left: 16px;
-	width: 11px;
-	background-position: -80px 0;
+	margin-left: 21px;
+	background-position: -80px -20px;
+}
+.base-tree-text{
+	margin-left: 1px;
+}
+
+.base-tree-child{
+	display: none;
+}
+.open > .base-tree-child{
+	display: block;
 }
 .base-tree-row{
-	margin-bottom: 5px;
+	padding: 3px 0;
+	margin: 2px 0;
+}
+.base-tree-row:hover{
+	background: #ffff00;
+	cursor: pointer;
+}
+.base-tree-row.select{
+	background: #487cd4;
+	color: #fff;
+}
+.base-tree-row.select:hover{
+	background: #5191F7;
+	color: #fff;
 }
 .base-tree-row span{
-	vertical-align: text-top;
+	vertical-align: bottom;
 }
+.base-tree-container{
+	
+}
+.base-tree-scroller{
+	
+}
+
+.m1.base-tree-row{ padding-left: 20px; }
+.m2.base-tree-row{ padding-left: 40px; }
+.m3.base-tree-row{ padding-left: 60px; }
+.m4.base-tree-row{ padding-left: 80px; }
+.m5.base-tree-row{ padding-left: 100px; }
+.m6.base-tree-row{ padding-left: 120px; }

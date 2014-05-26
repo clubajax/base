@@ -57,15 +57,18 @@ define([
 		}
 		selected = null;
 		
+		
 		if(view){
 			selected = view;
 			view.selected = true;
+			log('setSelected', view.id);
 		}else if(!selected){
 			selected = viewList[0];
 			selected.selected = true;
+			log('setSelected', selected.id);
 		}
 		
-		log('setSelected', selected.id);
+		//log('setSelected', selected.id);
 		return selected;
 	}
 	
@@ -112,7 +115,7 @@ define([
 			direction = -1;
 		}
 		
-		log('  from idx', fromIndex, 'to', toIndex);
+		log('  from idx', fromIndex, 'to', toIndex, '( ' + selected.id + ' > ' +view.id + ' )');
 		
 		
 		// selected
@@ -139,13 +142,15 @@ define([
 		behavior.all(moves).then(function(){
 			log('done animating');
 			setDisplayView(setSelected(view));
-			promise.resolve(view);
+			setTimeout(function(){ promise.resolve(view); }, 100);
+			
 		});
+		log('moves: ', moves);
 		return promise;
 	}
 	
 	function addView(view){
-		log('addView', view.id);
+		//log('addView', view.id);
 		viewMap[view.id] = view;
 		viewList.push(view);
 		// for when view emits an event that it wants to
@@ -182,11 +187,14 @@ define([
 			var
 				promise = setTransitionView(view);
 			view = this.byId(view);
+			console.log('    select view:', view.id);
 			if(view.onFirstDisplay && !view._displayed){
 				view.onFirstDisplay();
 				view._displayed = 1;
 			}
-			promise.inject(view);
+			if(!view.then){
+				promise.inject(view);
+			}
 			return view;
 		},
 		

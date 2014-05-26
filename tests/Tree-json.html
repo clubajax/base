@@ -19,19 +19,28 @@
 </script>
 </head>
 <body>
-	<div id='list'></div>
+	<div id='tree'></div>
+	<div id='tree2'></div>
 	<script>
 		require([
 			'base/core/xhr',
 			'base/ui/grid/Tree'
-		], function(xhr, List) {
+		], function(xhr, Tree) {
 			
 			var
-			list;
-			xhr.get('./data/tree-sm.json', {
+			tree = new Tree({}, 'tree'),
+			tree2 = new Tree({}, 'tree2');
+			xhr.get('./data/tree-sm2.json', {
 				callback: function(data){
 					console.log('JSON', data);
 					tree.render(data);
+				}	
+			});
+			
+			xhr.get('./data/tree-icons.json', {
+				callback: function(data){
+					console.log('JSON', data);
+					tree2.render(data);
 				}	
 			});
 						

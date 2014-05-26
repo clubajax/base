@@ -1,0 +1,35 @@
+{
+  "folders": [
+    {
+      "name": "World",
+      "id": "1",
+	  "icon":"folder-blue",
+      "folders": [
+        {
+          "name": "United States",
+          "id": "4",
+			"icon":"folder-blue",
+          "files": [
+            {
+              "name": "Texas",
+              "id": "5",
+				"icon":"file-script"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+		"name": "Mars",
+		"id": "2",
+		"icon":"file-page"
+    },
+    {
+      "name": "Venus",
+      "id": "3",
+		"icon":"file-settings"
+    }
+  ]
+}

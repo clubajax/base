@@ -38,7 +38,21 @@ define([
 						t.assert(node.id === value, 'node.id = ' + value);
                     t.assert(node.getAttribute('id') === value, 'node.getAttribute(id) = ' + value);
                 }
-			},
+			},{
+				title: 'isNode',
+				run: function(t){
+					t.assert(dom.isNode(dom('div')), 'node is node');
+					t.assert(!dom.isNode('foo'), 'string is not node');
+					t.assert(!dom.isNode({}), 'object is not node');
+					t.assert(dom.isNode(document), 'document is node');
+				}
+			},{
+				title: 'isWindow',
+				run: function(t){
+					t.assert(!dom.isNode(window), 'window is not node');
+					t.assert(dom.isWindow(window), 'window is window');
+				}
+			}
         ]
     };
 });
