@@ -113,7 +113,7 @@ define([
 			//console.trace('');
 			count++;
 			
-			if(count > 50){
+			if(count > 100){
 				//console.trace('');
 				throw new Error('TOO MUCH RECURSION');
 			}
