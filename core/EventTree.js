@@ -62,8 +62,10 @@
 		},
 	
 		removeChild: function(childId){
-			delete this.children[childId].eventTree;
-			delete this.children[childId];
+			if(this.children[childId]){
+				delete this.children[childId].eventTree;
+				delete this.children[childId];
+			}
 		},
 	
 		child: function(options){
