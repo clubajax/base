@@ -752,7 +752,12 @@ input.base-field{
 	
 }
 .base-tree-scroller{
-	
+	position: absolute;
+	top:0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: auto;
 }
 
 .m1.base-tree-row{ padding-left: 20px; }
