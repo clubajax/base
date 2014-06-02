@@ -77,7 +77,7 @@ define([
 		constructor: function(options){
 			this.idMap = {};
 			this.valueMap = {};
-			this.extraParams = {};
+			this.extraParams = options.extraParams || {};
 			this.readyCallbacks = [];
 		},
 		
@@ -201,6 +201,7 @@ define([
 			
 			var
 				promise,
+				cachePromise,
 				allParams, delimeter, url,
 				target = this.target || '';
 			
@@ -228,7 +229,7 @@ define([
 			console.log('query', query);
 			console.log('params', params);
 			console.log('this.database', this.database);
-			//console.log('this.extraParams', this.extraParams);
+			console.log('this.extraParams', this.extraParams);
 			//console.log('target', target);
 			
 			allParams = cleanObject(lang.mix({}, query, params, this.extraParams));
@@ -245,9 +246,9 @@ define([
 			
 			url = this.checkForProxyUrl(url);
 			
-			//console.log('URL', url);
+			console.log('URL', this.id, url);
 			
-			if(url === this._lastUrl){
+			if(url === this._lastUrl && this.data){
 				//console.log('prevent duplicate query blocked');
 				if(!this._inflight){
 					this.setData(this.data);
@@ -268,11 +269,16 @@ define([
 			this._inflight = true;
 			
 			this.readyStatus = false;
-			promise = cache(url, this.expires, null);
 			
-			promise.then(function(data){
+			promise = new Promise();
+			
+				
+			cachePromise = cache(url, this.expires, null);
+			
+			cachePromise.then(function(data){
 				this._inflight = false;
 				this.onQuerySuccess(data);
+				promise.resolve(this.data);
 			}.bind(this), function(e){
 				console.error('Store error', e);
 				this._inflight = false;
