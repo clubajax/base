@@ -194,7 +194,7 @@ define([
 		
 		query: function(query, params, successCallback){
 			
-			this.emit('data-begin');
+			//this.emit('data-begin');
 			
 			query = query || this.lastQuery || {};
 			params = params || this.lastParams || {};
@@ -250,6 +250,7 @@ define([
 			
 			if(url === this._lastUrl && this.data){
 				//console.log('prevent duplicate query blocked');
+				this.emit('data-begin', false);
 				if(!this._inflight){
 					this.setData(this.data);
 				}
@@ -257,6 +258,8 @@ define([
 				promise.resolve(this.data);
 				return promise;
 			}
+			
+			this.emit('data-begin', true);
 			this._lastUrl = url;
 			
 			console.time(this.url);
