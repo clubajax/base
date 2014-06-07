@@ -541,7 +541,7 @@ input.base-field{
 }
 .base-list-container{
 	position: absolute;
-	top:30px;
+	top:0px;
 	left:0;
 	right:0;
 	bottom: 0;
