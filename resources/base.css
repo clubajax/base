@@ -120,6 +120,26 @@ button:disabled,
 }
 
 
+.base-options-button{
+	position: absolute;
+	top: 2px;
+	right: 5px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	/*background: url(mobile_icons.png) no-repeat -0px -120px;*/
+}
+.base-options-button:before{
+	content: '\2699';
+	font-size: 38px;
+	color: #999;
+	position: relative;
+	top: -5px;
+}
+.base-options-button:hover:before{
+	color: #eee;
+}
+
 /* dropdown */
 .base-dropdown{
 	padding-left: 3px;
