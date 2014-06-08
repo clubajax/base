@@ -249,13 +249,13 @@ define([
 			console.log('URL', this.id, url);
 			
 			if(url === this._lastUrl && this.data){
-				//console.log('prevent duplicate query blocked');
+				console.log('prevent duplicate query blocked', this.data);
 				this.emit('data-begin', false);
 				if(!this._inflight){
 					this.setData(this.data);
 				}
 				promise = new Promise();
-				promise.resolve(this.data);
+				promise.call(this.data);
 				return promise;
 			}
 			
