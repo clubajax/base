@@ -2,7 +2,7 @@ define([
 ], function(){
 	
 	function Promise(promises){
-		
+		// TODO: rename to Deferred. This is not a Promise.
 		var
 			i,
 			self = this,
@@ -14,8 +14,16 @@ define([
 		this.status = 'initialized';
 		
 		this.then = function(callback, errback, progback, context){
-			this.status = 'pending';	
 			var ctx = context;
+			if(ctx){
+				callback = callback.bind(ctx);
+			}
+			
+			if(this.status === 'resolved'){
+				callback();
+				return this;
+			}
+			this.status = 'pending';	
 			if(progback){
 				if(typeof progback === 'object'){
 					ctx = progback;
@@ -29,9 +37,6 @@ define([
 				}else{
 					errbacks.push(errback);
 				}
-			}
-			if(ctx){
-				callback = callback.bind(ctx);
 			}
 			callbacks.push(callback);
 			
@@ -84,8 +89,12 @@ define([
 		}
 		
 		if(promises){
-			for(i = 0; i < promises.length; i++){
-				promises[i].then(resolve, self.reject);
+			if(promises.every(function(p){ return p.state === 'resolved'; })){
+				resolve();
+			}else{
+				for(i = 0; i < promises.length; i++){
+					promises[i].then(resolve, self.reject);
+				}
 			}
 		}
 	}
