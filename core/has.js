@@ -20,7 +20,7 @@ define([], function(dcl){
 		transitions = {
 			'MozTransition': 'transitionend',
 			'WebkitTransition': 'webkitTransitionEnd',
-			'transition': 'transitionEnd',
+			'transition': 'transitionend',
 			'MSTransition': 'msTransitionEnd',
 			'OTransition': 'oTransitionEnd'
 		}
