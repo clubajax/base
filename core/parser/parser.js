@@ -6,7 +6,7 @@ define([
 	var
 		log = logger('PRS', 0),
 		WIDGET_ATTR = 'data-widget',
-		PROP_ATTR = 'data-props',
+		//PROP_ATTR = 'data-props',
 		plugins = [],
 		spaces = '                                                                                   ', 
 		count = 0;
@@ -33,36 +33,36 @@ define([
 			}
 		}
 		
-		function assignProps(object, propObject){
-			//	currently only supports flat objects
-			//	deeper nesting could be done with:
-			//		JSON.parse('{' + propObject + '}');
-			var
-			i, key, value,
-			props = propObject.split(',');
+		//function assignProps(object, propObject){
+		//	//	currently only supports flat objects
+		//	//	deeper nesting could be done with:
+		//	//		JSON.parse('{' + propObject + '}');
+		//	var
+		//	i, key, value,
+		//	props = propObject.split(',');
+		//
+		//	for(i = 0; i < props.length; i++){
+		//		key = props[i].split(':')[0].trim();
+		//		value = props[i].split(':')[1].trim();
+		//		if(value !== '' && !isNaN(Number(value))){
+		//			value = Number(value);
+		//		}
+		//		object[key] = value;
+		//	}
+		//}
 		
-			for(i = 0; i < props.length; i++){
-				key = props[i].split(':')[0].trim();
-				value = props[i].split(':')[1].trim();
-				if(value !== '' && !isNaN(Number(value))){
-					value = Number(value);
-				}
-				object[key] = value;
-			}
-		}
-		
-		function attsToObject(atts){
-			var i, a, props = {};
-			for(i = 0; i < atts.length; i++){
-				a = atts[i];
-				if(a.localName === PROP_ATTR){
-					assignProps(props, a.value);
-				}else{
-					props[a.localName] = a.value;
-				}
-			}
-			return props;
-		}
+		//function attsToObject(atts){
+		//	var i, a, props = {};
+		//	for(i = 0; i < atts.length; i++){
+		//		a = atts[i];
+		//		if(a.localName === PROP_ATTR){
+		//			assignProps(props, a.value);
+		//		}else{
+		//			props[a.localName] = a.value;
+		//		}
+		//	}
+		//	return props;
+		//}
 		
 		function walkDom(parentNode, ATTR, nodes, widgetHasBeenParsed, keepWalking){
 			// walks a dom tree from a certain point, and
@@ -145,22 +145,9 @@ define([
 			
 			log(dent, 'parse complete, widgetNodes:', widgetNodes.length);
 			
-			widgetNodes.forEach(function(node){
+			widgetNodes.forEach(function parseWidgetNodes(node){
 				
-				//if(!node.getAttribute(WIDGET_ATTR)){
-				//	console.log(' *** already parsed!', node);
-				//	return;
-				//}
-				//if(node.getAttribute('parsed')){
-				//	console.log(' *** already parsed!', node);
-				//	widget = registry.getWidget(node.getAttribute('widgetId'));
-				//	widgets.push(widget);
-				//	console.log(' here is proof:', widget);
-				//	return;
-				//}
-				//console.log('node.attributes', node.attributes, node.attributes instanceof window.NamedNodeMap );
 				props = {};
-				//attsToObject(node.attributes);
 				handlePlugins('attributes', node.attributes, props);
 				
 				log(dent, 'props', props );
@@ -171,10 +158,6 @@ define([
 					return;
 				}
 				log(dent, 'make widget', type);
-				
-				//node.setAttribute('data-parsed', props['data-widget']);
-				//node.removeAttribute('data-widget');
-				//delete props['data-widget'];
 				
 				widget = new Ctor(props, node);
 				widgets.push(widget);

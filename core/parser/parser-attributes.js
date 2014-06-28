@@ -3,6 +3,7 @@ define([
 ], function(parser){
 	
 	var
+		ATT_TEST = /NamedNodeMap|NamedAttrMap/,
 		PROP_ATTR = 'data-props';
 		
 	
@@ -57,10 +58,8 @@ define([
 	}
 	
 	parser.plugin(function(attributes, propObject){
-		if(!!window.NamedNodeMap){
-			if(typeof attributes === 'object' && attributes instanceof window.NamedNodeMap){
-				addAttsToObject(attributes, propObject);
-			}
+		if(ATT_TEST.test(attributes.toString())){
+			addAttsToObject(attributes, propObject);
 		}else{
 			// for tests
 			if(Array.isArray(attributes)){
