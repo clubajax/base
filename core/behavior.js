@@ -125,7 +125,6 @@ define([
 			
 			dom.style(node, transition, transitionProps);
 			
-			//console.log(' - trans-start', node);
 			on.once(node, has('transitionend'), function(){
 				resolved = 1;
 				setTimeout(function(){
@@ -143,7 +142,7 @@ define([
 			
 			setTimeout(function(){
 				if(!resolved){
-					console.log('unresolved tramsition', node);	
+					console.log('unresolved transition', node);	
 				}	
 			}, 1000);
 			
@@ -188,7 +187,7 @@ define([
 					//console.log('UP last.x', e.mouse.last.x, 'speed', e.mouse.speed.x, e.mouse.speed.ping);
 					
 					x += ((e.mouse.last.x > 0) ? dist : -dist) * (e.mouse.speed.x);
-					console.log('org x', x);
+					//console.log('org x', x);
 					if(e.mouse.speed.x > 3){
 						time = 2000;
 					}
@@ -206,7 +205,7 @@ define([
 						time = 500;
 					}
 					
-					console.log('TO', x, '(',w,')');
+					//console.log('TO', x, '(',w,')');
 					anihandle = ani(node, cssMap.transform, 'translateX('+x+'px)', time);
 					if(sibling){
 						ani(sibling, cssMap.transform, 'translateX('+x+'px)', time);

@@ -226,10 +226,10 @@ define([
 				params[this.pagingEndProp] = this.pagingDefaultMax;
 			}
 			
-			console.log('query', query);
-			console.log('params', params);
-			console.log('this.database', this.database);
-			console.log('this.extraParams', this.extraParams);
+			//console.log('query', query);
+			//console.log('params', params);
+			//console.log('this.database', this.database);
+			//console.log('this.extraParams', this.extraParams);
 			//console.log('target', target);
 			
 			allParams = cleanObject(lang.mix({}, query, params, this.extraParams));

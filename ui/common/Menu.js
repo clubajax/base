@@ -174,8 +174,8 @@ define([
 		
 		position: function(){
 			var
-				padding = dom.computed(this.containerNode, 'padding-left') +
-					dom.computed(this.containerNode, 'padding-right'),
+				padding = dom.computed(this.containerNode, 'paddingLeft') +
+					dom.computed(this.containerNode, 'paddingRight'),
 				menuBox = dom.box(this.containerNode),
 				winBox = dom.box(window),
 				btnBox = dom.box(this.refNode),
@@ -198,7 +198,7 @@ define([
 					options.overflowY = 'visible';
 				}else if(botSpace > topSpace){
 					// bottom, but scroll
-					console.log('bottom scroll');
+					//console.log('bottom scroll');
 					options.height = botSpace;
 					options.overflowY = 'scroll';
 					options.overflowX = 'hidden';
@@ -208,13 +208,13 @@ define([
 					options.top = 3;
 				}
 			}else{
-				console.log('bottom full');
+				//console.log('bottom full');
 				// default, bottom, full
 				//options.overflowX = 'visible';
 				//options.overflowY = 'visible';
 			}
-			console.log('position', options);
-			console.log('bot space', botSpace);
+			//console.log('position', options);
+			//console.log('bot space', botSpace);
 			
 			dom.style(this.node, options);
 			dom.style(this.containerNode, 'width', w); // assume 2px border

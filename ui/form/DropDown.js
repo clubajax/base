@@ -74,7 +74,6 @@ define([
 				this.setLoading(false);
 			}, this);
 			this.store.on('items', function(items){
-				console.log('ITEMS', items);
 				this.setOptions(items);
 			}, this);
 		},

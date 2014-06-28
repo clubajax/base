@@ -108,7 +108,8 @@ define([
 			}
 			return null;
 		}else if(value === undefined){
-			return window.getComputedStyle(node)[prop];
+			// dom.computed?
+			return window.getComputedStyle(node)[prop] || 0;
 		}
 	
 		return node.style[prop];

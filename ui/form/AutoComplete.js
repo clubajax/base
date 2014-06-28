@@ -121,7 +121,7 @@ define([
 		
 		onKeyUp: function(e){
 			clearTimeout(this.debounceHandle);
-			console.log('key', e.keyCode);
+			//console.log('key', e.keyCode);
 			switch(e.keyCode){
 				case 27:
 					// ESC
@@ -156,7 +156,7 @@ define([
 		
 		query: function(){
 			if(this.inputNode.value === this.lastValue){
-				console.log('BLOCK SAME');
+				console.log('block dupe query');
 				return;
 			}
 			this.lastValue = this.inputNode.value;
