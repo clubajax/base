@@ -102,7 +102,14 @@
 	
 			args.shift();
 			
-			this._previousEvents[name] = args;
+			if(args){
+				if(Array.isArray(args) && args[0] === ''){
+					//noop
+					// this may be brittle...
+				}else{
+					this._previousEvents[name] = args;
+				}
+			}
 			
 			// adds ancestors to create a hierarchy
 			// event may look like:
@@ -188,9 +195,9 @@
 
 			if(includeMissed && this._previousEvents[name]){
 				deferredResult = this._previousEvents[name];
-				setTimeout(function(){
+				//setTimeout(function(){
 					callback(deferredResult);
-				}.bind(this), 100);
+				//}.bind(this), 100);
 				this._previousEvents[name] = null; // so it won't fire again... I think...
 			}
 	
