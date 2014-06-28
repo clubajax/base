@@ -30,6 +30,7 @@ define([
 			url += '?' + toQuery(options.params);
 		}
 		
+		
 		function callback(result){
 			if(options.callback){
 				options.callback(result);
@@ -74,6 +75,10 @@ define([
 		
 		req.onload = onload;
 		req.open(options.type, url, true);
+		
+		if(handleAs === 'json'){
+			req.setRequestHeader('Accept', 'application/json');
+		}
 		
 		req.send();
 		
